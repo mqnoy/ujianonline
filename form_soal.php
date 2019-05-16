@@ -11,7 +11,9 @@ include "./includes/Soal_list.php";
 //panggil function soal list
 $soal = tampil_soal();
 $tampil_pilihanGanda = function ($no_soal=1) use ($soal){
-    echo "<div class=\"tab\"> ".$soal['pilganda_soal_'.$no_soal]['soal'];
+    echo "<div class=\"tab\"> ";
+    echo "<h4>Soal <span id=\"posisi_soal\">$no_soal</span></h4>";
+    echo $soal['pilganda_soal_'.$no_soal]['soal'];
     foreach ($soal['pilganda_soal_'.$no_soal]['pilihan_ganda'] as $key => $value) {
         # code...
         echo "
@@ -21,33 +23,18 @@ $tampil_pilihanGanda = function ($no_soal=1) use ($soal){
     }
     echo "</div>";
 };
+if (isset($_POST)) {
+  # code...
+  var_dump($_POST);
+}
 ?>
-<form id="regForm" action="">
+<form id="regForm" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
   <?php 
   for ($i=1; $i <= sizeof($soal); $i++) { 
     # code...
     $tampil_pilihanGanda($i);
-
   }
   ?>
-  <!-- One "tab" for each step in the form: -->
-  <!-- <div class="tab">Name:
-    <p><input placeholder="First name..." oninput="this.className = ''" name="fname"></p>
-    <p><input placeholder="Last name..." oninput="this.className = ''" name="lname"></p>
-  </div>
-  <div class="tab">Contact Info:
-    <p><input placeholder="E-mail..." oninput="this.className = ''" name="email"></p>
-    <p><input placeholder="Phone..." oninput="this.className = ''" name="phone"></p>
-  </div>
-  <div class="tab">Birthday:
-    <p><input placeholder="dd" oninput="this.className = ''" name="dd"></p>
-    <p><input placeholder="mm" oninput="this.className = ''" name="nn"></p>
-    <p><input placeholder="yyyy" oninput="this.className = ''" name="yyyy"></p>
-  </div>
-  <div class="tab">Login Info:
-    <p><input placeholder="Username..." oninput="this.className = ''" name="uname"></p>
-    <p><input placeholder="Password..." oninput="this.className = ''" name="pword" type="password"></p>
-  </div> -->
   <div style="overflow:auto;">
     <div style="float:right;">
       <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
@@ -66,6 +53,10 @@ $tampil_pilihanGanda = function ($no_soal=1) use ($soal){
 <script>
 var currentTab = 0; // Current tab is set to be the first tab (0)
 showTab(currentTab); // Display the current tab
+
+// var posisi_soalnya = ;
+// document.getElementById("posisi_soal").innerHTML = posisi_soalnya;
+
 
 function showTab(n) {
   // This function will display the specified tab of the form...
@@ -87,6 +78,11 @@ function showTab(n) {
 }
 
 function nextPrev(n) {
+  //tampilkan info soal ke berapanya
+  // var ambil_name = document.getElementsByName("pilihan[pilihan_ganda_]".n);
+
+
+
   // This function will figure out which tab to display
   var x = document.getElementsByClassName("tab");
   // Exit the function if any field in the current tab is invalid:
