@@ -5,7 +5,17 @@
 body {
   background-color: #f1f1f1;
 }
-
+.title_regForm{
+  text-align: center;
+  display: inline-block;
+  width: 100%;
+  
+}
+.footer_form_soal{
+  width: 100%;
+  display: inline-block;
+  /* background: #4CAF50; */
+}
 #regForm {
   background-color: #ffffff;
   margin: 100px auto;
@@ -41,7 +51,7 @@ input.invalid {
 }
 
 /* Hide all steps by default: */
-.tab {
+.div_pilganda {
   display: none;
 }
 
@@ -77,6 +87,8 @@ button:hover {
 
 .step.active {
   opacity: 1;
+  background-color: #4CAF50;
+
 }
 
 /* Mark the steps that are finished and valid: */
