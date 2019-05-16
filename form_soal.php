@@ -28,7 +28,8 @@ if (isset($_POST)) {
   var_dump($_POST);
 }
 ?>
-<form id="regForm" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+<div id="regForm" >
+<form method="post" id="form_soal" action="<?php echo $_SERVER['PHP_SELF'];?>">
   <?php 
   for ($i=1; $i <= sizeof($soal); $i++) { 
     # code...
@@ -49,7 +50,7 @@ if (isset($_POST)) {
     <span class="step"></span>
   </div>
 </form>
-
+</div>
 <script>
 var currentTab = 0; // Current tab is set to be the first tab (0)
 showTab(currentTab); // Display the current tab
@@ -78,11 +79,6 @@ function showTab(n) {
 }
 
 function nextPrev(n) {
-  //tampilkan info soal ke berapanya
-  // var ambil_name = document.getElementsByName("pilihan[pilihan_ganda_]".n);
-
-
-
   // This function will figure out which tab to display
   var x = document.getElementsByClassName("tab");
   // Exit the function if any field in the current tab is invalid:
@@ -94,7 +90,8 @@ function nextPrev(n) {
   // if you have reached the end of the form...
   if (currentTab >= x.length) {
     // ... the form gets submitted:
-    document.getElementById("regForm").submit();
+    document.getElementById("form_soal").submit();
+
     return false;
   }
   // Otherwise, display the correct tab:
