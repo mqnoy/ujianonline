@@ -36,6 +36,14 @@ function tampil_soal(){
                 'C' => "4"
             )
         ),
+        'pilganda_soal_5' => array(
+            "soal" => "5 +1 = ?", 
+            "pilihan_ganda" => array(
+                'A' => "2",
+                'B' => "3",
+                'C' => "6"
+            )
+        ),
     );
     return $soal;
 }

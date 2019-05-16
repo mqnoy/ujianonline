@@ -6,6 +6,7 @@
 <body>
 <?php 
 session_start();
+$_SESSION['data_form_soal'] = array();
 include "./includes/Soal_list.php";
 
 //panggil function soal list
@@ -23,9 +24,10 @@ $tampil_pilihanGanda = function ($no_soal=1) use ($soal){
     }
     echo "</div>";
 };
-if (isset($_POST)) {
+if (isset($_POST['submit_soal'])) {
   # code...
-  var_dump($_POST);
+  $_SESSION['data_form_soal'] = $_POST;
+  header("Location: ./jawaban.php");
 }
 ?>
 <div id="regForm" >
@@ -44,10 +46,12 @@ if (isset($_POST)) {
   </div>
   <!-- Circles which indicates the steps of the form: -->
   <div style="text-align:center;margin-top:40px;">
-    <span class="step"></span>
-    <span class="step"></span>
-    <span class="step"></span>
-    <span class="step"></span>
+  <?php
+    for ($j=1; $j <= sizeof($soal); $j++) { 
+      # code...
+      echo "<span class=\"step\"></span>";
+    }
+  ?>
   </div>
 </form>
 </div>
@@ -70,7 +74,7 @@ function showTab(n) {
     document.getElementById("prevBtn").style.display = "inline";
   }
   if (n == (x.length - 1)) {
-    document.getElementById("nextBtn").innerHTML = "Submit";
+    document.getElementById("nextBtn").innerHTML = "Submit";    
   } else {
     document.getElementById("nextBtn").innerHTML = "Next";
   }
@@ -88,10 +92,22 @@ function nextPrev(n) {
   // Increase or decrease the current tab by 1:
   currentTab = currentTab + n;
   // if you have reached the end of the form...
+  var submited_form = false;
   if (currentTab >= x.length) {
-    // ... the form gets submitted:
-    document.getElementById("form_soal").submit();
+    var tombol_submit = document.getElementById("nextBtn");
+    var att = document.createAttribute("name");
+    att.value = "submit_soal";
+    tombol_submit.setAttribute("type", "submit"); 
 
+    // var tombol_submit = document.getElementById("nextBtn");
+    tombol_submit.setAttribute("type", "submit"); 
+    tombol_submit.setAttributeNode(att);
+    submited_form= true;
+  }
+  if (submited_form) {
+    // ... the form gets submitted:
+    // document.getElementById("form_soal").submit();
+      
     return false;
   }
   // Otherwise, display the correct tab:
