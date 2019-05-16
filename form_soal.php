@@ -59,10 +59,6 @@ if (isset($_POST['submit_soal'])) {
 var currentTab = 0; // Current tab is set to be the first tab (0)
 showTab(currentTab); // Display the current tab
 
-// var posisi_soalnya = ;
-// document.getElementById("posisi_soal").innerHTML = posisi_soalnya;
-
-
 function showTab(n) {
   // This function will display the specified tab of the form...
   var x = document.getElementsByClassName("tab");
@@ -106,7 +102,7 @@ function nextPrev(n) {
   }
   if (submited_form) {
     // ... the form gets submitted:
-    // document.getElementById("form_soal").submit();
+    document.getElementById("form_soal").submit();
       
     return false;
   }
