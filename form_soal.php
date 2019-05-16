@@ -23,7 +23,6 @@ $tampil_pilihanGanda = function ($no_soal=1) use ($soal){
 };
 ?>
 <form id="regForm" action="">
-  <h1>Register:</h1>
   <?php 
   $tampil_pilihanGanda(1);
   ?>
