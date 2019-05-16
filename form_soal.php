@@ -24,10 +24,14 @@ $tampil_pilihanGanda = function ($no_soal=1) use ($soal){
 ?>
 <form id="regForm" action="">
   <?php 
-  $tampil_pilihanGanda(1);
+  for ($i=1; $i <= sizeof($soal); $i++) { 
+    # code...
+    $tampil_pilihanGanda($i);
+
+  }
   ?>
   <!-- One "tab" for each step in the form: -->
-  <div class="tab">Name:
+  <!-- <div class="tab">Name:
     <p><input placeholder="First name..." oninput="this.className = ''" name="fname"></p>
     <p><input placeholder="Last name..." oninput="this.className = ''" name="lname"></p>
   </div>
@@ -43,7 +47,7 @@ $tampil_pilihanGanda = function ($no_soal=1) use ($soal){
   <div class="tab">Login Info:
     <p><input placeholder="Username..." oninput="this.className = ''" name="uname"></p>
     <p><input placeholder="Password..." oninput="this.className = ''" name="pword" type="password"></p>
-  </div>
+  </div> -->
   <div style="overflow:auto;">
     <div style="float:right;">
       <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
