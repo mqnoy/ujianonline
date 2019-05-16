@@ -16,7 +16,7 @@ $tampil_pilihanGanda = function ($no_soal=1) use ($soal){
         # code...
         echo "
         <p>
-            <input oninput=\"this.className = ''\" name=\"pilihan[pilihan_ganda_$no_soal]\" value=\"$key\" /> $value
+            <input type=\"radio\" oninput=\"this.className = ''\" name=\"pilihan[pilihan_ganda_$no_soal]\" value=\"$key\" /> $value
         </p>";
     }
     echo "</div>";
