@@ -2,13 +2,16 @@
 session_start();
 $response = array();
 $_SESSION['lembar_soal'] = array();
-
-if (isset($_POST['val_name'])) {
+$response['save_jawaban'] = false;
+# code...
+array_push($_SESSION['lembar_soal'] ,$_POST['pilihannya']);
+$response['status'] = true;
+$response['nomor_soal'] = $_POST['soal_nomor'];
+$response['jawaban'] = $_POST['pilihan'];
+if ($_SESSION['lembar_soal'] != NULL) {
     # code...
-    array_push($_SESSION['lembar_soal'] ,$_POST['val_name']);
-    $response['status'] = true;
-    $response['msg'] ='udah ke submit'.$_POST['val_name'];
-    $response['name_pilihan'] = $_SESSION['lembar_soal'];
-    echo json_encode($response);
+    $response['save_jawaban'] = true;
 }
+echo json_encode($response);
+
 ?>

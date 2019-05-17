@@ -7,7 +7,9 @@
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./bootstrap.min.css">
+    <link rel="stylesheet" href="./jquery.steps.css">
     <script type="text/javascript" charset="utf8" src="./jquery-2.0.3.js"></script>
+    <script type="text/javascript" charset="utf8" src="./jquery.steps.min.js"></script>
     <script type="text/javascript" src="./bootstrap.min.js"></script>
 
 </head>
@@ -16,75 +18,135 @@
     <div class="container">
         <div class="row">
             <span id="txt_response" class="help-block"></span>
-            
+
             <form action="" id="lembar_soal">
+                <h3></h3>
                 <section>
                     <p>Soal 1 berapakah yang bisa di anuin ?</p>
-                        <div class="form-group">
-                            <input type="radio" name="pilihan[soal_1]" value="A" />A
-                        </div>
-                        <div class="form-group">
-                            <input type="radio" name="pilihan[soal_1]" value="B" />B
-                        </div>
-                        <div class="form-group">
-                            <input type="radio" name="pilihan[soal_1]" value="C" />C
-                        </div>
-                        <div class="form-group">
-                            <input type="radio" name="pilihan[soal_1]" value="D" />D
-                        </div>
+                    <div class="radio">
+                        <label><input type="radio" name="pilihan[soal_0]" value="A">A</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="pilihan[soal_0]" value="B">B</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="pilihan[soal_0]" value="C">C</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="pilihan[soal_0]" value="D">D</label>
+                    </div>
                 </section>
 
+                <h3></h3>
                 <section>
                     <p>Soal 2 berapakah yang bisa di anuin ?</p>
-                        <div class="form-group">
-                            <input type="radio" name="pilihan[soal_2]" value="A" />A
-                        </div>
-                        <div class="form-group">
-                            <input type="radio" name="pilihan[soal_2]" value="B" />B
-                        </div>
-                        <div class="form-group">
-                            <input type="radio" name="pilihan[soal_2]" value="C" />C
-                        </div>
-                        <div class="form-group">
-                            <input type="radio" name="pilihan[soal_2]" value="D" />D
-                        </div>
+                    <div class="radio">
+                        <label><input type="radio" name="pilihan[soal_1]" value="A">A</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="pilihan[soal_1]" value="B">B</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="pilihan[soal_1]" value="C">C</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="pilihan[soal_1]" value="D">D</label>
+                    </div>
                 </section>
-                <button type="submit" class="btn btn-default">next</button>
+
+                <h3></h3>
+                <section>
+                        <p>Soal 3 berapakah yang bisa di anuin ?</p>
+                        <div class="radio">
+                            <label><input type="radio" name="pilihan[soal_2]" value="A">A</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="pilihan[soal_2]" value="B">B</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="pilihan[soal_2]" value="C">C</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="pilihan[soal_2]" value="D">D</label>
+                        </div>
+                    </section>
+                <!-- <button type="submit" class="btn btn-default">next</button> -->
             </form>
         </div>
     </div>
     <script type="text/javascript">
-    var val_pilihan;
-    var val_name;
+
         $(document).ready(function () {
-            $("#lembar_soal").click(function () {
-                var x = $("input").serializeArray();
-                $.each(x,function (i, field) {
-                    val_pilihan =field.value;
-                    // console.log(field);
-                    $.post("./tampungan_sess.php",{
-                            val_name:val_pilihan
-                        },function(data) {
+            var indexSoal=0;
+            function getSoal_index(soal_index){
+                indexSoal = soal_index;
+                return indexSoal;
+            }
+            //untuk ambil jawaban ketika di klik
+            $(function () {
+                $('input[type="radio"]').click(function () {
+                    if ($(this).is(':checked')) {
+                        var isinya = $(this).val();
+                        $.post("./tampungan_sess.php", {
+                            soal_nomor:indexSoal ,
+                            pilihan: isinya
+                        }, function (data) {
                             if (data.status == true) {
-                                $('#txt_response').html(data.msg); 
+                                // $('#txt_response').html(data.msg);
                                 console.log(data);
-                            } else{
+                            } else {
+                                console.log(data);
                                 console.log("err");
                             }
-                    },'json');
+                        }, 'json');
+                    }
                 });
-                
+            });
+            
+            //end
 
-            //     $('input[name*="pilihan"]').each(function() {
-            //         value_pilihan = $(this).val();
-            //     });
-            //     if (value_pilihan) {
-            //         console.log(value_pilihan);
-            //     }
+
+            var lembar_soal = $("#lembar_soal").show();
+            lembar_soal.steps(
+                {
+                headerTag: "h3",
+                titleTemplate: '<span class="number">#index#</span>',
+                bodyTag: "section",
+                transitionEffect: "slideLeft",
+                autoFocus: true,
+                saveState: true,
+                
+                onStepChanged: function(event, currentIndex) {
+                    // console.log(currentIndex);
+                    getSoal_index(currentIndex);
+                },
+                onFinished: function (event, currentIndex) {
+                    
+                    var formData = $('#lembar_soal').serialize(); // Gets the data from the form fields
+                    $.post('./hasil_lembar_soal.php', formData),
+                    
+                    function (data) {
+                        if (data.status == true) {
+                            console.log(data);
+                        }
+                    }
+                    // $('#lembar_soal').submit();
+
+                    return true;
+
+                }
 
             });
+   
 
         });
+
+
+
+
+
+
+
 
     </script>
 </body>
