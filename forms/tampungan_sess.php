@@ -1,17 +1,19 @@
 <?php
 session_start();
 $response = array();
-$_SESSION['lembar_soal'] = array();
+$_SESSION['jawaban_peserta'] = array();
 $response['save_jawaban'] = false;
 # code...
-array_push($_SESSION['lembar_soal'] ,$_POST['pilihannya']);
+array_push($_SESSION['jawaban_peserta'] ,$_POST['pilihan']);
 $response['status'] = true;
 $response['nomor_soal'] = $_POST['soal_nomor'];
 $response['jawaban'] = $_POST['pilihan'];
-if ($_SESSION['lembar_soal'] != NULL) {
+if ($_SESSION['jawaban_peserta'] != NULL) {
     # code...
     $response['save_jawaban'] = true;
 }
-echo json_encode($response);
+var_dump($_SESSION);
+
+//echo json_encode($response);
 
 ?>

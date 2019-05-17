@@ -13,13 +13,17 @@
     <script type="text/javascript" src="./bootstrap.min.js"></script>
 
 </head>
+<?php
+session_start();
+var_dump($_SESSION);
 
+?>
 <body>
     <div class="container">
         <div class="row">
             <span id="txt_response" class="help-block"></span>
 
-            <form action="" id="lembar_soal">
+            <form action="" class="wizard">
                 <h3></h3>
                 <section>
                     <p>Soal 1 berapakah yang bisa di anuin ?</p>
@@ -106,7 +110,7 @@
             //end
 
 
-            var lembar_soal = $("#lembar_soal").show();
+            var lembar_soal = $(".wizard").show();
             lembar_soal.steps(
                 {
                 headerTag: "h3",
@@ -122,7 +126,7 @@
                 },
                 onFinished: function (event, currentIndex) {
                     
-                    var formData = $('#lembar_soal').serialize(); // Gets the data from the form fields
+                    var formData = $('.wizard').serialize(); // Gets the data from the form fields
                     $.post('./hasil_lembar_soal.php', formData),
                     
                     function (data) {
