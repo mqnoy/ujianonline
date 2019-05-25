@@ -14,14 +14,9 @@ if (isset($_SESSION['ses_nis_siswa']) && isset($_SESSION['ses_nama_siswa']) && $
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>{title}</title>
   <?php
-    include "./templates/assets_header.php";
+    include "./templates/header.php";
   ?>  
-</head>
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
@@ -53,6 +48,4 @@ if (isset($_SESSION['ses_nis_siswa']) && isset($_SESSION['ses_nama_siswa']) && $
 </div>
 <!-- /.login-box -->
 
-<?php include "./templates/assets_footer.php"; ?>
-</body>
-</html>
+<?php include "./templates/footer.php"; ?>
