@@ -15,35 +15,31 @@
 <script src="./assets/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- ChartJS -->
 <script src="./assets/bower_components/chart.js/Chart.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<!-- <script src="./assets/js/pages/dashboard2.js"></script> -->
-<!-- AdminLTE for demo purposes -->
-<script src="./assets/js/demo.js"></script>
+<!-- CKeditor -->
+<script src="./assets/bower_components/ckeditor/ckeditor.js"></script>
 
 
 <script>
     $(function() {
         //combobox matpel sesuai dengan kelas
-        $("#cb_kelas").change(function() { 
-            $("#cb_matpel").hide(); 
-            $("#cb_nomor_soal").hide();
+        $("#cb_matpel").hide();
+        $("#cb_nomor_soal").hide();
+        $("#cb_kelas").change(function() {
             // console.log( $("#cb_kelas").val());
-            
             $.ajax({
-                type: "post", 
+                type: "post",
                 url: "./admin/proses.php",
                 data: {
-                    'tampil':'cr_nama_matpel',
+                    'tampil': 'cr_nama_matpel',
                     idkelas: $("#cb_kelas").val()
-                }, 
-                dataType: "json",
-                beforeSend: function() {
                 },
+                dataType: "json",
+                beforeSend: function() {},
                 success: function(response) {
                     if (response.status) {
                         // console.log(response.data);
                         $("#cb_matpel").html(response.data).show();
-                    }else{
+                    } else {
                         console.log("data tidak ada");
                     }
                 },
@@ -54,79 +50,142 @@
             return false;
         });
         //combobox no soal sesuai dengan kelas dan matpel
-        $("#cb_matpel").change(function() { 
+        $("#cb_matpel").change(function() {
             console.log("matpel ganti");
-            $("#cb_nomor_soal").hide(); 
-            // $.ajax({
-            //     type: "post", 
-            //     url: "./admin/proses.php",
-            //     data: {
-            //         'tampil':'cr_nomor_soal',
-            //         idkelas: $("#cb_kelas").val(),
-            //         idmatpel: $("#cb_matpel").val()
-            //     }, // data yang akan dikirim ke file yang dituju
-            //     dataType: "json",
-            //     beforeSend: function() {
-            //     },
-            //     success: function(response) {
-            //         if (response.status) {
-            //             console.log(response.status);
-            //             console.log("dump");
-            //             // $("#cb_nomor_soal").html(response.data_nomor_soal).show();
-            //         }else{
-            //             console.log("data tidak ada");
-            //         }
-            //     },
-            //     error: function(xhr, Status, err) {
-            //         $("Terjadi error : " + Status);
-            //     }
-            // });
+            $("#cb_nomor_soal").hide();
+            $.ajax({
+                type: "post",
+                url: "./admin/proses.php",
+                data: {
+                    'tampil': 'cr_nomor_soal',
+                    idkelas: $("#cb_kelas").val(),
+                    idmatpel: $("#cb_matpel").val()
+                },
+                dataType: "json",
+                beforeSend: function() {},
+                success: function(response) {
+                    if (response.status) {
+                        $("#cb_nomor_soal").html(response.data).show();
+                    } else {
+                        console.log("data tidak ada");
+                    }
+                },
+                error: function(xhr, Status, err) {
+                    $("Terjadi error : " + Status);
+                }
+            });
+            return false;
+        });
+        //combobox no soal sesuai dengan kelas dan matpel
+        $("#cb_nomor_soal").change(function() {
+            console.log("nomor soal ganti");
+            $.ajax({
+                type: "post",
+                url: "./admin/proses.php",
+                data: {
+                    'tampil': 'cr_txt_pertanyaan',
+                    idkelas: $("#cb_kelas").val(),
+                    idmatpel: $("#cb_matpel").val(),
+                    nomorsoal: $("#cb_nomor_soal").val()
+                },
+                dataType: "json",
+                beforeSend: function() {},
+                success: function(response) {
+                    if (response.status) {
+                        // show pg
+                        $("#group_pg_soal").show();
+                        $("#group_pg_pertanyaan").show();
+
+                        // $("textarea[name='txt_pertanyaan']").html("askodoaskdosa");
+                        var datasoal = JSON.parse(JSON.stringify(response.data)); 
+                        console.log(datasoal);
+                        // 
+                        $("[name='soalid']").val(datasoal.id_soal);
+                        CKEDITOR.instances.editor1.setData(datasoal.text_soal, function() {
+                            this.checkDirty(); // true
+                        });
+                    } else {
+                        $("#group_pg_soal").hide();
+                        console.log("data tidak ada");
+                    }
+                },
+                error: function(xhr, Status, err) {
+                    $("Terjadi error : " + Status);
+                }
+            });
             return false;
         });
 
-    //ketika submit button d click
-    $("#submit_matpel").click(function() {
-    //do ajax proses
-    $.ajax({
-        url: "./admin/proses.php",
-        type: "post", //form method
-        data: $("#form_matpel").serialize(),
-        dataType: "json", //misal kita ingin format datanya brupa json
-        beforeSend: function() {
-            // $('#notifications').show();
-            // $("#notifications").html("Please wait....");
-        },
-        success: function(response) {
-            if (response.status) {
-                console.log(response.data);
-            } else {
-                // alert("harap isi smw inputan");
-                // $("#notifications").html("error");
-                // $('.alert .close').on('click', function(e) {
-                //     $(this).parent().hide();
-                // });
-                window.setTimeout(function() {
-                    $('#notifications').show();
-                    $("#notifications").html(response.data);
-                }, 2000);
-                // $( '#notifications' ).attr( 'css', 'alert alert-success alert-dismissible' );   
-            }
-        },
-        error: function(xhr, Status, err) {
-            $("Terjadi error : " + Status);
-        }
-    });
-    return false;
-    })
+        //ketika submit button matpel d click
+        $("#submit_matpel").click(function() {
+            $.ajax({
+                url: "./admin/proses.php",
+                type: "post", //form method
+                data: $("#form_matpel").serialize(),
+                dataType: "json", //misal kita ingin format datanya brupa json
+                beforeSend: function() {
+                    // $('#notifications').show();
+                    // $("#notifications").html("Please wait....");
+                },
+                success: function(response) {
+                    if (response.status) {
+                        console.log(response.data);
+                    } else {
+                        window.setTimeout(function() {
+                            $('#notifications').show();
+                            $("#notifications").html(response.data);
+                        }, 2000);
+                        // $( '#notifications' ).attr( 'css', 'alert alert-success alert-dismissible' );   
+                    }
+                },
+                error: function(xhr, Status, err) {
+                    $("Terjadi error : " + Status);
+                }
+            });
+            return false;
+        });
+        
+        //submit form pil ganda
+        //ketika submit button pilganda d click
+        $("#submit_pilganda").click(function() {
+            $.ajax({
+                url: "./admin/proses.php",
+                type: "post", //form method
+                data: $("#form_pilihanganda").serialize(),
+                dataType: "json", //misal kita ingin format datanya brupa json
+                beforeSend: function() {
+                    // $('#notifications').show();
+                    // $("#notifications").html("Please wait....");
+                },
+                success: function(response) {
+                    if (response.status) {
+                        console.log(response.data);
+                    } else {
+                        window.setTimeout(function() {
+                            $('#notifications').show();
+                            $("#notifications").html(response.data);
+                        }, 2000);
+                        // $( '#notifications' ).attr( 'css', 'alert alert-success alert-dismissible' );   
+                    }
+                },
+                error: function(xhr, Status, err) {
+                    $("Terjadi error : " + Status);
+                }
+            });
+            return false;
+        });
+
+        <?php
+        if (isset($ck_editor)) {
+            ?>
+            CKEDITOR.replace('editor1');
+        <?php
+    }
+    ?>
+
     });
 </script>
 
-<!-- CKeditor -->
-<?php
-if (isset($ck_editor)) {
-    ?>
-    <script src="./assets/bower_components/ckeditor/ckeditor.js"></script>
-    <script>
-        $(function() {
-            CKEDITOR.replace('editor1');
-     
+</body>
+
+</html>

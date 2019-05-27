@@ -105,6 +105,7 @@ include "./templates/header.php";
               </a>
               <ul class="treeview-menu">
                 <li><a href="?halaman=form_soal"><i class="fa fa-circle-o"></i> Master soal</a></li>
+                <li><a href="?halaman=master_kunci_jawaban"><i class="fa fa-circle-o"></i> Master kunci jawaban</a></li>
                 <li><a href="?halaman=form_pil_ganda"><i class="fa fa-circle-o"></i> Master pilihan ganda</a></li>
                 <li><a href="?halaman=form_mata_pelajaran"><i class="fa fa-circle-o"></i> Master mata pelajaran</a></li>
               </ul>
@@ -236,6 +237,10 @@ include "./templates/header.php";
 
           <?php if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "form_mata_pelajaran") { ?>
             <?php include "./admin/form_master_matpel.php"; ?>
+          <?php } ?>
+
+          <?php if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "master_kunci_jawaban") { ?>
+            <?php include "./admin/form_master_kunci_jawaban.php"; ?>
           <?php } ?>
           </div>
       </section>

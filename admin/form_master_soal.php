@@ -38,22 +38,6 @@ $list_kelas = $models->select_kelas();
           <label>Pertanyaan</label>
           <textarea id="editor1" name="txt_pertanyaan" rows="10" cols="80"></textarea>
         </div>
-        <div class="input-group form-group col-md-3">
-          <span class="input-group-addon">A</span>
-          <input type="text" name="pg_a" class="form-control" placeholder="pilihan ganda A">
-        </div>
-        <div class="input-group form-group col-md-3">
-          <span class="input-group-addon">B</span>
-          <input type="text" name="pg_b" class="form-control" placeholder="pilihan ganda B">
-        </div>
-        <div class="input-group form-group col-md-3">
-          <span class="input-group-addon">C</span>
-          <input type="text" name="pg_c" class="form-control" placeholder="pilihan ganda C">
-        </div>
-        <div class="input-group form-group col-md-3">
-          <span class="input-group-addon">D</span>
-          <input type="text" name="pg_d" class="form-control" placeholder="pilihan ganda D">
-        </div>
       </div>
       <!-- /.box-body -->
 

@@ -1,6 +1,7 @@
 <?php
 $list_matpel = $models->select_matpel();
 $list_kelas = $models->select_kelas();
+$ck_editor = true;
 ?>
 <div class="col-md-12">
   <div class="box box-primary">
@@ -9,7 +10,9 @@ $list_kelas = $models->select_kelas();
     </div>
     <!-- /.box-header -->
     <!-- form start -->
-    <form role="form">
+    <form role="form" id="form_pilihanganda">
+    <input type="hidden" name="fr_post_pilihanganda" value="post_pilganda"/>
+    <input type="hidden" name="soalid"/>
       <div class="box-body">
         <div class="form-group">
           <label>Kelas</label>
@@ -26,7 +29,6 @@ $list_kelas = $models->select_kelas();
         <div class="form-group">
           <label>Mata pelajaran</label>
           <select id="cb_matpel" class="form-control">
-            <option  value="0">pilih mata pelajaran</option>
           </select>
         </div>
         <div class="input-group form-group col-md-2">
@@ -34,33 +36,34 @@ $list_kelas = $models->select_kelas();
           <select id="cb_nomor_soal" class="form-control" name="nomor_soal">
           </select>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="group_pg_pertanyaan" style="display:none;">
           <label>Pertanyaan</label>
-          <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+          <textarea id="editor1" name="txt_pertanyaan" rows="10" cols="80" disabled></textarea>
         </div>
 
-
-        <div class="input-group form-group col-md-3">
-          <span class="input-group-addon">A</span>
-          <input type="email" class="form-control" placeholder="Email">
-        </div>
-        <div class="input-group form-group col-md-3">
-          <span class="input-group-addon">B</span>
-          <input type="email" class="form-control" placeholder="Email">
-        </div>
-        <div class="input-group form-group col-md-3">
-          <span class="input-group-addon">C</span>
-          <input type="email" class="form-control" placeholder="Email">
-        </div>
-        <div class="input-group form-group col-md-3">
-          <span class="input-group-addon">D</span>
-          <input type="email" class="form-control" placeholder="Email">
+        <div class="input-group col-md-3" id="group_pg_soal" style="display:none;">
+          <div class="input-group margin">
+            <span class="input-group-addon">A</span>
+            <input type="text" name="pg_soal[]" class="form-control" placeholder="pilihan ganda A">
+          </div>
+          <div class="input-group margin">
+            <span class="input-group-addon">B</span>
+            <input type="text" name="pg_soal[]" class="form-control" placeholder="pilihan ganda B">
+          </div>
+          <div class="input-group margin">
+            <span class="input-group-addon">C</span>
+            <input type="text" name="pg_soal[]" class="form-control" placeholder="pilihan ganda C">
+          </div>
+          <div class="input-group margin">
+            <span class="input-group-addon">D</span>
+            <input type="text" name="pg_soal[]" class="form-control" placeholder="pilihan ganda D">
+          </div>
         </div>
       </div>
       <!-- /.box-body -->
 
       <div class="box-footer">
-        <button type="submit" class="btn btn-primary pull-right">Simpan</button>
+        <button type="submit" class="btn btn-primary pull-right" id="submit_pilganda">Simpan</button>
       </div>
     </form>
   </div>
