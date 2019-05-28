@@ -73,6 +73,51 @@ class Query extends Koneksi{
 		}
 		return sizeof($res) > 0 ? $res : null;
 	}
+	/**
+	 * select all data untuk kunci jawaban
+	 * @param $fields 
+     * @param $operand
+     * @param $keyword 
+	 * @return array
+	 */
+	public function select_kunci_jawaban($fields=null,$operand=null,$keyword=null){
+		# code...
+		$query = "SELECT ts.nomor_soal,ts.text_soal,mkj.jawaban_pg,mm.nama_matpel,mk.txt_kelas FROM `master_kunci_jawaban`mkj 
+		RIGHT JOIN tabel_soal ts ON mkj.soal_id = ts.id_soal 
+		LEFT JOIN master_matpel mm ON ts.matpel_id = mm.id_matpel
+		LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas";
+		$res =[];
+		$result = mysqli_query($this->conn,$query);
+		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+			$res[] = $row;
+		}
+		return sizeof($res) > 0 ? $res : null;
+	}
+
+	/**
+	 * select all data untuk kunci jawaban
+	 * @param $fields 
+     * @param $operand
+     * @param $keyword 
+	 * @return array
+	 */
+	public function select_pilihan_ganda($fields=null,$operand=null,$keyword=null){
+		$query = "SELECT ts.nomor_soal,ts.text_soal,CONCAT(mps.jawaban_pg,'. ',mps.jawaban_text) as pilihan_ganda,mm.nama_matpel,mk.txt_kelas FROM tabel_soal ts 
+		RIGHT JOIN  master_pg_soal mps 
+		ON ts.id_soal = mps.soal_id
+		LEFT JOIN master_matpel mm 
+		ON ts.matpel_id = mm.id_matpel
+		LEFT JOIN master_kelas mk
+		ON mm.kelas_id = mk.id_kelas
+		GROUP BY ts.text_soal,mps.jawaban_pg";
+		$res =[];
+		$result = mysqli_query($this->conn,$query);
+		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+			$res[] = $row;
+		}
+		// return $result;
+		return sizeof($res) > 0 ? $res : null;
+	}
 
 
 	//insert matpel kelas
@@ -100,6 +145,27 @@ class Query extends Koneksi{
         }
         $values  = implode(", ",$rawvalues);
         $query = "INSERT INTO `".$tablename."`($columns) VALUES (".$values.")";
+		
+		$execute = mysqli_query($this->conn,$query);
+		return $execute;
+	}
+
+	/**
+	 * insert data ke database
+	 * @param $tablename
+	 * @param $insData
+	 * @return boolean
+	 * 
+	 *  */
+	public function insert_into($tablename,$insData){
+		$columns = implode(", ",array_keys($insData));
+		$rawvalues=array();
+		foreach ($insData as $key => $value) {
+			# code...
+			$rawvalues[] = "\"".$value."\"";
+		}
+		$values  = implode(", ",$rawvalues);
+		$query = "INSERT INTO `".$tablename."`($columns) VALUES (".$values.")";
 		
 		$execute = mysqli_query($this->conn,$query);
 		return $execute;

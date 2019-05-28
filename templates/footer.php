@@ -175,6 +175,79 @@
             return false;
         });
 
+        //ketika submit button soal
+        $("#submit_soal").click(function() {
+            var value = CKEDITOR.instances['editor1'];
+            console.log(value);
+            $.ajax({
+                url: "./admin/proses.php",
+                type: "post", //form method
+                data: {
+                    'fr_post_soal' : $("[name='fr_post_soal']").val(),
+                    'nm_kelas' : $("#cb_kelas").val(),
+                    'nm_matpel' : $("#cb_matpel").val(),
+                    'no_pertanyaan' : $("#input_nomor_soal").val(),
+                    'txt_pertanyaan' : value.getData()
+                },
+                    // 'form_data' : $("#form_soal").serialize() ,
+                    
+                dataType: "json", //misal kita ingin format datanya brupa json
+                beforeSend: function() {
+            console.log(value);
+
+                    // $('#notifications').show();
+                    // $("#notifications").html("Please wait....");
+                },
+                success: function(response) {
+                    if (response.status) {
+                        console.log(response.data);
+                    } else {
+                        window.setTimeout(function() {
+                            $('#notifications').show();
+                            $("#notifications").html(response.data);
+                        }, 2000);
+                        // $( '#notifications' ).attr( 'css', 'alert alert-success alert-dismissible' );   
+                    }
+                },
+                // error: function(xhr, Status, err) {
+                //     $("Terjadi error : " + Status);
+                // }
+            });
+            return false;
+        });
+
+        // menampilkan list data untuk data kunci jawaban 
+        function tampil_data_kunci_jwbn(){
+            $.ajax({
+                url : "admin/proses.php",
+                type : "post",
+                data : {
+                    'tampil': 'tam_kunci_jawaban'
+                },
+                dataType : "json",
+                beforeSend:function () {
+                    
+                },
+                success: function (response) {
+                    if(response.status){
+                        console.log(response.data);
+                        // $('#myTable tr:last').after('<tr>...</tr><tr>...</tr>');
+                        $("#tabel_kunci_jawaban tr:last").after(response.data);
+                    }else{
+                        console.log("false");
+                    }
+                },
+                error : function (xhr, Status, err) {
+                    $("terjadi error : "+ Status);
+                    
+                }
+
+            });
+            return false;
+        }
+
+
+        tampil_data_kunci_jwbn();
         <?php
         if (isset($ck_editor)) {
             ?>
@@ -183,7 +256,7 @@
     }
     ?>
 
-    });
+    });//end of document ready function
 </script>
 
 </body>

@@ -1,7 +1,8 @@
 <?php
 $list_matpel = $models->select_matpel();
 $list_kelas = $models->select_kelas();
-$ck_editor = true;
+$anu = $models->select_pilihan_ganda();
+var_dump($anu);
 ?>
 <div class="col-md-12">
   <div class="box box-primary">

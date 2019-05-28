@@ -74,7 +74,7 @@ $list_kelas = $models->select_kelas();
                         <th style="width: 10px">#</th>
                         <th>Kelas</th>
                         <th>Mata pelajaran</th>
-                        <th>action</th>
+                        <th>aksi</th>
                     </tr>
                     <?php
                     $nomor = 1;

@@ -10,12 +10,14 @@ $list_kelas = $models->select_kelas();
     </div>
     <!-- /.box-header -->
     <!-- form start -->
-    <form role="form">
+    <form role="form" id="form_soal">
+      <input type="hidden" name="fr_post_soal" value="post_soal" />
+
       <div class="box-body">
-      <div class="form-group">
+        <div class="form-group">
           <label>Kelas</label>
           <select id="cb_kelas" class="form-control" name="nm_kelas">
-            <option>pilih kelas</option>
+            <option value="0">pilih kelas</option>
             <?php
             foreach ($list_kelas as $value) {
               # code...
@@ -26,7 +28,7 @@ $list_kelas = $models->select_kelas();
         </div>
         <div class="form-group">
           <label>Mata pelajaran</label>
-          <select id="cb_matpel" class="form-control">
+          <select id="cb_matpel" class="form-control" name="nm_matpel">
             <option>pilih mata pelajaran</option>
           </select>
         </div>
@@ -42,7 +44,7 @@ $list_kelas = $models->select_kelas();
       <!-- /.box-body -->
 
       <div class="box-footer">
-        <button type="submit" class="btn btn-primary pull-right">Simpan</button>
+        <button type="submit" class="btn btn-primary pull-right" id="submit_soal">Simpan</button>
       </div>
     </form>
   </div>
