@@ -39,6 +39,38 @@ class Query extends Koneksi{
 		}
 		return $res;
 	}
+	//select list matpel untuk siswa
+	public function select_matpel_kelas($keyword=null){
+		$query = "SELECT mm.nama_matpel,mk.txt_kelas,mk.kelas,mm.id_matpel FROM master_matpel mm 
+		LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas ";
+		// WHERE mk.kelas = 1";
+		if ($keyword != null) {
+			# code...
+			$query .= "WHERE mk.kelas = ".$keyword;
+		}
+		$res =[];
+		$result = mysqli_query($this->conn,$query);
+		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+			$res[] = $row;
+		}
+		return sizeof($res) > 0 ? $res : null;
+	}
+	//select count [query builder]
+	public function select_count($tabels=null,$field=null,$operand=null,$keyword=null){
+		$query = "SELECT COUNT(*) AS total_data FROM ".$tabels." "; 
+		if ($keyword != null ) {
+			# code...
+			$query .= "WHERE ".$field."".$operand."".$keyword;
+		}
+		$res =[];
+		$result = mysqli_query($this->conn,$query);
+		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+			$res[] = $row;
+		}
+		// return $query;
+		return sizeof($res) > 0 ? $res : null;
+	}
+
 	//select nomor pertanyaan where spesific matpel and kelas
 	public function select_no_pertanyaan_w_m_k($id_kelas,$id_matpel){
 		$query = "SELECT nomor_soal FROM tabel_soal ts LEFT JOIN master_matpel mm ON ts.matpel_id = mm.id_matpel WHERE mm.kelas_id = $id_kelas AND ts.matpel_id = $id_matpel ";
@@ -210,9 +242,16 @@ class Query extends Koneksi{
 	}
 }
 $models = new Query();
-/**
- * SELECT *,CONCAT(mps.jawaban_pg,': ',mps.jawaban_text) AS pilihan_ganda FROM tabel_soal ts 
- *RIGHT JOIN master_pg_soal mps ON ts.id_soal = mps.soal_id
- *LEFT JOIN master_matpel mm ON ts.matpel_id = mm.id_matpel
- *GROUP BY text_soal,pilihan_ganda
+/*
+SELECT *,CONCAT(mps.jawaban_pg,': ',mps.jawaban_text) AS pilihan_ganda FROM tabel_soal ts 
+ RIGHT JOIN master_pg_soal mps ON ts.id_soal = mps.soal_id
+ LEFT JOIN master_matpel mm ON ts.matpel_id = mm.id_matpel
+ GROUP BY text_soal,pilihan_ganda
+
+
+ SELECT COUNT(*) FROM (SELECT mm.nama_matpel,mk.txt_kelas,mk.kelas FROM master_matpel mm 
+LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas
+LEFT JOIN tabel_soal ts ON mm.id_matpel = ts.matpel_id
+WHERE mk.kelas = '1'
+) AS total_soal
  */
