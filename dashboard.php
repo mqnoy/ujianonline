@@ -3,8 +3,7 @@ session_start();
 $text_info = "";
 $text_desc_info = "";
 $halaman_active = "Dashboard";
-require 'includes/Query.php';
-$models = new Query();
+require_once 'includes/Query.php';
 if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
   $text_info = $_SESSION['ses_admin_username'];
   $text_desc_info = "admin";
@@ -96,7 +95,7 @@ include "./templates/header.php";
             </a>
           </li>
           <?php if ($_SESSION['is_admin']) { ?>
-            <li class="treeview">
+            <li class="active treeview menu-open" >
               <a href="#">
                 <i class="fa fa-edit"></i> <span>Master</span>
                 <span class="pull-right-container">
@@ -110,7 +109,7 @@ include "./templates/header.php";
                 <li><a href="?halaman=form_mata_pelajaran"><i class="fa fa-circle-o"></i> Master mata pelajaran</a></li>
               </ul>
             </li>
-            <li class="treeview">
+            <li class="active treeview menu-open">
               <a href="#">
                 <i class="fa fa-table"></i> <span>Report</span>
                 <span class="pull-right-container">
@@ -124,7 +123,7 @@ include "./templates/header.php";
           <?php } ?>
 
           <?php if ($_SESSION['is_siswa']) { ?>
-            <li class="treeview">
+            <li class="active treeview menu-open">
               <a href="#">
                 <i class="fa fa-edit"></i> <span>Soal</span>
                 <span class="pull-right-container">
