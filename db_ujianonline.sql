@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.8.5
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 23, 2019 at 04:38 AM
--- Server version: 10.1.8-MariaDB
--- PHP Version: 5.6.14
+-- Generation Time: May 28, 2019 at 10:51 AM
+-- Server version: 10.1.40-MariaDB
+-- PHP Version: 7.3.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -43,6 +45,27 @@ INSERT INTO `master_admin_aplikasi` (`id_admin`, `username`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `master_kelas`
+--
+
+CREATE TABLE `master_kelas` (
+  `id_kelas` int(11) NOT NULL,
+  `txt_kelas` text NOT NULL,
+  `kelas` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `master_kelas`
+--
+
+INSERT INTO `master_kelas` (`id_kelas`, `txt_kelas`, `kelas`) VALUES
+(1, 'kelas 1 smk', 1),
+(2, 'kelas 2 smk', 2),
+(3, 'kelas 3 smk', 3);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `master_kunci_jawaban`
 --
 
@@ -63,6 +86,29 @@ INSERT INTO `master_kunci_jawaban` (`id_kunci_jawaban`, `soal_id`, `jawaban_pg`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `master_matpel`
+--
+
+CREATE TABLE `master_matpel` (
+  `id_matpel` int(10) NOT NULL,
+  `nama_matpel` text NOT NULL,
+  `kelas_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `master_matpel`
+--
+
+INSERT INTO `master_matpel` (`id_matpel`, `nama_matpel`, `kelas_id`) VALUES
+(1, 'matematika', 1),
+(14, 'ppkn', 1),
+(15, 'Bahasa Indonesia', 3),
+(16, 'english', 2),
+(17, 'matematika', 2);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `master_pg_soal`
 --
 
@@ -78,53 +124,60 @@ CREATE TABLE `master_pg_soal` (
 --
 
 INSERT INTO `master_pg_soal` (`id_pg`, `jawaban_pg`, `jawaban_text`, `soal_id`) VALUES
-(1, 'A', '3', 1),
-(2, 'B', '2', 1),
-(4, 'C', '12', 1),
-(7, 'D', '14', 1);
+(1, 'A', 'asjidisaj', 1),
+(2, 'B', 'aisdjasijdasi', 1),
+(3, 'C', 'aidsjiasjd', 1),
+(4, 'D', 'asidjais', 1),
+(5, 'A', 'i\'m fine ', 2),
+(6, 'B', 'i\'m ok', 3),
+(7, 'C', 'i\'m good', 3),
+(8, 'D', 'i\'m not ok', 3);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `master_soal`
+-- Table structure for table `tabel_nilai_siswa`
 --
 
-CREATE TABLE `master_soal` (
-  `id_soal` int(10) NOT NULL,
-  `text_soal` text NOT NULL,
-  `matpel` varchar(20) NOT NULL,
-  `soal_kelas` enum('1','2','3') DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `master_soal`
---
-
-INSERT INTO `master_soal` (`id_soal`, `text_soal`, `matpel`, `soal_kelas`) VALUES
-(1, '1+1 = ?', 'matematika', '1'),
-(2, 'asdasd', '2', '2');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tabel_nilai_peserta`
---
-
-CREATE TABLE `tabel_nilai_peserta` (
+CREATE TABLE `tabel_nilai_siswa` (
   `id_siswa` int(10) NOT NULL,
   `nis` varchar(20) NOT NULL,
+  `nama_siswa` text NOT NULL,
   `total_nilai` int(9) NOT NULL,
   `siswa_kelas` char(10) NOT NULL,
-  `soal_id` int(10) NOT NULL,
+  `matpel_id` int(10) NOT NULL,
   `tanggal_pengerjaan` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tabel_nilai_peserta`
+-- Dumping data for table `tabel_nilai_siswa`
 --
 
-INSERT INTO `tabel_nilai_peserta` (`id_siswa`, `nis`, `total_nilai`, `siswa_kelas`, `soal_id`, `tanggal_pengerjaan`) VALUES
-(1, 'd20182727', 80, '3', 1, '2019-05-21 00:00:00');
+INSERT INTO `tabel_nilai_siswa` (`id_siswa`, `nis`, `nama_siswa`, `total_nilai`, `siswa_kelas`, `matpel_id`, `tanggal_pengerjaan`) VALUES
+(1, 'd20182727', 'rifky', 80, '3', 1, '2019-05-21 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tabel_soal`
+--
+
+CREATE TABLE `tabel_soal` (
+  `id_soal` int(10) NOT NULL,
+  `nomor_soal` int(100) NOT NULL,
+  `text_soal` text NOT NULL,
+  `matpel_id` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tabel_soal`
+--
+
+INSERT INTO `tabel_soal` (`id_soal`, `nomor_soal`, `text_soal`, `matpel_id`) VALUES
+(1, 1, '<p><code><strong>1+1 = ?</strong></code></p>\r\n', 1),
+(2, 3, 'asdasd', 1),
+(3, 1, '<p>how are you today?</p>\n', 16),
+(4, 2, '<p>Budi pergi kepasar ,siapa yang di rumah ?</p>\n', 15);
 
 --
 -- Indexes for dumped tables
@@ -137,10 +190,22 @@ ALTER TABLE `master_admin_aplikasi`
   ADD PRIMARY KEY (`id_admin`);
 
 --
+-- Indexes for table `master_kelas`
+--
+ALTER TABLE `master_kelas`
+  ADD PRIMARY KEY (`id_kelas`);
+
+--
 -- Indexes for table `master_kunci_jawaban`
 --
 ALTER TABLE `master_kunci_jawaban`
   ADD PRIMARY KEY (`id_kunci_jawaban`);
+
+--
+-- Indexes for table `master_matpel`
+--
+ALTER TABLE `master_matpel`
+  ADD PRIMARY KEY (`id_matpel`);
 
 --
 -- Indexes for table `master_pg_soal`
@@ -149,16 +214,16 @@ ALTER TABLE `master_pg_soal`
   ADD PRIMARY KEY (`id_pg`);
 
 --
--- Indexes for table `master_soal`
+-- Indexes for table `tabel_nilai_siswa`
 --
-ALTER TABLE `master_soal`
-  ADD PRIMARY KEY (`id_soal`);
+ALTER TABLE `tabel_nilai_siswa`
+  ADD PRIMARY KEY (`id_siswa`);
 
 --
--- Indexes for table `tabel_nilai_peserta`
+-- Indexes for table `tabel_soal`
 --
-ALTER TABLE `tabel_nilai_peserta`
-  ADD PRIMARY KEY (`id_siswa`);
+ALTER TABLE `tabel_soal`
+  ADD PRIMARY KEY (`id_soal`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -169,26 +234,44 @@ ALTER TABLE `tabel_nilai_peserta`
 --
 ALTER TABLE `master_admin_aplikasi`
   MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `master_kelas`
+--
+ALTER TABLE `master_kelas`
+  MODIFY `id_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT for table `master_kunci_jawaban`
 --
 ALTER TABLE `master_kunci_jawaban`
   MODIFY `id_kunci_jawaban` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `master_matpel`
+--
+ALTER TABLE `master_matpel`
+  MODIFY `id_matpel` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
 --
 -- AUTO_INCREMENT for table `master_pg_soal`
 --
 ALTER TABLE `master_pg_soal`
-  MODIFY `id_pg` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_pg` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
 --
--- AUTO_INCREMENT for table `master_soal`
+-- AUTO_INCREMENT for table `tabel_nilai_siswa`
 --
-ALTER TABLE `master_soal`
-  MODIFY `id_soal` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `tabel_nilai_peserta`
---
-ALTER TABLE `tabel_nilai_peserta`
+ALTER TABLE `tabel_nilai_siswa`
   MODIFY `id_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tabel_soal`
+--
+ALTER TABLE `tabel_soal`
+  MODIFY `id_soal` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
