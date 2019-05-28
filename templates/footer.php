@@ -24,6 +24,9 @@
         //combobox matpel sesuai dengan kelas
         $("#cb_matpel").hide();
         $("#cb_nomor_soal").hide();
+        $("#group_pertanyaan").hide();
+        $("#group_no_pertanyaan").hide();
+        
         $("#cb_kelas").change(function() {
             // console.log( $("#cb_kelas").val());
             $.ajax({
@@ -52,7 +55,9 @@
         //combobox no soal sesuai dengan kelas dan matpel
         $("#cb_matpel").change(function() {
             console.log("matpel ganti");
-            $("#cb_nomor_soal").hide();
+            $("#group_pertanyaan").show();
+            $("#group_no_pertanyaan").show();
+            
             $.ajax({
                 type: "post",
                 url: "./admin/proses.php",
@@ -94,7 +99,7 @@
                     if (response.status) {
                         // show pg
                         $("#group_pg_soal").show();
-                        $("#group_pg_pertanyaan").show();
+                        $("#group_pertanyaan").show();
 
                         // $("textarea[name='txt_pertanyaan']").html("askodoaskdosa");
                         var datasoal = JSON.parse(JSON.stringify(response.data)); 
@@ -230,7 +235,7 @@
                 },
                 success: function (response) {
                     if(response.status){
-                        console.log(response.data);
+                        // console.log(response.data);
                         // $('#myTable tr:last').after('<tr>...</tr><tr>...</tr>');
                         $("#tabel_kunci_jawaban tr:last").after(response.data);
                     }else{
@@ -246,8 +251,99 @@
             return false;
         }
 
+        // menampilkan list data untuk pilihan ganda 
+        function tampil_data_pilihan_ganda(){
+            $.ajax({
+                url : "admin/proses.php",
+                type : "post",
+                data : {
+                    'tampil': 'tam_pilihan_ganda'
+                },
+                dataType : "json",
+                beforeSend:function () {
+                    
+                },
+                success: function (response) {
+                    if(response.status){
+                        console.log(response.data);
+                        // $('#myTable tr:last').after('<tr>...</tr><tr>...</tr>');
+                        $("#tabel_piihanganda tr:last").after(response.data);
+                    }else{
+                        console.log("false");
+                    }
+                },
+                // error : function (xhr, Status, err) {
+                //     $("terjadi error : "+ Status);
+                    
+                // }
 
+            });
+            return false;
+        }
+
+        // menampilkan list data untuk pilihan ganda 
+        function tampil_data_soal(){
+            $.ajax({
+                url : "admin/proses.php",
+                type : "post",
+                data : {
+                    'fetch': 'data_tabel_soal'
+                },
+                dataType : "json",
+                beforeSend:function () {
+                    
+                },
+                success: function (response) {
+                    if(response.status){
+                        console.log(response.data);
+                        // $('#myTable tr:last').after('<tr>...</tr><tr>...</tr>');
+                        $("#tabel_soal tr:last").after(response.data);
+                    }else{
+                        console.log("false");
+                    }
+                },
+                // error : function (xhr, Status, err) {
+                //     $("terjadi error : "+ Status);
+                    
+                // }
+
+            });
+            return false;
+        }
+
+        // menampilkan list data nilai siswa 
+        function tampil_data_nilai_siswa(){
+            $.ajax({
+                url : "admin/proses.php",
+                type : "post",
+                data : {
+                    'fetch': 'data_tabel_nilai_siswa'
+                },
+                dataType : "json",
+                beforeSend:function () {
+                    
+                },
+                success: function (response) {
+                    if(response.status){
+                        console.log(response.data);
+                        // $('#myTable tr:last').after('<tr>...</tr><tr>...</tr>');
+                        $("#tabel_data_siswa tr:last").after(response.data);
+                    }else{
+                        console.log("false");
+                    }
+                },
+                // error : function (xhr, Status, err) {
+                //     $("terjadi error : "+ Status);
+                    
+                // }
+
+            });
+            return false;
+        }
+        tampil_data_nilai_siswa();
+        tampil_data_soal();
         tampil_data_kunci_jwbn();
+        tampil_data_pilihan_ganda();
         <?php
         if (isset($ck_editor)) {
             ?>

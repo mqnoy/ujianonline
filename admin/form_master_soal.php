@@ -1,8 +1,28 @@
 <?php
 $ck_editor = true;
-$list_matpel = $models->select_matpel();
 $list_kelas = $models->select_kelas();
 ?>
+<div class="modal fade" id="modal-soal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Default Modal</h4>
+              </div>
+              <div class="modal-body">
+                <p>One fine body&hellip;</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
 <div class="col-md-12">
   <div class="box box-primary">
     <div class="box-header with-border">
@@ -32,11 +52,11 @@ $list_kelas = $models->select_kelas();
             <option>pilih mata pelajaran</option>
           </select>
         </div>
-        <div class="input-group form-group col-md-2">
+        <div class="input-group form-group col-md-2" id="group_no_pertanyaan">
           <label for="input_nomor_soal">Nomor pertanyaan</label>
           <input type="number" name="no_pertanyaan" max=40 class="form-control " id="input_nomor_soal" placeholder="1">
         </div>
-        <div class="form-group">
+        <div class="form-group" id="group_pertanyaan">
           <label>Pertanyaan</label>
           <textarea id="editor1" name="txt_pertanyaan" rows="10" cols="80"></textarea>
         </div>
@@ -55,53 +75,15 @@ $list_kelas = $models->select_kelas();
     </div>
     <!-- /.box-header -->
     <div class="box-body">
-      <table class="table table-bordered">
+      <table class="table table-bordered" id="tabel_soal">
         <tbody>
           <tr>
             <th style="width: 10px">#</th>
-            <th>Task</th>
-            <th>Progress</th>
-            <th style="width: 40px">Label</th>
-          </tr>
-          <tr>
-            <td>1.</td>
-            <td>Update software</td>
-            <td>
-              <div class="progress progress-xs">
-                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-              </div>
-            </td>
-            <td><span class="badge bg-red">55%</span></td>
-          </tr>
-          <tr>
-            <td>2.</td>
-            <td>Clean database</td>
-            <td>
-              <div class="progress progress-xs">
-                <div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
-              </div>
-            </td>
-            <td><span class="badge bg-yellow">70%</span></td>
-          </tr>
-          <tr>
-            <td>3.</td>
-            <td>Cron job running</td>
-            <td>
-              <div class="progress progress-xs progress-striped active">
-                <div class="progress-bar progress-bar-primary" style="width: 30%"></div>
-              </div>
-            </td>
-            <td><span class="badge bg-light-blue">30%</span></td>
-          </tr>
-          <tr>
-            <td>4.</td>
-            <td>Fix and squish bugs</td>
-            <td>
-              <div class="progress progress-xs progress-striped active">
-                <div class="progress-bar progress-bar-success" style="width: 90%"></div>
-              </div>
-            </td>
-            <td><span class="badge bg-green">90%</span></td>
+            <th>no soal</th>
+            <th>soal</th>
+            <th>mata pelajaran</th>
+            <th>kelas</th>
+            <th>aksi</th>
           </tr>
         </tbody>
       </table>

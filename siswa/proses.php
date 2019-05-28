@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_POST['submit'])) {
+if (isset($_POST['login_siswa'])) {
     # code...
     // $_SESSION['nis_siswa'];
     if (empty($_POST['siswa_nis']) || empty($_POST['siswa_nama'])) {

@@ -2,7 +2,7 @@
 $list_matpel = $models->select_matpel();
 $list_kelas = $models->select_kelas();
 ?>
-<div class="modal fade" id="modal-pilihan-ganda">
+<div class="modal fade" id="modal-kunci-jawaban">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -55,6 +55,7 @@ $list_kelas = $models->select_kelas();
 						<th>nomor Soal</th>
 						<th>soal</th>
 						<th>jawaban</th>
+						<th>bobot</th>
 						<th>mata pelajaran</th>
 						<th>kelas</th>
 						<th>aksi</th>

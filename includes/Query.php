@@ -73,6 +73,18 @@ class Query extends Koneksi{
 		}
 		return sizeof($res) > 0 ? $res : null;
 	}
+	//select nilai siswa
+	public function select_nilai_siswa(){
+		$query = "SELECT tnp.nis,tnp.nama_siswa,tnp.siswa_kelas,mm.nama_matpel,tnp.total_nilai,tnp.tanggal_pengerjaan FROM tabel_nilai_siswa tnp 
+		LEFT JOIN master_matpel mm ON tnp.matpel_id = mm.id_matpel
+		LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas";
+		$res =[];
+		$result = mysqli_query($this->conn,$query);
+		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+			$res[] = $row;
+		}
+		return sizeof($res) > 0 ? $res : null;
+	}
 	/**
 	 * select all data untuk kunci jawaban
 	 * @param $fields 
@@ -82,7 +94,7 @@ class Query extends Koneksi{
 	 */
 	public function select_kunci_jawaban($fields=null,$operand=null,$keyword=null){
 		# code...
-		$query = "SELECT ts.nomor_soal,ts.text_soal,mkj.jawaban_pg,mm.nama_matpel,mk.txt_kelas FROM `master_kunci_jawaban`mkj 
+		$query = "SELECT ts.nomor_soal,ts.text_soal,mkj.jawaban_pg,mkj.bobot,mm.nama_matpel,mk.txt_kelas FROM `master_kunci_jawaban`mkj 
 		RIGHT JOIN tabel_soal ts ON mkj.soal_id = ts.id_soal 
 		LEFT JOIN master_matpel mm ON ts.matpel_id = mm.id_matpel
 		LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas";
@@ -95,7 +107,7 @@ class Query extends Koneksi{
 	}
 
 	/**
-	 * select all data untuk kunci jawaban
+	 * select all data untuk pilihan ganda
 	 * @param $fields 
      * @param $operand
      * @param $keyword 
@@ -118,6 +130,27 @@ class Query extends Koneksi{
 		// return $result;
 		return sizeof($res) > 0 ? $res : null;
 	}
+
+	/**
+	 * select all data untuk soal
+	 * @param $fields 
+     * @param $operand
+     * @param $keyword 
+	 * @return array
+	 */
+	public function select_soal($fields=null,$operand=null,$keyword=null){
+		$query = "SELECT ts.nomor_soal,ts.text_soal,mm.nama_matpel,mk.txt_kelas FROM tabel_soal ts 
+		LEFT JOIN master_matpel mm ON ts.matpel_id = mm.id_matpel
+		LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas";
+		$res =[];
+		$result = mysqli_query($this->conn,$query);
+		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+			$res[] = $row;
+		}
+		// return $result;
+		return sizeof($res) > 0 ? $res : null;
+	}
+	
 
 
 	//insert matpel kelas
@@ -177,3 +210,9 @@ class Query extends Koneksi{
 	}
 }
 $models = new Query();
+/**
+ * SELECT *,CONCAT(mps.jawaban_pg,': ',mps.jawaban_text) AS pilihan_ganda FROM tabel_soal ts 
+ *RIGHT JOIN master_pg_soal mps ON ts.id_soal = mps.soal_id
+ *LEFT JOIN master_matpel mm ON ts.matpel_id = mm.id_matpel
+ *GROUP BY text_soal,pilihan_ganda
+ */

@@ -26,7 +26,7 @@ if (isset($_SESSION['ses_nis_siswa']) && isset($_SESSION['ses_nama_siswa']) && $
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
 
-    <form action="./siswa/proses_login.php" method="post">
+    <form action="./siswa/proses.php" method="post">
       <div class="form-group has-feedback">
         <input type="text" class="form-control" name="siswa_nis" placeholder="nis">
         <!-- <span class="glyphicon glyphicon-envelope form-control-feedback"></span> -->
@@ -38,7 +38,7 @@ if (isset($_SESSION['ses_nis_siswa']) && isset($_SESSION['ses_nama_siswa']) && $
       <div class="row">
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" name="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button type="submit" name="login_siswa" class="btn btn-primary btn-block btn-flat">Sign In</button>
         </div>
         <!-- /.col -->
       </div>

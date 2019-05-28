@@ -1,9 +1,30 @@
 <?php
-$list_matpel = $models->select_matpel();
+$ck_editor = true;
 $list_kelas = $models->select_kelas();
 $anu = $models->select_pilihan_ganda();
-var_dump($anu);
+// var_dump($anu);
 ?>
+<div class="modal fade" id="modal-pilihan-ganda">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Default Modal</h4>
+              </div>
+              <div class="modal-body">
+                <p>One fine body&hellip;</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
 <div class="col-md-12">
   <div class="box box-primary">
     <div class="box-header with-border">
@@ -37,7 +58,7 @@ var_dump($anu);
           <select id="cb_nomor_soal" class="form-control" name="nomor_soal">
           </select>
         </div>
-        <div class="form-group" id="group_pg_pertanyaan" style="display:none;">
+        <div class="form-group" id="group_pertanyaan" style="display:none;">
           <label>Pertanyaan</label>
           <textarea id="editor1" name="txt_pertanyaan" rows="10" cols="80" disabled></textarea>
         </div>
@@ -75,53 +96,16 @@ var_dump($anu);
     </div>
     <!-- /.box-header -->
     <div class="box-body">
-      <table class="table table-bordered">
+      <table class="table table-bordered" id="tabel_piihanganda">
         <tbody>
           <tr>
             <th style="width: 10px">#</th>
-            <th>Task</th>
-            <th>Progress</th>
-            <th style="width: 40px">Label</th>
-          </tr>
-          <tr>
-            <td>1.</td>
-            <td>Update software</td>
-            <td>
-              <div class="progress progress-xs">
-                <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-              </div>
-            </td>
-            <td><span class="badge bg-red">55%</span></td>
-          </tr>
-          <tr>
-            <td>2.</td>
-            <td>Clean database</td>
-            <td>
-              <div class="progress progress-xs">
-                <div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
-              </div>
-            </td>
-            <td><span class="badge bg-yellow">70%</span></td>
-          </tr>
-          <tr>
-            <td>3.</td>
-            <td>Cron job running</td>
-            <td>
-              <div class="progress progress-xs progress-striped active">
-                <div class="progress-bar progress-bar-primary" style="width: 30%"></div>
-              </div>
-            </td>
-            <td><span class="badge bg-light-blue">30%</span></td>
-          </tr>
-          <tr>
-            <td>4.</td>
-            <td>Fix and squish bugs</td>
-            <td>
-              <div class="progress progress-xs progress-striped active">
-                <div class="progress-bar progress-bar-success" style="width: 90%"></div>
-              </div>
-            </td>
-            <td><span class="badge bg-green">90%</span></td>
+            <th>nomor soal</th>
+            <th>soal</th>
+            <th>pilihan ganda</th>
+            <th>mata pelajaran</th>
+            <th>kelas</th>
+            <th>aksi</th>
           </tr>
         </tbody>
       </table>
