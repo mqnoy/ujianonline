@@ -219,6 +219,11 @@ include "./templates/header.php";
             </div>
             <!-- end of Info boxes -->
           <?php }//end of rekapan ?>
+
+
+          <?php if ($_SESSION['is_admin'] == false && isset($_GET['halaman'])  && $_SESSION['is_siswa'] == true) { ?><!--start dashboard siswa-->
+          <?php } ?><!--end of dashboard siswa-->
+          disini siswa
           <?php
           include_once('./siswa/siswa_list_soal.php');
           if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "form_soal") { ?>
