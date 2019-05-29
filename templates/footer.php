@@ -20,6 +20,7 @@
 
 
 <script>
+    var url_static = "<?php echo base_url('includes/ajax.php');?>"; 
     $(function() {
         //combobox matpel sesuai dengan kelas
         $("#cb_matpel").hide();
@@ -27,6 +28,54 @@
         $("#group_pertanyaan").hide();
         $("#group_no_pertanyaan").hide();
         
+        function fetching_data_kelas(){
+            $.ajax({
+                type: "post",
+                url: url_static,
+                data: {
+                    'fetch': 'cb_data_kelas',
+                },
+                dataType: "json",
+                beforeSend: function() {},
+                success: function(response) {
+                    if (response.status) {
+                        // console.log(response.data);
+                        $("#cb_kelas").html(response.data).show();
+                    } else {
+                        console.log("data tidak ada");
+                    }
+                },
+                // error: function(xhr, Status, err) {
+                //     $("Terjadi error : " + Status);
+                // }
+            });
+        }
+        fetching_data_kelas();
+        $("#cb_kelas_siswa").change(function() {
+            $.ajax({
+                type: "post",
+                url: url_static,
+                data: {
+                    'aksi_siswa': 'terapkan_kelas',
+                    set_kelas: $("#cb_kelas_siswa").val()
+                },
+                dataType: "json",
+                beforeSend: function() {},
+                success: function(response) {
+                    if (response.status) {
+                        console.log(response);
+                        window.location.reload();
+                    } else {
+                        console.log("data tidak ada");
+                    }
+                },
+                // error: function(xhr, Status, err) {
+                //     $("Terjadi error : " + Status);
+                // }
+            });
+            return false;
+        });
+        //--//
         $("#cb_kelas").change(function() {
             // console.log( $("#cb_kelas").val());
             $.ajax({
@@ -134,7 +183,8 @@
                 },
                 success: function(response) {
                     if (response.status) {
-                        console.log(response.data);
+                        // console.log(response.data);
+                        
                     } else {
                         window.setTimeout(function() {
                             $('#notifications').show();
@@ -165,6 +215,10 @@
                 success: function(response) {
                     if (response.status) {
                         console.log(response.data);
+                        //coba w/o refresh
+                        tampil_data_pilihan_ganda();
+                        // $("#tabel_piihanganda").hide();
+                        // $("#tabel_piihanganda").show();
                     } else {
                         window.setTimeout(function() {
                             $('#notifications').show();
