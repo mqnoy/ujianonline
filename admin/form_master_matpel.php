@@ -39,14 +39,7 @@ $list_kelas = $models->select_kelas();
             <div class="box-body">
                 <div class="form-group">
                     <label>Kelas</label>
-                    <select class="form-control" name="matpel_kelas">
-                        <option>pilih kelas</option>
-                        <?php
-                        foreach ($list_kelas as $value) {
-                            # code...
-                            echo "<option value=\"" . $value['id_kelas'] . "\">" . $value['txt_kelas'] . "</option>";
-                        }
-                        ?>
+                    <select class="form-control" name="matpel_kelas" id="cb_kelas">
                     </select>
                 </div>
                 <div class="form-group">
@@ -68,7 +61,7 @@ $list_kelas = $models->select_kelas();
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-            <table class="table table-bordered">
+            <table class="table table-bordered" id="tabel_matpel">
                 <tbody>
                     <tr>
                         <th style="width: 10px">#</th>

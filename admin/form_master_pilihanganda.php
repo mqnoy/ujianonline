@@ -94,6 +94,7 @@ $anu = $models->select_pilihan_ganda();
     <div class="box-header with-border">
       <h3 class="box-title">List data soal</h3>
     </div>
+                    
     <!-- /.box-header -->
     <div class="box-body">
       <table class="table table-bordered" id="tabel_piihanganda">

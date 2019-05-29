@@ -98,12 +98,15 @@ class Query extends Koneksi{
 	//select kelas
 	public function select_kelas(){
 		$query = "SELECT * FROM master_kelas";
-		$res =[];
+		$res = NULL;
+		// $res =[];
+		$res = "<option value=\"0\">pilih kelas</option>";
 		$result = mysqli_query($this->conn,$query);
 		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
-			$res[] = $row;
+			// $res[] = $row;
+			$res .= "<option value='".$row['id_kelas']."'>".$row['txt_kelas']."</option>"; 
 		}
-		return sizeof($res) > 0 ? $res : null;
+		return $res;
 	}
 	//select nilai siswa
 	public function select_nilai_siswa(){

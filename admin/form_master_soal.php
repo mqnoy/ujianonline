@@ -37,14 +37,7 @@ $list_kelas = $models->select_kelas();
         <div class="form-group">
           <label>Kelas</label>
           <select id="cb_kelas" class="form-control" name="nm_kelas">
-            <option value="0">pilih kelas</option>
-            <?php
-            foreach ($list_kelas as $value) {
-              # code...
-              echo "<option value=\"" . $value['id_kelas'] . "\">" . $value['txt_kelas'] . "</option>";
-            }
-            ?>
-          </select>
+            </select>
         </div>
         <div class="form-group">
           <label>Mata pelajaran</label>
