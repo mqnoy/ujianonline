@@ -1,80 +1,48 @@
 <?php
 if ($_SESSION['is_siswa'] == true && isset($_GET['halaman']) && $_GET['halaman'] === "list_soal") {
-
-$getsoal_session = isset($_SESSION['get_kelas']) ? $_SESSION['get_kelas'] : null ;
- 
-  $data_matpel_siswa = $models->select_matpel_kelas($getsoal_session);
-  $total_soal = [];
-  $nama_siswa = $_SESSION['ses_nama_siswa'];
-  $nis_siswa = $_SESSION['ses_nis_siswa'];
   ?>
-  <div class="col-md-3">
-
-    <!-- Profile Image -->
-    <div class="box box-primary">
-      <div class="box-body box-profile">
-        <img class="profile-user-img img-responsive img-circle" src="<?php echo base_url('assets/img/user4-128x128.jpg');?>" alt="User profile picture">
-
-        <h3 class="profile-username text-center"><?php echo $nama_siswa;?></h3>
-
-        <p class="text-muted text-center"><?php echo $nis_siswa;?></p>
-
-        <ul class="list-group list-group-unbordered">
-          <li class="list-group-item">
-            <b>Followers</b> <a class="pull-right">1,322</a>
-          </li>
-          <li class="list-group-item">
-            <b>Following</b> <a class="pull-right">543</a>
-          </li>
-          <li class="list-group-item">
-            <b>Friends</b> <a class="pull-right">13,287</a>
-          </li>
-        </ul>
-
-        <div class="form-group">
-          <label>Kelas</label>
-          <select class="form-control" name="name_kelas" id="cb_kelas_siswa">
-          </select></div>
+  <div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Default Modal</h4>
+        </div>
+        <div class="modal-body">
+          <p>One fine body&hellip;</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
       </div>
-      <!-- /.box-body -->
+      <!-- /.modal-content -->
     </div>
-    <!-- /.box -->
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+  <div id="cloning" class="col-xs-12">
+  </div>
+  <div id="gg" style="display:none;">
+    <div class="col-lg-3 col-xs-6" id="for_clone" data-toggle="modal" data-target="#modal-default" role="button">
+      <!-- small box -->
+      <div class="small-box bg-blue">
+        <div class="inner">
+          <h3 id="put_totaldata">{asd}</h3>
+
+          <p id="put_txtkelas"> {txt_kelas}</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-stats-bars"></i>
+        </div>
+        <a href="#" id="put_soal_namamatpel" class="small-box-footer">
+          <i class="fa fa-arrow-circle-right"></i>
+        </a>
+      </div>
+    </div>
 
   </div>
-
-  <?php
-  foreach ($data_matpel_siswa as $value) {
-    # code...
-    $i = 0;
-    $total_soal = $models->select_count("tabel_soal", "matpel_id", "=", $value['id_matpel']);
-    // var_dump($total_soal);
-    ?>
-
-    <div class="col-md-3 col-sm-6 col-xs-12">
-      <div class="info-box bg-aqua">
-        <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
-
-        <div class="info-box-content">
-          <span class="info-box-text"><?php echo $value['nama_matpel']; ?></span>
-          <span class="info-box-number"><?php echo $total_soal[$i]['total_data']; ?></span>
-
-          <div class="progress">
-            <div class="progress-bar" style="width: 70%"></div>
-          </div>
-          <span class="progress-description">
-            <?php echo $value['txt_kelas']; ?>
-          </span>
-        </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
-    </div>
-  <?php
-  // $i++;
-}
-/** end foreach  */
-?>
-
 <?php
 }
 ?>

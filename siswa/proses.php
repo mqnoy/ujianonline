@@ -12,7 +12,7 @@ if (isset($_POST['login_siswa'])) {
         $_SESSION['is_logged'] = true;
         $_SESSION['is_admin'] = false;
         $_SESSION['is_siswa'] = true;
-        header('Location: ../dashboard.php?halaman=list_soal');
+        header('Location: ../dashboard.php');
     }
 }
 

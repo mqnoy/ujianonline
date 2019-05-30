@@ -95,7 +95,7 @@ include "./templates/header.php";
             </a>
           </li>
           <?php if ($_SESSION['is_admin']) { ?>
-            <li class="active treeview menu-open" >
+            <li class="active treeview menu-open">
               <a href="#">
                 <i class="fa fa-edit"></i> <span>Master</span>
                 <span class="pull-right-container">
@@ -218,12 +218,55 @@ include "./templates/header.php";
               <!-- /.col -->
             </div>
             <!-- end of Info boxes -->
-          <?php }//end of rekapan ?>
+          <?php
+        }
+        ?>
 
 
-          <?php if ($_SESSION['is_admin'] == false && isset($_GET['halaman'])  && $_SESSION['is_siswa'] == true) { ?><!--start dashboard siswa-->
-          <?php } ?><!--end of dashboard siswa-->
-          disini siswa
+          <?php 
+          if ($_SESSION['is_admin'] == false && $_SESSION['is_siswa'] == true && !isset($_GET['halaman'])) {
+            $nama_siswa = $_SESSION['ses_nama_siswa'];
+            $nis_siswa = $_SESSION['ses_nis_siswa'];
+            ?>
+            <!--start dashboard siswa-->
+            <div class="row">
+              <div class="col-md-7">
+                <!-- Profile Image -->
+                <div class="box box-primary">
+                  <div class="box-body box-profile">
+                    <img class="profile-user-img img-responsive img-circle" src="<?php echo base_url('assets/img/user4-128x128.jpg'); ?>" alt="User profile picture">
+
+                    <h3 class="profile-username text-center"><?php echo $nama_siswa; ?></h3>
+
+                    <p class="text-muted text-center"><?php echo $nis_siswa; ?></p>
+
+                    <ul class="list-group list-group-unbordered">
+                      <li class="list-group-item">
+                        <b>Followers</b> <a class="pull-right">1,322</a>
+                      </li>
+                      <li class="list-group-item">
+                        <b>Following</b> <a class="pull-right">543</a>
+                      </li>
+                      <li class="list-group-item">
+                        <b>Friends</b> <a class="pull-right">13,287</a>
+                      </li>
+                    </ul>
+
+                    <div class="form-group">
+                      <label>Kelas</label>
+                      <select class="form-control" name="name_kelas_siswa" id="cb_kelas_siswa">
+                      </select></div>
+                  </div>
+                  <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+
+              </div>
+            </div>
+          <?php } ?>
+          <!--end of dashboard siswa-->
+
+
           <?php
           include_once('./siswa/siswa_list_soal.php');
           if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "form_soal") { ?>
@@ -246,22 +289,22 @@ include "./templates/header.php";
           <?php if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "master_kunci_jawaban") { ?>
             <?php include "./admin/form_master_kunci_jawaban.php"; ?>
           <?php } ?>
-          </div>
+        </div>
       </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
 
-  <footer class="main-footer">
-    <div class="pull-right hidden-xs">
-      <b>Version</b> 2.4.0
-    </div> <strong>
-      <?php var_dump($_SESSION); ?>
-      <br />
-      Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
-    reserved.
-  </footer>
+    <footer class="main-footer">
+      <div class="pull-right hidden-xs">
+        <b>Version</b> 2.4.0
+      </div> <strong>
+        <?php var_dump($_SESSION); ?>
+        <br />
+        Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
+      reserved.
+    </footer>
   </div>
   <!-- ./wrapper -->
-  
+
   <?php include "./templates/footer.php"; ?>

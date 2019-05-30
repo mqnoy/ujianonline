@@ -41,18 +41,21 @@ class Query extends Koneksi{
 	}
 	//select list matpel untuk siswa
 	public function select_matpel_kelas($keyword=null){
-		$query = "SELECT mm.nama_matpel,mk.txt_kelas,mk.kelas,mm.id_matpel FROM master_matpel mm 
-		LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas ";
+		$res =[];
+		$query = "";
 		// WHERE mk.kelas = 1";
 		if ($keyword != null) {
 			# code...
+			$query = "SELECT mm.nama_matpel,mk.txt_kelas,mk.kelas,mm.id_matpel FROM master_matpel mm 
+			LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas ";
 			$query .= "WHERE mk.kelas = ".$keyword;
+			$result = mysqli_query($this->conn,$query);
+			while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+				$res[] = $row;
+			}
 		}
-		$res =[];
-		$result = mysqli_query($this->conn,$query);
-		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
-			$res[] = $row;
-		}
+		
+		// return $query;
 		return sizeof($res) > 0 ? $res : null;
 	}
 	//select count [query builder]
