@@ -64,6 +64,10 @@
                     success: function(response) {
                         if (response.status) {
                             console.log(response.data);
+                            $("#notifications").fadeTo(2000, 500).slideUp(500, function(){
+                                $("#sucnotifications").slideUp(500);
+                                window.location.href = "<?php echo base_url('dashboard.php?halaman=nilai_saya'); ?>";
+                            });
                         } else {
                             alert("gagal post lembar soal!");
                         }
