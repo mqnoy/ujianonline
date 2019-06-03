@@ -16,5 +16,25 @@ function base_url($SCRIPT_NAME=null){
     return $base_url;
 }
 
-// echo base_url();
-// phpinfo();
+//fungsi untuk mencocokan jawaban siswa dengan kunci jawaban di database
+function periksa_jawaban($jawaban,$kunci_jawaban){
+    $ret = false;
+    if ($jawaban === $kunci_jawaban) {
+        # code...
+        $ret = true;
+    }
+    return $ret;
+}
+
+//fungsi untuk mengambill tanggal sekarang 
+function tgl_waktu_skrg(){
+    return date("Y-m-d H:i:s");
+}
+
+
+$hal_aktif = function ($str_halaman){
+    // unset($_SESSION['halaman_aktif']);
+    // $_SESSION['halaman_aktif'] = $str_halaman;
+    return $_SESSION['halaman_aktif'] = $str_halaman;
+
+};

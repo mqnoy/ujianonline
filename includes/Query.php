@@ -73,6 +73,69 @@ class Query extends Koneksi{
 		// return $query;
 		return sizeof($res) > 0 ? $res : null;
 	}
+	/**
+	 *  select list soal untuk halaman lembar soal siswa
+	 *  @param idmatpel
+	 *  @param idkelas
+	 *  @return array
+	*/
+	public function select_soal_siswa($id_kelas=null,$id_matpel){
+		$res =[];
+		$query = "";
+			# code...
+			$query = "SELECT *,CONCAT(nomor_soal,'. ',text_soal) AS text_soal_sis FROM tabel_soal ts 
+			LEFT JOIN master_matpel mm ON ts.matpel_id = mm.id_matpel
+			LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas
+			INNER JOIN master_pg_soal mps ON ts.id_soal = mps.soal_id "; 
+			$query .= " WHERE ts.matpel_id = '".$id_matpel."' AND mm.kelas_id = ".$id_kelas;
+			$query .= " GROUP BY (text_soal)";
+
+			$query .= " ORDER BY  ts.id_soal ASC ";
+			$result = mysqli_query($this->conn,$query);
+			while($row=mysqli_fetch_assoc($result)){
+				$res[] = $row;
+			}
+		// mysqli_free_result($result);
+
+		// return $query;
+		return sizeof($res) > 0 ? $res : null;
+	}
+	public function select_kunci_jawaban_sis($id_soal){
+		// $res =[];
+		$query = "";
+			# code...
+			$query = "SELECT * FROM master_kunci_jawaban WHERE soal_id = '".$id_soal."'";
+			$result = mysqli_query($this->conn,$query);
+			while($row=mysqli_fetch_assoc($result)){
+				// $res[] = $row;
+				$res = $row;
+			}
+		// mysqli_free_result($result);
+		// return $query;
+		return sizeof($res) > 0 ? $res : null;
+	}
+	/**
+	 *  select list pulihan ganda soal untuk halaman lembar soal siswa
+	 *  @param idmatpel
+	 *  @param idkelas
+	 *  @return array
+	*/
+	public function select_pgsoal_siswa($id_soal=null){
+		$res =[];
+		$query = "";
+			# code...
+			$query = "SELECT *,CONCAT(jawaban_pg,'. ',jawaban_text) as pilihan_ganda FROM master_pg_soal";
+			$query .= " WHERE soal_id = '".$id_soal."'";
+			$query .= " ORDER BY jawaban_pg ASC";
+			$result = mysqli_query($this->conn,$query);
+			while($row=mysqli_fetch_assoc($result)){
+				$res[] = $row;
+			}
+		// mysqli_free_result($result);
+
+		// return $query;
+		return sizeof($res) > 0 ? $res : null;
+	}
 
 	//select nomor pertanyaan where spesific matpel and kelas
 	public function select_no_pertanyaan_w_m_k($id_kelas,$id_matpel){
@@ -136,6 +199,11 @@ class Query extends Koneksi{
 		RIGHT JOIN tabel_soal ts ON mkj.soal_id = ts.id_soal 
 		LEFT JOIN master_matpel mm ON ts.matpel_id = mm.id_matpel
 		LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas";
+		if ($fields != null && $operand != null && $keyword != null) {
+			# code...
+			$query .= " WHERE ".$fields." ".$operand."'".$keyword."'";
+
+		}
 		$res =[];
 		$result = mysqli_query($this->conn,$query);
 		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
