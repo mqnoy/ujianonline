@@ -58,12 +58,13 @@
                     data: $("#form_lembar_soal_siswa").serialize(),
                     dataType: "json", 
                     beforeSend: function() {
-                        // $('#notifications').show();
-                        // $("#notifications").html("Please wait....");
+                        $(".overlay").show();
+                        // $("#overlay").html("Please wait....");
                     },
                     success: function(response) {
                         if (response.status) {
                             console.log(response.data);
+                            $(".overlay").hide();
                             $("#notifications").fadeTo(2000, 500).slideUp(500, function(){
                                 $("#sucnotifications").slideUp(500);
                                 window.location.href = "<?php echo base_url('dashboard.php?halaman=nilai_saya'); ?>";
