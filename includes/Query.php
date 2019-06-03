@@ -174,6 +174,21 @@ class Query extends Koneksi{
 		}
 		return $res;
 	}
+	//select nilai siswa by token
+	public function select_nilai_bytoken($token_siswa,$nis_siswa){
+		$res = null;
+		$query = "SELECT * FROM tabel_nilai_siswa tns INNER JOIN master_siswa ms ON tns.siswa_id = ms.id_siswa
+		WHERE ms.token_siswa = '".$token_siswa."' AND ms.siswa_nis='".$nis_siswa."'";
+
+		$result = mysqli_query($this->conn,$query);
+		while($row=mysqli_fetch_assoc($result)){
+			$res[] = $row;
+		}
+		// mysqli_free_result($result);
+
+		// return $query;
+		return sizeof($res) > 0 ? $res : null;
+	}
 	//select nilai siswa
 	public function select_nilai_siswa(){
 		$query = "SELECT tnp.nis,tnp.nama_siswa,tnp.siswa_kelas,mm.nama_matpel,tnp.total_nilai,tnp.tanggal_pengerjaan FROM tabel_nilai_siswa tnp 
@@ -258,7 +273,24 @@ class Query extends Koneksi{
 	}
 	
 
+	//select data dari database
+	public function select_from($tablename,$field=null,$operand=null,$keyword=null){
+		$query="";
 
+		$query = "SELECT * FROM ".$tablename;
+		if ($field != null && $operand != null) {
+			# code...
+			$query .= " WHERE ".$field."".$operand."'".$keyword."'";
+		}
+		$result = mysqli_query($this->conn,$query);
+			while($row=mysqli_fetch_assoc($result)){
+				$res[] = $row;
+			}
+		// mysqli_free_result($result);
+
+		// return $query;
+		return sizeof($res) > 0 ? $res : null;
+	}
 	//insert matpel kelas
 	public function insert_matpel($tablename,$insData){
 		$columns = implode(", ",array_keys($insData));
@@ -308,6 +340,13 @@ class Query extends Koneksi{
 		
 		$execute = mysqli_query($this->conn,$query);
 		return $execute;
+	}
+
+	public function update_siswa($id_kelas,$nis_siswa){
+		$query = "UPDATE master_siswa SET siswa_kelas_id='".$id_kelas."' WHERE siswa_nis='".$nis_siswa."'";
+		$execute = mysqli_query($this->conn,$query);
+		return $execute;
+
 	}
 	//close connection database
 	public function close_db(){

@@ -26,6 +26,14 @@ function periksa_jawaban($jawaban,$kunci_jawaban){
     return $ret;
 }
 
+//fungsi untuk generate token siswa diperlukan ketika melihat hasil nilai
+function generate_tokenSiswa($string){
+    $acak = str_shuffle("1234ABCDEFGH");
+    $raw = $string.$acak;
+    $generate_token = base64_encode($raw);
+    return $generate_token;
+}
+
 //fungsi untuk mengambill tanggal sekarang 
 function tgl_waktu_skrg(){
     return date("Y-m-d H:i:s");

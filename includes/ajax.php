@@ -2,12 +2,6 @@
 session_start();
 include '../includes/Query.php';
 
-// $jawaban_siswa['pilihan'] = array(
-//     "1" => 'A',//kunci jawaban = a
-//     "2" => 'B'//kunci jawaban = b
-// );
-
-
 if (isset($_SESSION['is_logged'])) {
     # code...
     
@@ -25,15 +19,20 @@ if (isset($_SESSION['is_logged'])) {
                 $nilai += $kunci_jawaban['bobot'];
             }
         }
+
         $nama_siswa = $_SESSION['ses_nama_siswa'];
         $nis_siswa = $_SESSION['ses_nis_siswa'];
         $matpelid = $_SESSION['ses_id_matpel'];
         $siswakelas =  $_SESSION['ses_kelas_soal'];
+        $id_siswa = 0;
+        $select_siswa = $models->select_from("master_siswa","siswa_nis","=",$nis_siswa);
+        foreach ($select_siswa as $value_siswa) {
+            # code...
+            $id_siswa = $value_siswa['id_siswa'];
+        }
         $insData = array (
-            'nis' => $nis_siswa,
-            'nama_siswa' => $nama_siswa ,
+            'siswa_id' => $id_siswa ,
             'total_nilai' => $nilai ,
-            'siswa_kelas' => $siswakelas ,
             'matpel_id' => $matpelid,
             'tanggal_pengerjaan' => tgl_waktu_skrg()
         );
@@ -64,18 +63,44 @@ if (isset($_SESSION['is_logged'])) {
         }
         echo json_encode($response);
     }
+    //terapkan token tuntuk melihat hasil nilai 1 siswa
+    if (isset($_POST['aksi_siswa']) && $_POST['aksi_siswa'] == "terapkan_token_siswa") {
+        $set_token = $_POST['set_token'];
+
+        $_SESSION['token_siswa'] = $set_token;
+        $gettoken = $_SESSION['token_siswa'];
+
+            $response = array(
+                'status' => true,
+                'pesan' => "token diset"
+            );
+
+        echo json_encode($response);
+    }
+
     //pemilihan kelas di list soal siswa
     if (isset($_POST['aksi_siswa']) && $_POST['aksi_siswa'] == "terapkan_kelas") {
         $set_kelas = $_POST['set_kelas'];
 
         $_SESSION['ses_kelas_soal'] = $set_kelas;
-
         $getkelas = $_SESSION['ses_kelas_soal'];
-        $response = array(
-            'status' => true,
-            'kelas_yg_dipilih' => $getkelas
-        );
-        
+
+        $nis_siswa = $_SESSION['ses_nis_siswa'];
+        //update siswa kelas
+        $update_siswa = $models->update_siswa($getkelas,$nis_siswa);
+        if ($update_siswa) {
+            # code...
+            $response = array(
+                'status' => true,
+                'kelas_yg_dipilih' => $getkelas
+            );
+        }else{
+            $response = array(
+                'status' => false,
+                'pesan' => "gagal menerapkan kelas"
+            );
+        }
+
         echo json_encode($response);
     }
     //pemilihan matpel di list soal siswa
