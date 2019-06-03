@@ -2,10 +2,10 @@
 -- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 28, 2019 at 10:51 AM
+-- Host: localhost
+-- Generation Time: Jun 03, 2019 at 05:57 PM
 -- Server version: 10.1.40-MariaDB
--- PHP Version: 7.3.5
+-- PHP Version: 7.1.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -81,7 +81,8 @@ CREATE TABLE `master_kunci_jawaban` (
 --
 
 INSERT INTO `master_kunci_jawaban` (`id_kunci_jawaban`, `soal_id`, `jawaban_pg`, `bobot`) VALUES
-(1, 1, 'B', 10);
+(1, 1, 'A', 10),
+(2, 2, 'B', 10);
 
 -- --------------------------------------------------------
 
@@ -104,7 +105,8 @@ INSERT INTO `master_matpel` (`id_matpel`, `nama_matpel`, `kelas_id`) VALUES
 (14, 'ppkn', 1),
 (15, 'Bahasa Indonesia', 3),
 (16, 'english', 2),
-(17, 'matematika', 2);
+(17, 'matematika', 2),
+(18, 'English', 2);
 
 -- --------------------------------------------------------
 
@@ -124,14 +126,14 @@ CREATE TABLE `master_pg_soal` (
 --
 
 INSERT INTO `master_pg_soal` (`id_pg`, `jawaban_pg`, `jawaban_text`, `soal_id`) VALUES
-(1, 'A', 'asjidisaj', 1),
-(2, 'B', 'aisdjasijdasi', 1),
-(3, 'C', 'aidsjiasjd', 1),
-(4, 'D', 'asidjais', 1),
-(5, 'A', 'i\'m fine ', 2),
-(6, 'B', 'i\'m ok', 3),
-(7, 'C', 'i\'m good', 3),
-(8, 'D', 'i\'m not ok', 3);
+(1, 'A', 'adeknya rudi', 1),
+(2, 'B', 'adeknya fani', 1),
+(3, 'C', 'adeknya koko', 1),
+(4, 'D', 'adeknya kiki', 1),
+(5, 'A', 'ya ini cuma sampe b', 2),
+(6, 'B', 'ya ini cuma sampe deh', 2),
+(7, 'C', '', 2),
+(8, 'D', '', 2);
 
 -- --------------------------------------------------------
 
@@ -154,7 +156,11 @@ CREATE TABLE `tabel_nilai_siswa` (
 --
 
 INSERT INTO `tabel_nilai_siswa` (`id_siswa`, `nis`, `nama_siswa`, `total_nilai`, `siswa_kelas`, `matpel_id`, `tanggal_pengerjaan`) VALUES
-(1, 'd20182727', 'rifky', 80, '3', 1, '2019-05-21 00:00:00');
+(1, '201643502057', 'rifkyazmi', 90, '1', 1, '2019-06-03 22:38:18'),
+(2, '201643502058', 'rifkyazmi', 0, '1', 1, '2019-06-03 22:41:11'),
+(3, '123', 'asd', 10, '3', 15, '2019-06-03 22:44:38'),
+(4, '123', 'asd', 20, '3', 15, '2019-06-03 22:44:59'),
+(5, '2018', 'qnoy', 10, '3', 15, '2019-06-03 22:45:52');
 
 -- --------------------------------------------------------
 
@@ -174,10 +180,8 @@ CREATE TABLE `tabel_soal` (
 --
 
 INSERT INTO `tabel_soal` (`id_soal`, `nomor_soal`, `text_soal`, `matpel_id`) VALUES
-(1, 1, '<p><code><strong>1+1 = ?</strong></code></p>\r\n', 1),
-(2, 3, 'asdasd', 1),
-(3, 1, '<p>how are you today?</p>\n', 16),
-(4, 2, '<p>Budi pergi kepasar ,siapa yang di rumah ?</p>\n', 15);
+(1, 1, '<p>siapakah andi ?</p>\n', 15),
+(2, 2, '<p>belum ada pg test</p>\n', 15);
 
 --
 -- Indexes for dumped tables
@@ -245,13 +249,13 @@ ALTER TABLE `master_kelas`
 -- AUTO_INCREMENT for table `master_kunci_jawaban`
 --
 ALTER TABLE `master_kunci_jawaban`
-  MODIFY `id_kunci_jawaban` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_kunci_jawaban` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `master_matpel`
 --
 ALTER TABLE `master_matpel`
-  MODIFY `id_matpel` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_matpel` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `master_pg_soal`
@@ -263,13 +267,13 @@ ALTER TABLE `master_pg_soal`
 -- AUTO_INCREMENT for table `tabel_nilai_siswa`
 --
 ALTER TABLE `tabel_nilai_siswa`
-  MODIFY `id_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tabel_soal`
 --
 ALTER TABLE `tabel_soal`
-  MODIFY `id_soal` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_soal` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
