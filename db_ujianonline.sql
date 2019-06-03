@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 03, 2019 at 05:57 PM
+-- Generation Time: Jun 03, 2019 at 10:04 PM
 -- Server version: 10.1.40-MariaDB
 -- PHP Version: 7.1.29
 
@@ -133,7 +133,33 @@ INSERT INTO `master_pg_soal` (`id_pg`, `jawaban_pg`, `jawaban_text`, `soal_id`) 
 (5, 'A', 'ya ini cuma sampe b', 2),
 (6, 'B', 'ya ini cuma sampe deh', 2),
 (7, 'C', '', 2),
-(8, 'D', '', 2);
+(8, 'D', '', 2),
+(9, 'A', '2', 3),
+(10, 'B', '3', 3),
+(11, 'C', '5', 3),
+(12, 'D', '6', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `master_siswa`
+--
+
+CREATE TABLE `master_siswa` (
+  `id_siswa` int(10) NOT NULL,
+  `siswa_nis` varchar(20) NOT NULL,
+  `siswa_nama` text NOT NULL,
+  `siswa_kelas_id` int(11) NOT NULL DEFAULT '0',
+  `token_siswa` varchar(200) NOT NULL,
+  `tgl_terdaftar` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `master_siswa`
+--
+
+INSERT INTO `master_siswa` (`id_siswa`, `siswa_nis`, `siswa_nama`, `siswa_kelas_id`, `token_siswa`, `tgl_terdaftar`) VALUES
+(1, '2057', 'rifky', 3, 'MjA1N0RGRTIxQTRDM0hHQg==', '2019-06-04 02:59:52');
 
 -- --------------------------------------------------------
 
@@ -142,11 +168,9 @@ INSERT INTO `master_pg_soal` (`id_pg`, `jawaban_pg`, `jawaban_text`, `soal_id`) 
 --
 
 CREATE TABLE `tabel_nilai_siswa` (
-  `id_siswa` int(10) NOT NULL,
-  `nis` varchar(20) NOT NULL,
-  `nama_siswa` text NOT NULL,
+  `id_nilai` int(10) NOT NULL,
+  `siswa_id` int(10) NOT NULL,
   `total_nilai` int(9) NOT NULL,
-  `siswa_kelas` char(10) NOT NULL,
   `matpel_id` int(10) NOT NULL,
   `tanggal_pengerjaan` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -155,12 +179,9 @@ CREATE TABLE `tabel_nilai_siswa` (
 -- Dumping data for table `tabel_nilai_siswa`
 --
 
-INSERT INTO `tabel_nilai_siswa` (`id_siswa`, `nis`, `nama_siswa`, `total_nilai`, `siswa_kelas`, `matpel_id`, `tanggal_pengerjaan`) VALUES
-(1, '201643502057', 'rifkyazmi', 90, '1', 1, '2019-06-03 22:38:18'),
-(2, '201643502058', 'rifkyazmi', 0, '1', 1, '2019-06-03 22:41:11'),
-(3, '123', 'asd', 10, '3', 15, '2019-06-03 22:44:38'),
-(4, '123', 'asd', 20, '3', 15, '2019-06-03 22:44:59'),
-(5, '2018', 'qnoy', 10, '3', 15, '2019-06-03 22:45:52');
+INSERT INTO `tabel_nilai_siswa` (`id_nilai`, `siswa_id`, `total_nilai`, `matpel_id`, `tanggal_pengerjaan`) VALUES
+(1, 1, 10, 15, '2019-06-04 03:00:45'),
+(2, 1, 10, 15, '2019-06-04 03:00:45');
 
 -- --------------------------------------------------------
 
@@ -181,7 +202,8 @@ CREATE TABLE `tabel_soal` (
 
 INSERT INTO `tabel_soal` (`id_soal`, `nomor_soal`, `text_soal`, `matpel_id`) VALUES
 (1, 1, '<p>siapakah andi ?</p>\n', 15),
-(2, 2, '<p>belum ada pg test</p>\n', 15);
+(2, 2, '<p>belum ada pg test</p>\n', 15),
+(3, 1, '<p>1+1 = ?</p>\n', 17);
 
 --
 -- Indexes for dumped tables
@@ -218,10 +240,17 @@ ALTER TABLE `master_pg_soal`
   ADD PRIMARY KEY (`id_pg`);
 
 --
+-- Indexes for table `master_siswa`
+--
+ALTER TABLE `master_siswa`
+  ADD PRIMARY KEY (`id_siswa`),
+  ADD UNIQUE KEY `siswa_nis` (`siswa_nis`);
+
+--
 -- Indexes for table `tabel_nilai_siswa`
 --
 ALTER TABLE `tabel_nilai_siswa`
-  ADD PRIMARY KEY (`id_siswa`);
+  ADD PRIMARY KEY (`id_nilai`);
 
 --
 -- Indexes for table `tabel_soal`
@@ -261,19 +290,25 @@ ALTER TABLE `master_matpel`
 -- AUTO_INCREMENT for table `master_pg_soal`
 --
 ALTER TABLE `master_pg_soal`
-  MODIFY `id_pg` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_pg` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `master_siswa`
+--
+ALTER TABLE `master_siswa`
+  MODIFY `id_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tabel_nilai_siswa`
 --
 ALTER TABLE `tabel_nilai_siswa`
-  MODIFY `id_siswa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_nilai` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tabel_soal`
 --
 ALTER TABLE `tabel_soal`
-  MODIFY `id_soal` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_soal` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
