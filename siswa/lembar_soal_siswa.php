@@ -3,6 +3,12 @@ if ($_SESSION['is_siswa'] == true && isset($_GET['halaman']) && $_GET['halaman']
   // echo $_SESSION['ses_id_matpel'];
   // echo $_SESSION['ses_kelas_soal'];
 ?>
+<div class="col-md-12">
+<div class="alert alert-success alert-dismissible" id="notifications" style="display:none;">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-check"></i> Alert!</h4>
+                Success alert preview. This alert is dismissable.
+              </div>
 <form role="form" id="form_lembar_soal_siswa">
 <input type="hidden" name="fr_post" value="post_lembarsoal_siswa"/>
 
@@ -50,17 +56,22 @@ if ($_SESSION['is_siswa'] == true && isset($_GET['halaman']) && $_GET['halaman']
 
 <?php
   }// enf of foreach
-}//end if null
-else{
-  echo "belum ada soal";
-}
-
 ?>
 <div class="col-md-2 pull-right">
 <button type="submit" id="btn_form_lembarsoal" class="btn btn-block btn-success">Selesai mengerjakan</button>
 </div>
 <form>
 <?php
+}//end if null
+else{
+  ?>
+  <div class="col-md-2 pull-left">
+  belum ada soal
+  <button type="submit" onclick="window.history.back()" class="btn btn-block btn btn-danger">Kembali</button>
+  </div>
+  <?php
+}
+echo "</div>";
 }//end if sessions
 
 ?>
