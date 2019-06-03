@@ -4,6 +4,7 @@ if ($_SESSION['is_siswa'] == true && isset($_GET['halaman']) && $_GET['halaman']
   // echo $_SESSION['ses_kelas_soal'];
 ?>
 <div class="col-md-12">
+
 <div class="alert alert-success alert-dismissible" id="notifications" style="display:none;">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 <h4><i class="icon fa fa-check"></i> Alert!</h4>
@@ -50,7 +51,11 @@ if ($_SESSION['is_siswa'] == true && isset($_GET['halaman']) && $_GET['halaman']
             echo "belum ada!";
           }
       ?>
+      
     </div><!-- /.box-body -->
+    <div class="overlay" style="display:none;">
+      <i class="fa fa-refresh fa-spin"></i>
+    </div>
   </div>
 </div>
 
@@ -71,7 +76,10 @@ else{
   </div>
   <?php
 }
-echo "</div>";
+?>
+
+</div>
+<?php
 }//end if sessions
 
 ?>
