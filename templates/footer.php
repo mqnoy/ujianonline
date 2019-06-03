@@ -21,12 +21,13 @@
 
 <script>
     var url_static = "<?php echo base_url('includes/ajax.php'); ?>";
+    
+
     $(function() {
-         //
-         $("#cloning #for_clone").click(function() {
-                alert("clicked");
-            });
-            //
+
+        $("#dashboard_menu").click(function () {
+            window.location.href = "<?php echo base_url('dashboard.php'); ?>";
+        })
         //combobox matpel sesuai dengan kelas
         $("#cb_matpel").hide();
         $("#cb_nomor_soal").hide();
@@ -37,7 +38,59 @@
         if ($_SESSION['is_logged'] == true && $_SESSION['is_siswa'] == true) {
             # code...
             ?>
-            //tampil data soal untuk siswa
+            var url_static_siswa = "<?php echo base_url('includes/ajax.php'); ?>";
+            
+            //post lembar soal siswa 
+            $("#btn_form_lembarsoal").click(function () {
+                $.ajax({
+                    url: url_static_siswa,
+                    type: "post", 
+                    data: $("#form_lembar_soal_siswa").serialize(),
+                    dataType: "json", 
+                    beforeSend: function() {
+                        // $('#notifications').show();
+                        // $("#notifications").html("Please wait....");
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            console.log(response.data);
+                        } else {
+                            alert("gagal post lembar soal!");
+                        }
+                    },
+                    // error: function(xhr, Status, err) {
+                    //     $("Terjadi error : " + Status);
+                    // }
+                });
+                return false;
+            })
+            
+            $("#btn-modal-lsiswa-doit").click(function () {
+                var soal_idmatpel =  $("#get_soal_idmatpel").text();
+                $.ajax({
+                    type: "post",
+                    url: url_static,
+                    data: {
+                        'aksi_siswa': 'terapkan_matpel',
+                        'set_matpel': soal_idmatpel
+                    },
+                    dataType: "json",
+                    beforeSend: function() {},
+                    success: function(response) {
+                        if (response.status) {
+                            console.log(response);
+                            window.location.href = "<?php echo base_url('dashboard.php?halaman=lembar_soal_siswa'); ?>";
+                        } else {
+                            console.log("set matpel gagal");
+                        }
+                    },
+                    // error: function(xhr, Status, err) {
+                    //     $("Terjadi error : " + Status);
+                    // }
+                });
+                return false;
+            });
+            //fetch data soal untuk siswa
             function fetching_data_soal_list() {
                 console.log("fetching data div");
                 $.ajax({
@@ -51,28 +104,39 @@
                     success: function(response) {
                         if (response.status) {
                             var div_put;
+                            var i = 1;
                             var data_soal_siswa_db = JSON.parse(JSON.stringify(response.data));
                             $.each(data_soal_siswa_db, function(index, item) {
-                                $("#for_clone").clone().appendTo("#cloning");
-                                $('#gg').remove();
-                                $("#for_clone").find("#put_soal_namamatpel").html(item.arr_matpel);
-                                $("#for_clone").find("#put_totaldata").html(item.arr_totaldata);
-                                $("#for_clone").find("#put_txtkelas").html(item.arr_kelas);
+                                $("#for_clone").clone().attr("id", "clone"+i+"").appendTo("#cloning");
 
+                                $('#gg').hide();
+                                $("#clone"+i+"").find("#put_soal_namamatpel").html(item.arr_matpel);
+                                $("#clone"+i+"").find("#put_totaldata").html(item.arr_totaldata);
+                                $("#clone"+i+"").find("#put_txtkelas").html(item.arr_kelas);
+                                $("#clone"+i+"").find("#put_soal_idmatpel").html(item.arr_matpel_id);
+
+                                $("#clone"+i+"").click(function () {
+                                    $("#modal-list-soal-siswa").modal("show");
+                                    $("#get_soal_idmatpel").text(item.arr_matpel_id);
+                                });
+                           
+                            i++;
                             });
+                            
                         } else {
                             console.log("data tidak ada");
                         }
                     },
-                    error: function(xhr, Status, err) {
-                        $("Terjadi error : " + Status);
-                    }
+                    // error: function(xhr, Status, err) {
+                    //     $("Terjadi error : " + Status);
+                    // }
                 });
             }
             fetching_data_soal_list();
+            
 
            
-            //tampil data kelas untuk siswa
+            //fetch data kelas untuk siswa
             function fetching_data_kelas_siswa() {
                 $.ajax({
                     type: "post",
@@ -126,7 +190,14 @@
 
     if ($_SESSION['is_logged'] == true && $_SESSION['is_admin'] == true) {
         ?>
-            //tampil data kelas untuk admin
+        var url_static_admin = "<?php echo base_url('admin/ajax_admin.php'); ?>";
+
+        //untuk pencarian nilai siswa
+        $("#ns_btn").click(function () {
+            var ns_keyword = $("#ns_itext").val();
+            alert(ns_keyword);
+        });
+            //fetch data kelas untuk admin
             function fetching_data_kelas() {
                 $.ajax({
                     type: "post",
@@ -156,9 +227,9 @@
                 // console.log( $("#cb_kelas").val());
                 $.ajax({
                     type: "post",
-                    url: "./admin/proses.php",
+                    url: url_static_admin,
                     data: {
-                        'tampil': 'cr_nama_matpel',
+                        'fetch': 'cr_nama_matpel',
                         idkelas: $("#cb_kelas").val()
                     },
                     dataType: "json",
@@ -185,9 +256,9 @@
 
                 $.ajax({
                     type: "post",
-                    url: "./admin/proses.php",
+                    url: url_static_admin,
                     data: {
-                        'tampil': 'cr_nomor_soal',
+                        'fetch': 'cr_nomor_soal',
                         idkelas: $("#cb_kelas").val(),
                         idmatpel: $("#cb_matpel").val()
                     },
@@ -211,9 +282,9 @@
                 console.log("nomor soal ganti");
                 $.ajax({
                     type: "post",
-                    url: "./admin/proses.php",
+                    url: url_static_admin,
                     data: {
-                        'tampil': 'cr_txt_pertanyaan',
+                        'fetch': 'cr_txt_pertanyaan',
                         idkelas: $("#cb_kelas").val(),
                         idmatpel: $("#cb_matpel").val(),
                         nomorsoal: $("#cb_nomor_soal").val()
@@ -249,7 +320,7 @@
             //ketika submit button matpel d click
             $("#submit_matpel").click(function() {
                 $.ajax({
-                    url: "./admin/proses.php",
+                    url: url_static_admin,
                     type: "post", //form method
                     data: $("#form_matpel").serialize(),
                     dataType: "json", //misal kita ingin format datanya brupa json
@@ -280,7 +351,7 @@
             //ketika submit button pilganda d click
             $("#submit_pilganda").click(function() {
                 $.ajax({
-                    url: "./admin/proses.php",
+                    url: url_static_admin,
                     type: "post", //form method
                     data: $("#form_pilihanganda").serialize(),
                     dataType: "json", //misal kita ingin format datanya brupa json
@@ -292,7 +363,7 @@
                         if (response.status) {
                             console.log(response.data);
                             //coba w/o refresh
-                            tampil_data_pilihan_ganda();
+                            fetch_data_pilihan_ganda();
                             // $("#tabel_piihanganda").hide();
                             // $("#tabel_piihanganda").show();
                         } else {
@@ -315,7 +386,7 @@
                 var value = CKEDITOR.instances['editor1'];
                 console.log(value);
                 $.ajax({
-                    url: "./admin/proses.php",
+                    url: url_static_admin,
                     type: "post", //form method
                     data: {
                         'fr_post_soal': $("[name='fr_post_soal']").val(),
@@ -352,12 +423,12 @@
             });
 
             // menampilkan list data untuk data kunci jawaban 
-            function tampil_data_kunci_jwbn() {
+            function fetch_data_kunci_jwbn() {
                 $.ajax({
-                    url: "admin/proses.php",
+                    url: url_static_admin,
                     type: "post",
                     data: {
-                        'tampil': 'tam_kunci_jawaban'
+                        'fetch': 'tam_kunci_jawaban'
                     },
                     dataType: "json",
                     beforeSend: function() {
@@ -382,12 +453,12 @@
             }
 
             // menampilkan list data untuk pilihan ganda 
-            function tampil_data_pilihan_ganda() {
+            function fetch_data_pilihan_ganda() {
                 $.ajax({
-                    url: "admin/proses.php",
+                    url: url_static_admin,
                     type: "post",
                     data: {
-                        'tampil': 'tam_pilihan_ganda'
+                        'fetch': 'tam_pilihan_ganda'
                     },
                     dataType: "json",
                     beforeSend: function() {
@@ -412,9 +483,9 @@
             }
 
             // menampilkan list data untuk pilihan ganda 
-            function tampil_data_soal() {
+            function fetch_data_soal() {
                 $.ajax({
-                    url: "admin/proses.php",
+                    url: url_static_admin,
                     type: "post",
                     data: {
                         'fetch': 'data_tabel_soal'
@@ -442,9 +513,9 @@
             }
 
             // menampilkan list data nilai siswa 
-            function tampil_data_nilai_siswa() {
+            function fetch_data_nilai_siswa() {
                 $.ajax({
-                    url: "admin/proses.php",
+                    url: url_static_admin,
                     type: "post",
                     data: {
                         'fetch': 'data_tabel_nilai_siswa'
@@ -470,10 +541,10 @@
                 });
                 return false;
             }
-            tampil_data_nilai_siswa();
-            tampil_data_soal();
-            tampil_data_kunci_jwbn();
-            tampil_data_pilihan_ganda();
+            fetch_data_nilai_siswa();
+            fetch_data_soal();
+            fetch_data_kunci_jwbn();
+            fetch_data_pilihan_ganda();
         <?php
     }
     /**end sessions an admin*/
@@ -488,6 +559,46 @@
     ?>
 
     }); //end of document ready function
+</script>
+<script>
+
+$.AdminLTESidebarTweak = {};
+
+$.AdminLTESidebarTweak.options = {
+    EnableRemember: true,
+    NoTransitionAfterReload: false
+    //Removes the transition after page reload.
+};
+
+$(function () {
+    "use strict";
+
+    $("body").on("collapsed.pushMenu", function(){
+        if($.AdminLTESidebarTweak.options.EnableRemember){
+            document.cookie = "toggleState=closed";
+        } 
+    });
+    $("body").on("expanded.pushMenu", function(){
+        if($.AdminLTESidebarTweak.options.EnableRemember){
+            document.cookie = "toggleState=opened";
+        } 
+    });
+
+    if($.AdminLTESidebarTweak.options.EnableRemember){
+        var re = new RegExp('toggleState' + "=([^;]+)");
+        var value = re.exec(document.cookie);
+        var toggleState = (value != null) ? unescape(value[1]) : null;
+        if(toggleState == 'closed'){
+            if($.AdminLTESidebarTweak.options.NoTransitionAfterReload){
+                $("body").addClass('sidebar-collapse hold-transition').delay(100).queue(function(){
+                    $(this).removeClass('hold-transition'); 
+                });
+            }else{
+                $("body").addClass('sidebar-collapse');
+            }
+        }
+    } 
+});
 </script>
 
 </body>
