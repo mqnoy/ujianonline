@@ -9,6 +9,8 @@ if ($_SESSION['is_siswa'] == true && isset($_GET['halaman']) && $_GET['halaman']
 <?php
   $soal_untuk_siswa  = $models->select_soal_siswa($_SESSION['ses_kelas_soal'],$_SESSION['ses_id_matpel']);
   // var_dump($soal_untuk_siswa);
+  if ($soal_untuk_siswa != null) {
+    # code...
   foreach ($soal_untuk_siswa as $soal) {
     # code...
     $no_soal = $soal['nomor_soal'];
@@ -48,6 +50,11 @@ if ($_SESSION['is_siswa'] == true && isset($_GET['halaman']) && $_GET['halaman']
 
 <?php
   }// enf of foreach
+}//end if null
+else{
+  echo "belum ada soal";
+}
+
 ?>
 <div class="col-md-2 pull-right">
 <button type="submit" id="btn_form_lembarsoal" class="btn btn-block btn-success">Selesai mengerjakan</button>
