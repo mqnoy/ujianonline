@@ -40,6 +40,16 @@
             ?>
             var url_static_siswa = "<?php echo base_url('includes/ajax.php'); ?>";
             
+
+            //function copy token to clipboard
+            $("#txt_token_siswa").click(function () {
+                var token_value = $("#txt_token_siswa").val();
+                $("#txt_token_siswa").select();
+                document.execCommand("copy");
+                alert("sudah di copy");
+                //update database for hide token after clicked
+            });
+            
             //post lembar soal siswa 
             $("#btn_form_lembarsoal").click(function () {
                 $.ajax({
@@ -64,7 +74,36 @@
                 });
                 return false;
             })
-            
+
+            //terapkan token tuntuk melihat hasil nilai 1 siswa
+            $("#btn_token_set").click(function name(params) {
+                var valuetoken =  $("#value_token").val();
+                $.ajax({
+                    type: "post",
+                    url: url_static,
+                    data: {
+                        'aksi_siswa': 'terapkan_token_siswa',
+                        'set_token': valuetoken
+                    },
+                    dataType: "json",
+                    beforeSend: function() {},
+                    success: function(response) {
+                        if (response.status) {
+                            console.log(response);
+                            window.location.href = "<?php echo base_url('dashboard.php?halaman=nilai_saya'); ?>";
+                        } else {
+                            console.log("set token gagal");
+                        }
+                    },
+                    // error: function(xhr, Status, err) {
+                    //     $("Terjadi error : " + Status);
+                    // }
+                });
+                return false;
+                
+            });
+
+            //terapkan matpel siswa redirect ke halaman lembar soal
             $("#btn-modal-lsiswa-doit").click(function () {
                 var soal_idmatpel =  $("#get_soal_idmatpel").text();
                 $.ajax({
