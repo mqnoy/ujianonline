@@ -17,8 +17,9 @@ if (isset($_POST['submit'])) {
       $_SESSION['is_logged'] = true;
       $_SESSION['is_admin'] = true;
       $_SESSION['is_siswa'] = false;
+      $_SESSION['halaman_aktif'] = "Dashboard";
     }
-    header('Location: ./dashboard.php?halaman=rekapan');
+    header('Location: ./dashboard.php');
   }
 }
 if (isset($_GET['action']) && $_GET['action'] === "logout") {

@@ -2,7 +2,8 @@
 session_start();
 $text_info = "";
 $text_desc_info = "";
-$halaman_active = "Dashboard";
+
+$session_level = "";
 require_once 'includes/Query.php';
 if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
   $text_info = $_SESSION['ses_admin_username'];
@@ -28,7 +29,6 @@ include "./templates/header.php";
         <!-- logo for regular state and mobile devices -->
         <span class="logo-lg"><b>Ujian</b>online</span>
       </a>
-
       <!-- Header Navbar: style can be found in header.less -->
       <nav class="navbar navbar-static-top">
         <!-- Sidebar toggle button-->
@@ -66,12 +66,11 @@ include "./templates/header.php";
                 </li>
               </ul>
             </li>
-
           </ul>
         </div>
-
       </nav>
     </header>
+
     <!-- Left side column. contains the logo and sidebar -->
     <aside class="main-sidebar">
       <!-- sidebar: style can be found in sidebar.less -->
@@ -89,8 +88,8 @@ include "./templates/header.php";
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
           <li class="header">MENU</li>
-          <li class="active treeview menu-open">
-            <a href="#">
+          <li class="treeview menu-open">
+            <a href="#" id="dashboard_menu">
               <i class="fa fa-dashboard"></i> <span>Dashboard</span>
             </a>
           </li>
@@ -125,13 +124,12 @@ include "./templates/header.php";
           <?php if ($_SESSION['is_siswa']) { ?>
             <li class="active treeview menu-open">
               <a href="#">
-                <i class="fa fa-edit"></i> <span>Soal</span>
+                <i class="fa fa-edit"></i> <span>Siswa</span>
                 <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span>
               </a>
               <ul class="treeview-menu">
-                <li><a href="?halaman=list_soal"><i class="fa fa-circle-o"></i> List soal</a></li>
                 <li><a href="?halaman=nilai_saya"><i class="fa fa-circle-o"></i> Lihat nilai saya</a></li>
               </ul>
             </li>
@@ -140,171 +138,87 @@ include "./templates/header.php";
       </section>
       <!-- /.sidebar -->
     </aside>
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
           Dashboard
-          <!-- <small>Version 2.0</small> -->
         </h1>
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-          <li class="active"><?php echo $halaman_active; ?></li>
+          <li class="active"> Dashboard </li>
         </ol>
       </section>
-
       <!-- Main content -->
       <section class="content">
         <div class="row">
-          <?php if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] === "rekapan") { ?>
-            <!-- Info boxes -->
-            <div class="row">
-              <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="info-box">
-                  <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
-
-                  <div class="info-box-content">
-                    <span class="info-box-text">CPU Traffic</span>
-                    <span class="info-box-number">90<small>%</small></span>
-                  </div>
-                  <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-              </div>
-              <!-- /.col -->
-              <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="info-box">
-                  <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
-
-                  <div class="info-box-content">
-                    <span class="info-box-text">Likes</span>
-                    <span class="info-box-number">41,410</span>
-                  </div>
-                  <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-              </div>
-              <!-- /.col -->
-
-              <!-- fix for small devices only -->
-              <div class="clearfix visible-sm-block"></div>
-
-              <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="info-box">
-                  <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
-
-                  <div class="info-box-content">
-                    <span class="info-box-text">Sales</span>
-                    <span class="info-box-number">760</span>
-                  </div>
-                  <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-              </div>
-              <!-- /.col -->
-              <div class="col-md-3 col-sm-6 col-xs-12">
-                <div class="info-box">
-                  <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
-                  <div class="info-box-content">
-                    <span class="info-box-text">New Members</span>
-                    <span class="info-box-number">2,000</span>
-                  </div>
-                  <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-              </div>
-              <!-- /.col -->
-            </div>
-            <!-- end of Info boxes -->
-          <?php
-        }
+        <?php  
+        if (isset($_GET['halaman']) && $_SESSION['is_logged'] == true ) {
+          # code...
+          $halaman = $_GET['halaman'];
+          switch ($halaman) {
+            case 'form_soal':
+              # code...
+              include_once "./admin/form_master_soal.php"; 
+              break;
+            case 'form_pil_ganda':
+              # code...
+              include_once "./admin/form_master_pilihanganda.php"; 
+              break;
+            case 'nilai_siswa':
+              # code...
+              include_once "./admin/admin_list_nilai_siswa.php"; 
+              break;
+            case 'form_mata_pelajaran':
+              # code...
+              include_once "./admin/form_master_matpel.php"; 
+              break;
+            case 'master_kunci_jawaban':
+              # code...
+              include_once "./admin/form_master_kunci_jawaban.php"; 
+              break;
+            case 'list_soal':
+              # code...
+              include_once "./siswa/siswa_list_soal.php"; 
+              break;
+            case 'lembar_soal_siswa':
+              # code...
+              include_once "./siswa/lembar_soal_siswa.php"; 
+              break;
+            case 'nilai_saya':
+              # code...
+              include_once "./siswa/nilai_saya.php"; 
+              break;
+            default:
+              # code...
+              include_once "./404.php";
+              break;
+          }
+          }elseif ($_SESSION['is_admin'] == true && $_SESSION['is_siswa'] == false && !isset($_GET['halaman']) ){
+            //halaman utama admin
+            include_once "./admin/admin_halaman_utama.php";
+          }elseif ($_SESSION['is_admin'] == false && $_SESSION['is_siswa'] == true && !isset($_GET['halaman']) ){
+            //halaman utama siswa
+            include_once "./siswa/siswa_halaman_utama.php";
+          }else{
+            include_once "./404.php";
+          }
         ?>
-
-
-          <?php 
-          if ($_SESSION['is_admin'] == false && $_SESSION['is_siswa'] == true && !isset($_GET['halaman'])) {
-            $nama_siswa = $_SESSION['ses_nama_siswa'];
-            $nis_siswa = $_SESSION['ses_nis_siswa'];
-            ?>
-            <!--start dashboard siswa-->
-            <div class="row">
-              <div class="col-md-7">
-                <!-- Profile Image -->
-                <div class="box box-primary">
-                  <div class="box-body box-profile">
-                    <img class="profile-user-img img-responsive img-circle" src="<?php echo base_url('assets/img/user4-128x128.jpg'); ?>" alt="User profile picture">
-
-                    <h3 class="profile-username text-center"><?php echo $nama_siswa; ?></h3>
-
-                    <p class="text-muted text-center"><?php echo $nis_siswa; ?></p>
-
-                    <ul class="list-group list-group-unbordered">
-                      <li class="list-group-item">
-                        <b>Followers</b> <a class="pull-right">1,322</a>
-                      </li>
-                      <li class="list-group-item">
-                        <b>Following</b> <a class="pull-right">543</a>
-                      </li>
-                      <li class="list-group-item">
-                        <b>Friends</b> <a class="pull-right">13,287</a>
-                      </li>
-                    </ul>
-
-                    <div class="form-group">
-                      <label>Kelas</label>
-                      <select class="form-control" name="name_kelas_siswa" id="cb_kelas_siswa">
-                      </select></div>
-                  </div>
-                  <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
-
-              </div>
-            </div>
-          <?php } ?>
-          <!--end of dashboard siswa-->
-
-
-          <?php
-          include_once('./siswa/siswa_list_soal.php');
-          if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "form_soal") { ?>
-            <!-- add1 -->
-            <?php include "./admin/form_master_soal.php"; ?>
-            <!-- add2 -->
-          <?php } ?>
-          <?php if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "form_pil_ganda") { ?>
-            <?php include "./admin/form_master_pilihanganda.php"; ?>
-          <?php } ?>
-
-          <?php if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "nilai_siswa") { ?>
-            <?php include "./admin/admin_list_nilai_siswa.php"; ?>
-          <?php } ?>
-
-          <?php if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "form_mata_pelajaran") { ?>
-            <?php include "./admin/form_master_matpel.php"; ?>
-          <?php } ?>
-
-          <?php if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "master_kunci_jawaban") { ?>
-            <?php include "./admin/form_master_kunci_jawaban.php"; ?>
-          <?php } ?>
         </div>
       </section>
       <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-
     <footer class="main-footer">
       <div class="pull-right hidden-xs">
-        <b>Version</b> 2.4.0
-      </div> <strong>
-        <?php var_dump($_SESSION); ?>
-        <br />
-        Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
-      reserved.
+      Copyright &copy; 2019 
+      </div> 
+      <strong>
+        <!-- template by Almsaeed Studio https://adminlte.io version 2.4.0 -->
+        aplikasi ujianonline smk
+        </strong>
     </footer>
   </div>
   <!-- ./wrapper -->
-
   <?php include "./templates/footer.php"; ?>

@@ -1,7 +1,8 @@
 <?php
 $ck_editor = true;
 $list_kelas = $models->select_kelas();
-?>
+if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "form_soal") { 
+  ?>
 <div class="modal fade" id="modal-soal">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -95,3 +96,6 @@ $list_kelas = $models->select_kelas();
   </div>
 
 </div>
+<?php
+}
+?>

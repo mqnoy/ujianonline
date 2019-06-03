@@ -1,7 +1,8 @@
 <?php
+if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "form_mata_pelajaran") { 
 $list_matpel = $models->select_matpel();
-$list_kelas = $models->select_kelas();
 ?>
+   
 <div class="modal fade" id="modal-default">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -112,3 +113,6 @@ $list_kelas = $models->select_kelas();
         </div>
     </div>
 </div>
+                <?php
+            }
+            ?>

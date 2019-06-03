@@ -1,20 +1,22 @@
 <?php
 if ($_SESSION['is_siswa'] == true && isset($_GET['halaman']) && $_GET['halaman'] === "list_soal") {
   ?>
-  <div class="modal fade" id="modal-default">
+  <div class="modal fade" id="modal-list-soal-siswa">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Default Modal</h4>
+          <h4 class="modal-title">Soal</h4>
         </div>
         <div class="modal-body">
-          <p>One fine body&hellip;</p>
+          <p>
+            Soal yang dipilih <span id="get_soal_idmatpel"></span>
+          </p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Kembali</button>
+          <button type="button" id="btn-modal-lsiswa-doit"class="btn btn-primary">Kerjakan</button>
         </div>
       </div>
       <!-- /.modal-content -->
@@ -25,7 +27,8 @@ if ($_SESSION['is_siswa'] == true && isset($_GET['halaman']) && $_GET['halaman']
   <div id="cloning" class="col-xs-12">
   </div>
   <div id="gg" style="display:none;">
-    <div class="col-lg-3 col-xs-6" id="for_clone" data-toggle="modal" data-target="#modal-default" role="button">
+    <!-- <div class="col-lg-3 col-xs-6" id="for_clone" data-toggle="modal" data-target="#modal-list-soal-siswa" role="button"> -->
+    <div class="col-lg-3 col-xs-6" id="for_clone" role="button">
       <!-- small box -->
       <div class="small-box bg-blue">
         <div class="inner">

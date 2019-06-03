@@ -1,6 +1,6 @@
-<?php
+<?php if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "master_kunci_jawaban") { 
+          
 $list_matpel = $models->select_matpel();
-$list_kelas = $models->select_kelas();
 ?>
 <div class="modal fade" id="modal-kunci-jawaban">
 	<div class="modal-dialog">
@@ -31,16 +31,9 @@ $list_kelas = $models->select_kelas();
 		<!-- /.box-header -->
 		<div class="box-body">
 			<div class="form-group col-xs-3">
-				<label>Kelas</label>
-				<select id="cb_kelas" class="form-control" name="nm_kelas">
-					<option value="0">pilih kelas</option>
-					<?php
-					foreach ($list_kelas as $value) {
-						# code...
-						echo "<option value=\"" . $value['id_kelas'] . "\">" . $value['txt_kelas'] . "</option>";
-					}
-					?>
-				</select>
+                    <label>Kelas</label>
+                    <select class="form-control" name="matpel_kelas" id="cb_kelas">
+                    </select>
 			</div>
 			<div class="form-group col-xs-3">
 			<label>Mata pelajaran</label>
@@ -92,3 +85,6 @@ $list_kelas = $models->select_kelas();
 		</div>
 	</div>
 </div>
+<?php 
+}
+?>

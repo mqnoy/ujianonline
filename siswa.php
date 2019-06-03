@@ -9,7 +9,7 @@ if (isset($_GET['action']) && $_GET['action']=="logout") {
   }
 if (isset($_SESSION['ses_nis_siswa']) && isset($_SESSION['ses_nama_siswa']) && $_SESSION['is_logged']) {
     # code...
-    header('Location: ./dashboard.php?halaman=list_soal');
+    header('Location: ./dashboard.php');
 }
 ?>
 <!DOCTYPE html>
@@ -26,7 +26,7 @@ if (isset($_SESSION['ses_nis_siswa']) && isset($_SESSION['ses_nama_siswa']) && $
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
 
-    <form action="./siswa/proses.php" method="post">
+    <form action="./siswa/ajax_siswa.php" method="post">
       <div class="form-group has-feedback">
         <input type="text" class="form-control" name="siswa_nis" placeholder="nis">
         <!-- <span class="glyphicon glyphicon-envelope form-control-feedback"></span> -->

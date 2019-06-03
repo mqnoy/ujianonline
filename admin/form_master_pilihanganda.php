@@ -2,7 +2,8 @@
 $ck_editor = true;
 $list_kelas = $models->select_kelas();
 $anu = $models->select_pilihan_ganda();
-// var_dump($anu);
+
+if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "form_pil_ganda") { 
 ?>
 <div class="modal fade" id="modal-pilihan-ganda">
           <div class="modal-dialog">
@@ -36,17 +37,10 @@ $anu = $models->select_pilihan_ganda();
     <input type="hidden" name="fr_post_pilihanganda" value="post_pilganda"/>
     <input type="hidden" name="soalid"/>
       <div class="box-body">
-        <div class="form-group">
-          <label>Kelas</label>
-          <select id="cb_kelas" class="form-control" name="nm_kelas">
-            <option value="0">pilih kelas</option>
-            <?php
-            foreach ($list_kelas as $value) {
-              # code...
-              echo "<option value=\"" . $value['id_kelas'] . "\">" . $value['txt_kelas'] . "</option>";
-            }
-            ?>
-          </select>
+      <div class="form-group">
+            <label>Kelas</label>
+            <select class="form-control" name="matpel_kelas" id="cb_kelas">
+            </select>
         </div>
         <div class="form-group">
           <label>Mata pelajaran</label>
@@ -125,3 +119,7 @@ $anu = $models->select_pilihan_ganda();
   </div>
 
 </div>
+
+<?php
+}
+?>
