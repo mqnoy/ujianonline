@@ -58,8 +58,8 @@
 			<select id="cb_matpel" class="form-control" name="nm_matpel">
 				</select>
 			</div>
-
-			<table class="table table-bordered" id="tabel_kunci_jawaban">
+			<div class="box-body table-responsive no-padding">
+			<table class="table table-bordered " id="tabel_kunci_jawaban">
 				<tbody>
 					<tr>
 						<th style="width: 10px">#</th>
@@ -83,6 +83,7 @@
 				<li><a href="#">3</a></li>
 				<li><a href="#">»</a></li>
 			</ul>
+		</div>
 		</div>
 	</div>
 </div>
