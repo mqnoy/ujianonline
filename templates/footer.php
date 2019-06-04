@@ -59,18 +59,20 @@
                     dataType: "json", 
                     beforeSend: function() {
                         $(".overlay").show();
+                        $("#btn_form_lembarsoal").attr('class','btn btn-block btn-success disabled');
                         // $("#overlay").html("Please wait....");
                     },
                     success: function(response) {
                         if (response.status) {
                             // console.log(response.data);
                             $(".overlay").hide();
-                            $("#notifications").fadeTo(2000, 500).slideUp(500, function(){
-                                $("#sucnotifications").slideUp(500);
+                            $("#notifications").fadeTo(1000, 500).slideUp(100, function(){
+                                $("#notifications").slideUp(500);
                                 window.location.href = "<?php echo base_url('dashboard.php?halaman=nilai_saya'); ?>";
                             });
                         } else {
                             alert("gagal post lembar soal!");
+
                         }
                     },
                     // error: function(xhr, Status, err) {
