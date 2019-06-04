@@ -79,7 +79,7 @@ class Query extends Koneksi{
 	 *  @param idkelas
 	 *  @return array
 	*/
-	public function select_soal_siswa($id_kelas=null,$id_matpel){
+	public function select_soal_siswa($id_kelas=null,$id_matpel=null){
 		$res =[];
 		$query = "";
 			# code...
@@ -191,8 +191,9 @@ class Query extends Koneksi{
 	}
 	//select nilai siswa
 	public function select_nilai_siswa(){
-		$query = "SELECT tnp.nis,tnp.nama_siswa,tnp.siswa_kelas,mm.nama_matpel,tnp.total_nilai,tnp.tanggal_pengerjaan FROM tabel_nilai_siswa tnp 
-		LEFT JOIN master_matpel mm ON tnp.matpel_id = mm.id_matpel
+		$query = "SELECT ms.siswa_nis,ms.siswa_nama,mk.txt_kelas,mm.nama_matpel,tnp.total_nilai,tnp.tanggal_pengerjaan FROM tabel_nilai_siswa tnp 
+		LEFT JOIN master_siswa ms ON tnp.siswa_id = ms.id_siswa
+        LEFT JOIN master_matpel mm ON tnp.matpel_id = mm.id_matpel
 		LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas";
 		$res =[];
 		$result = mysqli_query($this->conn,$query);
@@ -210,7 +211,7 @@ class Query extends Koneksi{
 	 */
 	public function select_kunci_jawaban($fields=null,$operand=null,$keyword=null){
 		# code...
-		$query = "SELECT ts.nomor_soal,ts.text_soal,mkj.jawaban_pg,mkj.bobot,mm.nama_matpel,mk.txt_kelas FROM `master_kunci_jawaban`mkj 
+		$query = "SELECT ts.id_soal,ts.matpel_id,ts.nomor_soal,ts.text_soal,mkj.jawaban_pg,mkj.bobot,mm.nama_matpel,mk.txt_kelas FROM `master_kunci_jawaban`mkj 
 		RIGHT JOIN tabel_soal ts ON mkj.soal_id = ts.id_soal 
 		LEFT JOIN master_matpel mm ON ts.matpel_id = mm.id_matpel
 		LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas";
@@ -260,10 +261,18 @@ class Query extends Koneksi{
 	 * @return array
 	 */
 	public function select_soal($fields=null,$operand=null,$keyword=null){
-		$query = "SELECT ts.nomor_soal,ts.text_soal,mm.nama_matpel,mk.txt_kelas FROM tabel_soal ts 
+		$res=null;
+		$query="";
+
+		$query = "SELECT ts.nomor_soal,ts.text_soal,ts.id_soal,mm.nama_matpel,mk.txt_kelas FROM tabel_soal ts 
 		LEFT JOIN master_matpel mm ON ts.matpel_id = mm.id_matpel
 		LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas";
-		$res =[];
+
+		if ($fields != null && $keyword != null) {
+			# code...
+			$query .= " WHERE ".$fields."".$operand."".$keyword;
+		}
+
 		$result = mysqli_query($this->conn,$query);
 		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
 			$res[] = $row;
@@ -276,7 +285,7 @@ class Query extends Koneksi{
 	//select data dari database
 	public function select_from($tablename,$field=null,$operand=null,$keyword=null){
 		$query="";
-
+		$res = null;
 		$query = "SELECT * FROM ".$tablename;
 		if ($field != null && $operand != null) {
 			# code...
@@ -328,26 +337,41 @@ class Query extends Koneksi{
 	 * @return boolean
 	 * 
 	 *  */
-	public function insert_into($tablename,$insData){
-		$columns = implode(", ",array_keys($insData));
-		$rawvalues=array();
-		foreach ($insData as $key => $value) {
+	public function insert_into($tablename,$insData=null){
+		$execute = false;
+		if ($insData != null) {
 			# code...
-			$rawvalues[] = "\"".$value."\"";
+			$columns = implode(", ",array_keys($insData));
+			$rawvalues=array();
+			foreach ($insData as $key => $value) {
+				# code...
+				$rawvalues[] = "\"".$value."\"";
+			}
+			$values  = implode(", ",$rawvalues);
+			$query = "INSERT INTO `".$tablename."`($columns) VALUES (".$values.")";
+			
+			$execute = mysqli_query($this->conn,$query);
 		}
-		$values  = implode(", ",$rawvalues);
-		$query = "INSERT INTO `".$tablename."`($columns) VALUES (".$values.")";
 		
+		return $execute;
+	}
+	public function update_kunci_jawaban($id_soal,$jawaban_pg,$bobot_pg){
+		$query = "UPDATE master_kunci_jawaban SET jawaban_pg='".$jawaban_pg."' ,bobot='".$bobot_pg."' WHERE soal_id='".$id_soal."'";
 		$execute = mysqli_query($this->conn,$query);
 		return $execute;
 	}
-
 	public function update_siswa($id_kelas,$nis_siswa){
 		$query = "UPDATE master_siswa SET siswa_kelas_id='".$id_kelas."' WHERE siswa_nis='".$nis_siswa."'";
 		$execute = mysqli_query($this->conn,$query);
 		return $execute;
 
 	}
+	// public function update_soal_kuncijwbn($id_soal,$kunci_jawaban){
+	// 	$query = "UPDATE master_siswa SET siswa_kelas_id='".$id_kelas."' WHERE siswa_nis='".$nis_siswa."'";
+	// 	$execute = mysqli_query($this->conn,$query);
+	// 	return $execute;
+
+	// }
 	//close connection database
 	public function close_db(){
 

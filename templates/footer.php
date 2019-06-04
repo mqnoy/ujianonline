@@ -63,7 +63,7 @@
                     },
                     success: function(response) {
                         if (response.status) {
-                            console.log(response.data);
+                            // console.log(response.data);
                             $(".overlay").hide();
                             $("#notifications").fadeTo(2000, 500).slideUp(500, function(){
                                 $("#sucnotifications").slideUp(500);
@@ -94,7 +94,7 @@
                     beforeSend: function() {},
                     success: function(response) {
                         if (response.status) {
-                            console.log(response);
+                            // //console.log(response);
                             window.location.href = "<?php echo base_url('dashboard.php?halaman=nilai_saya'); ?>";
                         } else {
                             console.log("set token gagal");
@@ -122,7 +122,7 @@
                     beforeSend: function() {},
                     success: function(response) {
                         if (response.status) {
-                            console.log(response);
+                            //console.log(response);
                             window.location.href = "<?php echo base_url('dashboard.php?halaman=lembar_soal_siswa'); ?>";
                         } else {
                             console.log("set matpel gagal");
@@ -217,7 +217,7 @@
                     beforeSend: function() {},
                     success: function(response) {
                         if (response.status) {
-                            console.log(response);
+                            //console.log(response);
                             window.location.href = "<?php echo base_url('dashboard.php?halaman=list_soal'); ?>";
                         } else {
                             console.log("data tidak ada");
@@ -365,9 +365,9 @@
             $("#submit_matpel").click(function() {
                 $.ajax({
                     url: url_static_admin,
-                    type: "post", //form method
+                    type: "post", 
                     data: $("#form_matpel").serialize(),
-                    dataType: "json", //misal kita ingin format datanya brupa json
+                    dataType: "json", 
                     beforeSend: function() {
                         // $('#notifications').show();
                         // $("#notifications").html("Please wait....");
@@ -396,9 +396,9 @@
             $("#submit_pilganda").click(function() {
                 $.ajax({
                     url: url_static_admin,
-                    type: "post", //form method
+                    type: "post", 
                     data: $("#form_pilihanganda").serialize(),
-                    dataType: "json", //misal kita ingin format datanya brupa json
+                    dataType: "json", 
                     beforeSend: function() {
                         // $('#notifications').show();
                         // $("#notifications").html("Please wait....");
@@ -431,7 +431,7 @@
                 console.log(value);
                 $.ajax({
                     url: url_static_admin,
-                    type: "post", //form method
+                    type: "post", 
                     data: {
                         'fr_post_soal': $("[name='fr_post_soal']").val(),
                         'nm_kelas': $("#cb_kelas").val(),
@@ -441,7 +441,7 @@
                     },
                     // 'form_data' : $("#form_soal").serialize() ,
 
-                    dataType: "json", //misal kita ingin format datanya brupa json
+                    dataType: "json", 
                     beforeSend: function() {
                         console.log(value);
 
@@ -450,7 +450,7 @@
                     },
                     success: function(response) {
                         if (response.status) {
-                            console.log(response.data);
+                            // console.log(response.data);
                         } else {
                             window.setTimeout(function() {
                                 $('#notifications').show();
@@ -466,8 +466,78 @@
                 return false;
             });
 
+            
+            function fetch_data_modal_mkj(post_idsoal){
+                var kunci_jawaban = "";
+                $.ajax({
+                    url: url_static_admin,
+                    type: "post",
+                    data: {
+                        'fetch': 'data_modal_mkj',
+                        'p_idsoal' : post_idsoal
+                    },
+                    dataType: "json",
+                    beforeSend: function() {
+
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            console.log(response);
+                            $("#modal-kunci-jawaban #modal-mkj-text-soal").text(response.text_soal_modal);
+                            $("#modal-kunci-jawaban #modal-mkj-pilihan-ganda").html(response.data_pg_modal);
+                            $("#modal-kunci-jawaban [name='post_soal_id']").val(post_idsoal);
+                            $("#modal-kunci-jawaban [name='post_pg_bobot']").val(response.data_bobotjwbn_modal);
+                            $("#modal-kunci-jawaban [value='"+response.data_kuncijwbn_modal+"']").attr('checked', 'checked');
+                            
+                            $("#modal-kunci-jawaban").modal("show");
+
+                            $("#btn-pilih-modal-mkj").click(function () {
+                                $.ajax({
+                                    url: url_static_admin,
+                                    type: "post", 
+                                    data: $("#form_modal_mkj").serialize(),
+                                    dataType: "json", 
+                                    beforeSend: function() {
+                                        // $('#notifications').show();
+                                        // $("#notifications").html("Please wait....");
+                                    },
+                                    success: function(response) {
+                                        if (response.status) {
+                                            alert("success");
+                                            $("#modal-kunci-jawaban").modal("hide");
+                                            window.location.href = "<?php echo base_url('dashboard.php?halaman=master_kunci_jawaban'); ?>";
+                       
+                                        } else {
+                                            alert("gagal menerapkan kunci jawaban");
+                                        }
+                                    },
+                                    // error: function(xhr, Status, err) {
+                                    //     $("Terjadi error : " + Status);
+                                    // }
+                                });
+                                return false;
+
+                            });
+
+                            
+                        } else {
+                            console.log("false");
+                        }
+                    },
+                    // error: function(xhr, Status, err) {
+                    //     $("terjadi error : " + Status);
+
+                    // }
+
+                });
+
+                return false;
+            } 
+            
             // menampilkan list data untuk data kunci jawaban 
             function fetch_data_kunci_jwbn() {
+                var j=0;
+
                 $.ajax({
                     url: url_static_admin,
                     type: "post",
@@ -481,8 +551,18 @@
                     success: function(response) {
                         if (response.status) {
                             // console.log(response.data);
-                            // $('#myTable tr:last').after('<tr>...</tr><tr>...</tr>');
-                            $("#tabel_kunci_jawaban tr:last").after(response.data);
+                            $("#tabel_kunci_jawaban tr:last").empty().after(response.data);
+                            //button master kunci jawaban untuk update 
+                            $.each(response.data, function(index, item) {
+                                $("#btn_aksi_mkj").attr("id", "btn_aksi_mkj"+j+"");
+                                $("#btn_aksi_mkj"+j+"").click(function () {
+                                    //data-soal='1' data-matpel= '15'
+                                    var idsoal_source =$(this).data('soal');
+                                    fetch_data_modal_mkj(idsoal_source);
+                                    console.log(idsoal_source);
+                                });
+                                j++;
+                            });
                         } else {
                             console.log("false");
                         }
@@ -510,7 +590,7 @@
                     },
                     success: function(response) {
                         if (response.status) {
-                            console.log(response.data);
+                            // console.log(response.data);
                             // $('#myTable tr:last').after('<tr>...</tr><tr>...</tr>');
                             $("#tabel_piihanganda tr:last").after(response.data);
                         } else {
@@ -540,7 +620,7 @@
                     },
                     success: function(response) {
                         if (response.status) {
-                            console.log(response.data);
+                            // console.log(response.data);
                             // $('#myTable tr:last').after('<tr>...</tr><tr>...</tr>');
                             $("#tabel_soal tr:last").after(response.data);
                         } else {
@@ -570,7 +650,7 @@
                     },
                     success: function(response) {
                         if (response.status) {
-                            console.log(response.data);
+                            // console.log(response.data);
                             // $('#myTable tr:last').after('<tr>...</tr><tr>...</tr>');
                             $("#tabel_data_siswa tr:last").after(response.data);
                         } else {

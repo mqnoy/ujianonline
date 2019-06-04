@@ -102,7 +102,59 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
         }
         echo json_encode($response);
     }
+    //post master kunci jawaban mkj
+    if (isset($_POST['fr_post_masterkuncijwbn'])) {
+        # code...
+        $status = false;
+        $pesan = null;
+        $soal_id = $_POST['post_soal_id'];
+        $bobot_pg = empty($_POST['post_pg_bobot']) ? 0 : $_POST['post_pg_bobot'] ;
+        if (isset($_POST['pilihan_ganda'])) {
+            # code...
+            $pilihan_ganda = $_POST['pilihan_ganda'];
+            $value_pg = "";
+            foreach ($pilihan_ganda as $key => $val_pilihan_ganda) {
+                # code...
+                $value_pg = $pilihan_ganda[$key];
+            }
+            $check_kuncijwbn = $models->select_from("master_kunci_jawaban","soal_id","=",$soal_id);
+            if ($check_kuncijwbn) {
+                # code...
+                //do update
+                $update_kuncijwb = $models->update_kunci_jawaban($soal_id,$value_pg,$bobot_pg);
+                if ($update_kuncijwb) {
+                    # code...
+                    $status = true;
+                    $pesan = "perubahan kunci jawaban sukses";
+                }else{
+                    $status = false;
+                    $pesan = "perubahan kunci jawaban gagal";
+                }
+                
+            }else{
+                //do insert
+                $data_kuncijawaban = array(
+                    'soal_id' => $soal_id,
+                    'jawaban_pg' => $value_pg,
+                    'bobot' => $bobot_pg 
+                );
+                $insert_kuncijwbn = $models->insert_into("master_kunci_jawaban",$data_kuncijawaban);
+                // var_dump($insert_kuncijwbn);
+                if ($insert_kuncijwbn) {
+                    # code...
+                    $status = true;
+                    $pesan = "tambah kunci jawaban sukses";
+                }
+            }
+        }
+        $response = array(
+            'status' => $status,
+            'pesan' => $pesan
+        );
+        
+        echo json_encode($response);
 
+    }
     //cari nama matpel
     if (isset($_POST['fetch']) && $_POST['fetch'] == "cr_nama_matpel") {
         # code...
@@ -174,6 +226,53 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
         }
         echo json_encode($response);
     }
+    //data modal master kunci jawaban mkj
+    if (isset($_POST['fetch']) && $_POST['fetch'] == "data_modal_mkj") {
+        # code...
+        $data_pg_modal=[];
+        $id_soal = $_POST['p_idsoal'];
+        $soal_untuk_siswa  = $models->select_soal("id_soal","=",$id_soal);
+        $kunci_jawaban = $models->select_kunci_jawaban("id_soal","=",$id_soal);
+        $kunci_jawaban_db = "";
+        $bobot_jawaban_db = "";
+        foreach ($kunci_jawaban as $val_kunci_jawaban) {
+            # code...
+            $kunci_jawaban_db = $val_kunci_jawaban['jawaban_pg'];
+            $bobot_jawaban_db = $val_kunci_jawaban['bobot'];
+        }
+
+        foreach ($soal_untuk_siswa as $soal) {
+            $no_soal = $soal['nomor_soal'];
+            $text_soal_modal = strip_tags($soal['text_soal']);
+            $list_pilihan_ganda_soal = $models->select_pgsoal_siswa($soal['id_soal']);
+            if ($list_pilihan_ganda_soal != null) {
+                foreach ($list_pilihan_ganda_soal as $pilihan_ganda) {
+                    $value_pg = $pilihan_ganda['jawaban_pg'];
+                    $text_pg = $pilihan_ganda['pilihan_ganda'];
+                    $data_pg_modal []= "
+                    <div class='input-group'>
+                        <div class='radio'>
+                            <label>
+                                <input type='radio' id='pilihan_ganda' name='pilihan_ganda[$id_soal]' value='$value_pg'>$text_pg
+                            </label>
+                        </div>
+                    </div>
+                    ";
+                }
+            }
+
+        }
+        $response = array(
+            'status' => true,
+            'text_soal_modal' => $text_soal_modal,
+            'data_pg_modal' => $data_pg_modal,
+            'data_kuncijwbn_modal' => $kunci_jawaban_db,
+            'data_bobotjwbn_modal' => $bobot_jawaban_db
+        );
+        //  var_dump($response);
+         echo json_encode($response);
+
+    }
     //data tabel kunci jawaban
     if (isset($_POST['fetch']) && $_POST['fetch'] == "tam_kunci_jawaban") {
         # code...
@@ -187,11 +286,14 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
         }else{
             $data = [];
             $nomor=1;
+            $i=0;
             // ts.nomor_soal,ts.text_soal,mkj.jawaban_pg,mm.nama_matpel,mk.txt_kelas
             foreach ($data_soal_kunci_jawaban as $value) {
                 # code...
                 $jawaban_pg = $value['jawaban_pg'] == null ? "belum di set" : $value['jawaban_pg'] ;
                 $bobot= $value['bobot'] == null ? 0 : $value['bobot'] ;
+                $id_soal = $value['id_soal'];
+                $matpel_id = $value['matpel_id'];
                 $data []= "
                 <tr>
                     <td>".$nomor."</td>
@@ -202,14 +304,13 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
                     <td>".$value['nama_matpel']."</td>
                     <td>".$value['txt_kelas']."</td>
                     <td>
-                        <div class='btn-group'>
-                            <a class='margin' data-toggle='modal' data-target='#modal-kunci-jawaban'>
-                                <button type='button' class='btn  btn-warning'><i class='fa fa-edit'></i></button>
-                            </a>
+                        <div class='btn-group margin' id='btn_aksi_mkj_group'>
+                            <button id='btn_aksi_mkj' role='button' data-soal='".$id_soal."' data-matpel= '".$matpel_id."' data-jawabanpg= '".$value['jawaban_pg']."' data-bobotpg= '".$value['bobot']."' type='button' class='btn  btn-warning'><i class='fa fa-edit'></i></button>
                         </div>
                     </td>
                     </tr>
                 ";
+                $i++;
                 $nomor++;
             }
             $response = array(
@@ -326,7 +427,6 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
             warning
             primary
             danger */
-            // tnp.nis,tnp.nama_siswa,tnp.siswa_kelas,mm.nama_matpel,tnp.total_nilai,tnp.tanggal_pengerjaan
             foreach ($data_nilai_siswa as $value) {
                 # code...
                 $total_nilai = $value['total_nilai'];
@@ -344,9 +444,9 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
                 $data []= "
                 <tr>
                     <td>".$nomor."</td>
-                    <td>".$value['nis']."</td>
-                    <td>".$value['nama_siswa']."</td>
-                    <td>".$value['siswa_kelas']."</td>
+                    <td>".$value['siswa_nis']."</td>
+                    <td>".$value['siswa_nama']."</td>
+                    <td>".$value['txt_kelas']."</td>
                     <td>".$value['nama_matpel']."</td>
                     <td><span class='label label-".$warna_nilai."'>$total_nilai</span></td>
                     <td>".$value['tanggal_pengerjaan']."</td>

@@ -1,6 +1,7 @@
 <?php if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "master_kunci_jawaban") { 
-          
-$list_matpel = $models->select_matpel();
+
+
+ 
 ?>
 <div class="modal fade" id="modal-kunci-jawaban">
 	<div class="modal-dialog">
@@ -8,16 +9,33 @@ $list_matpel = $models->select_matpel();
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Default Modal</h4>
+				<h4 class="modal-title">Terapkan kunci jawaban</h4>
 			</div>
-			<div class="modal-body">
-				<p>One fine body&hellip;</p>
+			<form role="form" id="form_modal_mkj">
+			<input type="hidden" name="fr_post_masterkuncijwbn" value="post_mkj"/>
+			<input type="hidden" name="post_soal_id" value=""/>
+			<div class="modal-body" id="body-modal-mkj">
+				<h4 id="modal-mkj-text-soal"></h4>
+					<div class="input-group" id="modal-mkj-pilihan-ganda">
+						<div class="radio">
+							<label>
+								<input type="radio" name="pilihan[]" id="pilihanganda" value="">
+							</label>
+						</div>
+					</div>
+					<div class="input-group margin">
+						<span class="input-group-addon">bobot</span>
+						<input type="number" name="post_pg_bobot" class="form-control" placeholder="10">
+					</div>
+					<p class="help-block margin"></p>
+
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">tutup</button>
+				<button type="button" id="btn-pilih-modal-mkj" class="btn btn-primary">Pilih kunci jawaban</button>
 			</div>
 		</div>
+		</form>
 		<!-- /.modal-content -->
 	</div>
 	<!-- /.modal-dialog -->
@@ -26,7 +44,7 @@ $list_matpel = $models->select_matpel();
 <div class="col-md-12">
 	<div class="box box-primary">
 		<div class="box-header with-border">
-			<h3 class="box-title">List data soal</h3>
+			<h3 class="box-title">List data kunci jawaban</h3>
 		</div>
 		<!-- /.box-header -->
 		<div class="box-body">
@@ -37,7 +55,7 @@ $list_matpel = $models->select_matpel();
 			</div>
 			<div class="form-group col-xs-3">
 			<label>Mata pelajaran</label>
-			<select id="cb_matpel" class="form-control name="nm_matpel">
+			<select id="cb_matpel" class="form-control" name="nm_matpel">
 				</select>
 			</div>
 
@@ -53,23 +71,6 @@ $list_matpel = $models->select_matpel();
 						<th>kelas</th>
 						<th>aksi</th>
 					</tr>
-					<!-- <tr>
-						<td>1.</td>
-						<td>Update software</td>
-						<td>
-						</td>
-						<td>
-						</td>
-						<td>
-						</td>
-						<td style="width: 13%">
-							<div class="btn-group">
-								<a class="margin" data-toggle="modal" data-target="#modal-pilihan-ganda">
-									<button type="button" class="btn  btn-warning"><i class="fa fa-edit"></i></button>
-								</a>
-							</div>
-						</td>
-					</tr> -->
 				</tbody>
 			</table>
 		</div>
