@@ -68,7 +68,6 @@ if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "for
       <h3 class="box-title">List data soal</h3>
     </div>
     <!-- /.box-header -->
-    <div class="box-body">
     <div class="box-body table-responsive no-padding">
       <table class="table table-bordered" id="tabel_soal">
         <tbody>
@@ -95,7 +94,6 @@ if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "for
     </div>
     </div>
 
-  </div>
 
 </div>
 <?php

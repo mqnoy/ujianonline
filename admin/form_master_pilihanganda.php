@@ -90,7 +90,8 @@ if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "for
     </div>
                     
     <!-- /.box-header -->
-    <div class="box-body">
+    <div class="box-body table-responsive no-padding">
+    
       <table class="table table-bordered" id="tabel_piihanganda">
         <tbody>
           <tr>

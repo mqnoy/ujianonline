@@ -61,7 +61,6 @@ $list_matpel = $models->select_matpel();
             <h3 class="box-title">List mata pelajaran</h3>
         </div>
         <!-- /.box-header -->
-        <div class="box-body">
         <div class="box-body table-responsive no-padding">
             <table class="table table-bordered" id="tabel_matpel">
                 <tbody>
@@ -111,7 +110,6 @@ $list_matpel = $models->select_matpel();
                 <li><a href="#">3</a></li>
                 <li><a href="#">»</a></li>
             </ul>
-        </div>
         </div>
     </div>
 </div>

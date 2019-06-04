@@ -47,7 +47,7 @@
 			<h3 class="box-title">List data kunci jawaban</h3>
 		</div>
 		<!-- /.box-header -->
-		<div class="box-body">
+		<div class="box-body table-responsive no-padding">
 			<div class="form-group col-xs-3">
                     <label>Kelas</label>
                     <select class="form-control" name="matpel_kelas" id="cb_kelas">
@@ -58,7 +58,7 @@
 			<select id="cb_matpel" class="form-control" name="nm_matpel">
 				</select>
 			</div>
-			<div class="box-body table-responsive no-padding">
+			
 			<table class="table table-bordered " id="tabel_kunci_jawaban">
 				<tbody>
 					<tr>
@@ -83,7 +83,6 @@
 				<li><a href="#">3</a></li>
 				<li><a href="#">»</a></li>
 			</ul>
-		</div>
 		</div>
 	</div>
 </div>
