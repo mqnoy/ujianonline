@@ -58,9 +58,9 @@
                     data: $("#form_lembar_soal_siswa").serialize(),
                     dataType: "json", 
                     beforeSend: function() {
+                        $("#btn_form_lembarsoal").prop('disabled', true);
                         $(".overlay").show();
                         $("#btn_form_lembarsoal").attr('class','btn btn-block btn-success disabled');
-                        $("#btn_form_lembarsoal").prop('disabled', true);
                         // $("#overlay").html("Please wait....");
                     },
                     success: function(response) {
