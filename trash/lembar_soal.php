@@ -76,7 +76,7 @@ if (isset($_SESSION['show_lembar_soal'])) {
     <input type="submit" name="lanjut_soal" value="lanjut"/>
     <input type="button" value="kembali" onclick="window.history.back();"/>
     </form>
-<?phpn
+<?php
 
 if (isset($_GET['lanjut_soal'])) {
     # code...
