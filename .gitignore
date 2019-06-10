@@ -1,1 +1,2 @@
-includes/settings.php
+#ignore files
+./includes/settings.php
