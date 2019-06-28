@@ -250,8 +250,8 @@ class Query extends Koneksi{
 			$res[] = $row;
 		}
 		// return $result;
-		// return sizeof($res) > 0 ? $res : null;
-		var_dump($query);
+		return sizeof($res) > 0 ? $res : null;
+		// var_dump($query);
 	}
 
 	/**
