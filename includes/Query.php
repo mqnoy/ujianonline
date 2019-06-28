@@ -16,8 +16,14 @@ class Query extends Koneksi{
 		return sizeof($res) > 0 ? $res : null;
 	}
 	// select matpel join kelas
-	public function select_matpel(){
-		$query = "SELECT * FROM master_matpel mm LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas";
+	public function select_matpel($var_idmatpel=null,$var_idkelas=null){
+		if ($var_idmatpel !=null && $var_idkelas != null) {
+			# code...
+			$query = "SELECT * FROM master_matpel mm LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas";
+			$query .= " WHERE mm.id_matpel=".$var_idmatpel." AND mk.id_kelas=".$var_idkelas;
+		}else{
+			$query = "SELECT * FROM master_matpel mm LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas";
+		}
 		$res =[];
 		$result = mysqli_query($this->conn,$query);
 		while($row=mysqli_fetch_assoc($result)){
@@ -367,12 +373,20 @@ class Query extends Koneksi{
 		return $execute;
 
 	}
-	// public function update_soal_kuncijwbn($id_soal,$kunci_jawaban){
-	// 	$query = "UPDATE master_siswa SET siswa_kelas_id='".$id_kelas."' WHERE siswa_nis='".$nis_siswa."'";
-	// 	$execute = mysqli_query($this->conn,$query);
-	// 	return $execute;
 
-	// }
+	public function update_matpel($text_matpel,$id_matpel,$text_kelasid){
+		$query = "UPDATE master_matpel SET nama_matpel='".$text_matpel."' , kelas_id='".$text_kelasid."' WHERE id_matpel='".$id_matpel."'";
+		$execute = mysqli_query($this->conn,$query);
+		return $execute;
+	}
+
+	public function delete_one_record($tablename,$field,$operand,$priKey){
+		$query = "DELETE FROM ".$tablename." WHERE $field".$operand.$priKey;
+		$execute = mysqli_query($this->conn,$query);
+		return $execute;
+	}
+
+
 	//close connection database
 	public function close_db(){
 

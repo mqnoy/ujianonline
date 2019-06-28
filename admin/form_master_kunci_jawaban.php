@@ -1,8 +1,10 @@
 <?php if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "master_kunci_jawaban") { 
-
-
- 
 ?>
+<div class="alert alert-success alert-dismissible" id="notifications" style="display:none;">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-check"></i> Alert!</h4>
+                Success alert preview. This alert is dismissable.
+              </div>
 <div class="modal fade" id="modal-kunci-jawaban">
 	<div class="modal-dialog">
 		<div class="modal-content">

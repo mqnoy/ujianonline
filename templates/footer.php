@@ -469,7 +469,98 @@
                 return false;
             });
 
-            
+            function edit_data_mata_pelajaran(post_idmatpel,post_idkelas){
+                $.ajax({
+                    type: "post",
+                    url: url_static,
+                    data: {
+                        'fetch': 'cb_data_kelas',
+                    },
+                    dataType: "json",
+                    beforeSend: function() {},
+                    success: function(response) {
+                        if (response.status) {
+                            // console.log(response.data);
+                            $(".mod-edit-mk").html(response.data).show();
+                        } else {
+                            console.log("data tidak ada");
+                        }
+                    },
+                    error: function(xhr, Status, err) {
+                        $("Terjadi error : " + Status);
+                    }
+                });
+
+                var kunci_jawaban = "";
+                console.log(post_idmatpel,"&&",post_idkelas);
+                $.ajax({
+                    url: url_static_admin,
+                    type: "post",
+                    data: {
+                        'fetch': 'data_modal_mk',
+                        'p_idmatpel' : post_idmatpel,
+                        'p_idkelas' : post_idkelas
+                    },
+                    dataType: "json",
+                    beforeSend: function() {
+
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            console.log(response);
+                            $("#modal-edit-matpel [name='post_text_matpel']").val(response.text_matpel);
+                            $("#modal-edit-matpel [name='post_matpel_id']").val(post_idmatpel);
+                            $(".mod-edit-mk [value='"+post_idkelas+"']").attr('selected', 'selected');
+                            $("#modal-edit-matpel").modal("show");
+                            $("#modal-edit-matpel").on("hidden.bs.modal", function () {
+                                // fix bug multi selected combo box
+                                $("option:selected", ".mod-edit-mk").removeAttr("selected");
+                                // alert("modal closed");
+                            });
+
+                            //button edit mata pelajaran
+                            $("#btn-ubah-modal-mk").click(function () {
+                                $.ajax({
+                                    url: url_static_admin,
+                                    type: "post", 
+                                    data: $("#form_modal_mk").serialize(),
+                                    dataType: "json", 
+                                    beforeSend: function() {
+                                        // $('#notifications').show();
+                                        // $("#notifications").html("Please wait....");
+                                    },
+                                    success: function(response) {
+                                        if (response.status) {
+                                            // $("#modal-kunci-jawaban").modal("hide");
+                                            alert("berhasil ubah");
+                                            window.location.href = "<?php echo base_url('dashboard.php?halaman=form_mata_pelajaran'); ?>";
+                                        } else {
+                                            alert("gagal ubah");
+                                        }
+                                    },
+                                    // error: function(xhr, Status, err) {
+                                    //     $("Terjadi error : " + Status);
+                                    // }
+                                });
+                                return false;
+
+                            });
+
+                            
+                        } else {
+                            console.log("false");
+                        }
+                    },
+                    // error: function(xhr, Status, err) {
+                    //     $("terjadi error : " + Status);
+
+                    // }
+
+                });
+
+                return false;
+            } 
+
             function fetch_data_modal_mkj(post_idsoal){
                 var kunci_jawaban = "";
                 $.ajax({
@@ -506,10 +597,9 @@
                                     },
                                     success: function(response) {
                                         if (response.status) {
-                                            alert("success");
                                             $("#modal-kunci-jawaban").modal("hide");
+                                            alert("success");
                                             window.location.href = "<?php echo base_url('dashboard.php?halaman=master_kunci_jawaban'); ?>";
-                       
                                         } else {
                                             alert("gagal menerapkan kunci jawaban");
                                         }
@@ -537,10 +627,90 @@
                 return false;
             } 
             
+            //hapus satu mata pelajaran
+            $("#modal-remove-matpel .btn-hpus-matpel").click(function () {
+                var id_matpel = $("#modal-remove-matpel [name='text_matpel']").val();
+                console.log("do hapus",id_matpel);
+
+                $.ajax({
+                    url: url_static_admin,
+                    type: "post", 
+                    data: $("#form_del_modal_mk").serialize(),
+                    dataType: "json",
+                    beforeSend: function() {
+
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            alert("berhasil hapus");
+                            $("#modal-remove-matpel").modal("hide");
+                            window.location.href = "<?php echo base_url('dashboard.php?halaman=form_mata_pelajaran'); ?>";
+                                        
+                        } else {
+                            alert("gagal hapus");
+                        }
+                    },
+                    error: function(xhr, Status, err) {
+                        $("terjadi error : " + Status);
+
+                    }
+
+                });
+                return false;
+            });
+
+            // menampilkan list data untuk data mata pelajaran 
+            function fetch_data_mata_pelajaran() {
+                $.ajax({
+                    url: url_static_admin,
+                    type: "post",
+                    data: {
+                        'fetch': 'list_matpel'
+                    },
+                    dataType: "json",
+                    beforeSend: function() {
+
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            // console.log(response.data);
+                            $("#tabel_matpel tr:last").empty().after(response.data);
+                            //button master matpel untuk update 
+                            var db_list_kuncijawaban = JSON.parse(JSON.stringify(response.data));
+                            $(".btn_aksi_mp .edit-matpel").each(function (index , obj) {
+                                $(this).click(function () {
+                                    //data-soal='1' data-matpel= '15'
+                                    var id_matpel_db =$(this).data('matpel');
+                                    var id_kelas_db =$(this).data('kelas');
+                                    edit_data_mata_pelajaran(id_matpel_db,id_kelas_db);
+                                });
+                            });
+                            $(".btn_aksi_mp .remove-matpel").each(function (index , obj) {
+                                $(this).click(function () {
+                                    //data-soal='1' data-matpel= '15'
+                                    var id_matpel_db =$(this).data('matpel');
+                                    var id_kelas_db =$(this).data('kelas');
+                                    $("#modal-remove-matpel [name='text_matpel']").val(id_matpel_db);
+                                    $("#modal-remove-matpel [name='text_kelas']").val(id_kelas_db);
+                                    $("#modal-remove-matpel").modal("show");
+                                });
+                            });
+                            
+                        } else {
+                            console.log("false");
+                        }
+                    },
+                    error: function(xhr, Status, err) {
+                        $("terjadi error : " + Status);
+
+                    }
+
+                });
+                return false;
+            }
+
             // menampilkan list data untuk data kunci jawaban 
             function fetch_data_kunci_jwbn() {
-                var j=0;
-
                 $.ajax({
                     url: url_static_admin,
                     type: "post",
@@ -556,15 +726,14 @@
                             // console.log(response.data);
                             $("#tabel_kunci_jawaban tr:last").empty().after(response.data);
                             //button master kunci jawaban untuk update 
-                            $.each(response.data, function(index, item) {
-                                $("#btn_aksi_mkj").attr("id", "btn_aksi_mkj"+j+"");
-                                $("#btn_aksi_mkj"+j+"").click(function () {
+                            var db_list_kuncijawaban = JSON.parse(JSON.stringify(response.data));
+                            $(".btn_aksi_mkj button").each(function (index , obj) {
+                                $(this).click(function () {
                                     //data-soal='1' data-matpel= '15'
                                     var idsoal_source =$(this).data('soal');
                                     fetch_data_modal_mkj(idsoal_source);
                                     console.log(idsoal_source);
                                 });
-                                j++;
                             });
                         } else {
                             console.log("false");
@@ -670,6 +839,7 @@
             }
             fetch_data_nilai_siswa();
             fetch_data_soal();
+            fetch_data_mata_pelajaran();
             fetch_data_kunci_jwbn();
             fetch_data_pilihan_ganda();
         <?php

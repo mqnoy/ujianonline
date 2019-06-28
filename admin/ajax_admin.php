@@ -226,6 +226,84 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
         }
         echo json_encode($response);
     }
+    //data modal master mata pelajaran
+    if (isset($_POST['fetch']) && $_POST['fetch'] == "data_modal_mk") {
+        # code...
+        $id_matpel = $_POST['p_idmatpel'];
+        $id_kelas = $_POST['p_idkelas'];
+        $list_matpel = $models->select_matpel($id_matpel,$id_kelas);
+        // var_dump($list_matpel);
+        $status = false;
+        $text_matpel="";
+        $text_kelas="";
+        if ($list_matpel != null) {
+            # code...
+            $status = true;
+            foreach ($list_matpel as $val_matpel) {
+                # code...
+                $text_matpel = $val_matpel['nama_matpel'];
+                $text_kelas = $val_matpel['txt_kelas'];
+            }
+            $response = array(
+                'status' => $status,
+                'text_matpel' => $text_matpel,
+                'text_kelas' => $text_kelas,
+            );
+        }else{
+            $response = array(
+                'status' => $status,
+                'data' => "tidak ada!",
+            );
+        }
+        //  var_dump($response);
+         echo json_encode($response);
+    }
+    //edit mata pelajaran
+    if (isset($_POST['fr_post_mastermatpel']) && $_POST['fr_post_mastermatpel']=="post_mk") {
+        # code...
+        // var_dump($_POST);
+        $val_id_matpel = $_POST['post_matpel_id'];
+        $val_text_matpel = $_POST['post_text_matpel'];
+        $val_kelas_id = $_POST['matpel_kelas'];
+        $edit_matpel = $models->update_matpel($val_text_matpel,$val_id_matpel,$val_kelas_id);
+        if ($edit_matpel) {
+            # code...
+            $status = true;
+            $pesan = "berhasil ubah mata pelajaran";
+        }else{
+             $status = false;
+             $pesan = "gagal ubah mata pelajaran";
+        }
+        $response = array(
+            "status" => $status,
+            "pesan" => $pesan
+        );
+        // var_dump($edit_matpel);
+        echo json_encode($response);
+    }
+    //delete satu mata pelajaran
+    if (isset($_POST['fr_post_del']) && $_POST['fr_post_del'] == "post_del_matpel") {
+        # code...
+        // var_dump($_POST);
+        $id_matpel = $_POST['text_matpel'];
+        //($tablename,$field,$operand,$priKey)
+        $delete_matpel = $models->delete_one_record("master_matpel","id_matpel","=",$id_matpel);
+        $status = false;
+        if ($delete_matpel) {
+            # code...
+            $status = true;
+            $pesan = "berhasil hapus mata pelajaran";
+        }else{
+             $status = false;
+             $pesan = "gagal hapus mata pelajaran";
+        }
+        $response = array(
+            "status" => $status,
+            "pesan" => $pesan
+        );
+        echo json_encode($response);
+    }
+
     //data modal master kunci jawaban mkj
     if (isset($_POST['fetch']) && $_POST['fetch'] == "data_modal_mkj") {
         # code...
@@ -273,6 +351,64 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
          echo json_encode($response);
 
     }
+        //data tabel mata pelajaran
+        if (isset($_POST['fetch']) && $_POST['fetch'] == "list_matpel") {
+            # code...
+            /** 
+    ["id_matpel"]=>
+    string(2) "16"
+    ["nama_matpel"]=>
+    string(7) "english"
+    ["kelas_id"]=>
+    string(1) "2"
+    ["id_kelas"]=>
+    string(1) "2"
+    ["txt_kelas"]=>
+    string(11) "kelas 2 smk"
+    ["kelas"]=>
+    string(1) "2"
+  } */
+            $list_matpel = $models->select_matpel();
+            if ($list_matpel == null) {
+                # code...
+                $response = array(
+                    'status' => true,
+                    'data' => "tidak ada data"
+                );
+            }else{
+                $data = [];
+                $nomor=1;
+                $i=0;
+
+                // ts.nomor_soal,ts.text_soal,mkj.jawaban_pg,mm.nama_matpel,mk.txt_kelas
+                foreach ($list_matpel as $value) {
+                    # code...
+                    $id_matpel = $value['id_matpel'];
+                    $id_kelas = $value['id_kelas'];
+                    $data []="
+                    <tr>
+                        <td>".$nomor."</td>
+                        <td>".$value['txt_kelas']."</td>
+                        <td>".$value['nama_matpel']."</td>
+                        <td>
+                            <div class='btn-group margin btn_aksi_mp'>
+                                <button role='button' data-matpel='".$id_matpel."' data-kelas= '".$id_kelas."' type='button' class='edit-matpel btn  btn-warning'><i class='fa fa-edit'></i></button>
+                                <button role='button' data-matpel='".$id_matpel."' data-kelas= '".$id_kelas."' type='button' class='remove-matpel btn  btn-danger'><i class='fa fa-remove'></i></button>
+                            </div>
+                        </td>
+                        </tr>
+                    ";
+                    $i++;
+                    $nomor++;
+                }
+                $response = array(
+                    'status' => true,
+                    'data' => $data
+                );
+            }
+            // var_dump($data);
+            echo json_encode($response);
+        }
     //data tabel kunci jawaban
     if (isset($_POST['fetch']) && $_POST['fetch'] == "tam_kunci_jawaban") {
         # code...
@@ -304,8 +440,8 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
                     <td>".$value['nama_matpel']."</td>
                     <td>".$value['txt_kelas']."</td>
                     <td>
-                        <div class='btn-group margin' id='btn_aksi_mkj_group'>
-                            <button id='btn_aksi_mkj' role='button' data-soal='".$id_soal."' data-matpel= '".$matpel_id."' data-jawabanpg= '".$value['jawaban_pg']."' data-bobotpg= '".$value['bobot']."' type='button' class='btn  btn-warning'><i class='fa fa-edit'></i></button>
+                        <div class='btn-group margin btn_aksi_mkj' id='btn_aksi_mkj_group'>
+                            <button role='button' data-soal='".$id_soal."' data-matpel= '".$matpel_id."' data-jawabanpg= '".$value['jawaban_pg']."' data-bobotpg= '".$value['bobot']."' type='button' class='btn  btn-warning'><i class='fa fa-edit'></i></button>
                         </div>
                     </td>
                     </tr>
