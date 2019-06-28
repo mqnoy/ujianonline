@@ -363,6 +363,7 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
             );
         }
         // var_dump($data);
+        //
         echo json_encode($response);
     }
 
