@@ -1,6 +1,5 @@
 <?php
-session_start();
-include '../includes/Query.php';
+include '../includes/app.php';
 
 if (isset($_SESSION['is_logged'])) {
     # code...
@@ -143,7 +142,7 @@ if (isset($_SESSION['is_logged'])) {
         $data_div = [];
         if ($data_matpel_siswa == null) {
             $response = array(
-                'status' => true,
+                'status' => false,
                 'data' => "tidak ada data"
             );
         } else {

@@ -1,7 +1,6 @@
 <?php
-session_start();
 include "./templates/header.php";
-require('./includes/Query.php');
+require('./includes/app.php');
 if (isset($_POST['submit'])) {
   # code...
   $username = mysqli_real_escape_string($models->conn, $_POST['username']);
@@ -21,13 +20,6 @@ if (isset($_POST['submit'])) {
     }
     header('Location: ./dashboard.php');
   }
-}
-if (isset($_GET['action']) && $_GET['action'] === "logout") {
-  # code...
-  session_start();
-  session_destroy();
-  session_unset();
-  header('Location: ./admin.php?msg=logout');
 }
 ?>
 <body class="hold-transition login-page">

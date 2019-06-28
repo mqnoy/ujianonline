@@ -1,10 +1,8 @@
 <?php
-session_start();
 $text_info = "";
 $text_desc_info = "";
-
 $session_level = "";
-require_once 'includes/Query.php';
+require_once 'includes/app.php';
 if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
   $text_info = $_SESSION['ses_admin_username'];
   $text_desc_info = "admin";
@@ -56,12 +54,7 @@ include "./templates/header.php";
                 <!-- Menu Footer-->
                 <li class="user-footer">
                   <div class="pull-right">
-                    <?php if ($_SESSION['is_admin'] == true) {
-                      $url_logout = "./admin.php?action=logout";
-                    } else {
-                      $url_logout = "./siswa.php?action=logout";
-                    } ?>
-                    <a href="<?php echo $url_logout; ?>" class="btn btn-default btn-flat">Sign out</a>
+                    <a href="<?php echo base_url("logout.php"); ?>" class="btn btn-default btn-flat">Sign out</a>
                   </div>
                 </li>
               </ul>

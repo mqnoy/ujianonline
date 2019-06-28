@@ -1,7 +1,5 @@
 <?php
-session_start();
-include '../includes/Query.php';
-
+include '../includes/app.php';
 if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
     # code...
 

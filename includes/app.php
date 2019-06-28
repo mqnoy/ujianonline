@@ -1,5 +1,8 @@
 <?php
 define("_DIR_APPS_","ujianonline");
+session_start();
+require_once ("Query.php");
+
 
 function base_url($SCRIPT_NAME=null){
 

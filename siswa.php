@@ -1,13 +1,6 @@
 <?php
-session_start();
-if (isset($_GET['action']) && $_GET['action']=="logout") {
-    # code...
-    session_destroy();
-    session_unset();
-    header('Location: ./siswa.php?msg=logout');
-}
 include "./templates/header.php";
-require('./includes/Query.php');
+require('./includes/app.php');
 
 if (isset($_POST['login_siswa'])) {
     # code...
