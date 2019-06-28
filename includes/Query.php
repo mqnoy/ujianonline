@@ -10,7 +10,7 @@ class Query extends Koneksi{
 		$q_select_admin = "SELECT * FROM master_admin_aplikasi WHERE username='".$var_username."' AND password='".$var_password."'";
 		$res =[];
 		$result = mysqli_query($this->conn,$q_select_admin);
-		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+		while($row=mysqli_fetch_assoc($result)){
 			$res[] = $row;
 		}
 		return sizeof($res) > 0 ? $res : null;
@@ -20,7 +20,7 @@ class Query extends Koneksi{
 		$query = "SELECT * FROM master_matpel mm LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas";
 		$res =[];
 		$result = mysqli_query($this->conn,$query);
-		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+		while($row=mysqli_fetch_assoc($result)){
 			$res[] = $row;
 		}
 		return sizeof($res) > 0 ? $res : null;
@@ -33,7 +33,7 @@ class Query extends Koneksi{
 		$res = "<option value=\"0\">pilih mata pelajaran</option>";
 
 		$result = mysqli_query($this->conn,$query);
-		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+		while($row=mysqli_fetch_assoc($result)){
 			// $res[] = $row;
 			$res .= "<option value='".$row['id_matpel']."'>".$row['nama_matpel']."</option>"; 
 		}
@@ -50,7 +50,7 @@ class Query extends Koneksi{
 			LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas ";
 			$query .= "WHERE mk.kelas = ".$keyword;
 			$result = mysqli_query($this->conn,$query);
-			while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+			while($row=mysqli_fetch_assoc($result)){
 				$res[] = $row;
 			}
 		}
@@ -67,7 +67,7 @@ class Query extends Koneksi{
 		}
 		$res =[];
 		$result = mysqli_query($this->conn,$query);
-		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+		while($row=mysqli_fetch_assoc($result)){
 			$res[] = $row;
 		}
 		// return $query;
@@ -89,7 +89,6 @@ class Query extends Koneksi{
 			INNER JOIN master_pg_soal mps ON ts.id_soal = mps.soal_id "; 
 			$query .= " WHERE ts.matpel_id = '".$id_matpel."' AND mm.kelas_id = ".$id_kelas;
 			$query .= " GROUP BY (text_soal)";
-
 			$query .= " ORDER BY  ts.id_soal ASC ";
 			$result = mysqli_query($this->conn,$query);
 			while($row=mysqli_fetch_assoc($result)){
@@ -98,6 +97,7 @@ class Query extends Koneksi{
 		// mysqli_free_result($result);
 
 		// return $query;
+		// var_dump($query);
 		return sizeof($res) > 0 ? $res : null;
 	}
 	public function select_kunci_jawaban_sis($id_soal){
@@ -144,7 +144,7 @@ class Query extends Koneksi{
 		// $res =[];
 		$res = "<option value=\"0\">pilih nomor soal</option>";
 		$result = mysqli_query($this->conn,$query);
-		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+		while($row=mysqli_fetch_assoc($result)){
 			// $res[] = $row;
 			$res .= "<option value='".$row['nomor_soal']."'>".$row['nomor_soal']."</option>"; 
 		}
@@ -156,7 +156,7 @@ class Query extends Koneksi{
 		// $res = NULL;
 		$res =[];
 		$result = mysqli_query($this->conn,$query);
-		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+		while($row=mysqli_fetch_assoc($result)){
 			$res[] = $row;
 		}
 		return $res;
@@ -168,7 +168,7 @@ class Query extends Koneksi{
 		// $res =[];
 		$res = "<option value=\"0\">pilih kelas</option>";
 		$result = mysqli_query($this->conn,$query);
-		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+		while($row=mysqli_fetch_assoc($result)){
 			// $res[] = $row;
 			$res .= "<option value='".$row['id_kelas']."'>".$row['txt_kelas']."</option>"; 
 		}
@@ -197,7 +197,7 @@ class Query extends Koneksi{
 		LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas";
 		$res =[];
 		$result = mysqli_query($this->conn,$query);
-		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+		while($row=mysqli_fetch_assoc($result)){
 			$res[] = $row;
 		}
 		return sizeof($res) > 0 ? $res : null;
@@ -222,7 +222,7 @@ class Query extends Koneksi{
 		}
 		$res =[];
 		$result = mysqli_query($this->conn,$query);
-		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+		while($row=mysqli_fetch_assoc($result)){
 			$res[] = $row;
 		}
 		return sizeof($res) > 0 ? $res : null;
@@ -246,11 +246,12 @@ class Query extends Koneksi{
 		GROUP BY ts.text_soal,mps.jawaban_pg";
 		$res =[];
 		$result = mysqli_query($this->conn,$query);
-		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+		while($row=mysqli_fetch_assoc($result)){
 			$res[] = $row;
 		}
 		// return $result;
-		return sizeof($res) > 0 ? $res : null;
+		// return sizeof($res) > 0 ? $res : null;
+		var_dump($query);
 	}
 
 	/**
@@ -274,7 +275,7 @@ class Query extends Koneksi{
 		}
 
 		$result = mysqli_query($this->conn,$query);
-		while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+		while($row=mysqli_fetch_assoc($result)){
 			$res[] = $row;
 		}
 		// return $result;
