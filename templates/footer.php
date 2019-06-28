@@ -35,7 +35,7 @@
         $("#group_no_pertanyaan").hide();
 
         <?php
-        if ($_SESSION['is_logged'] == true && $_SESSION['is_siswa'] == true) {
+        if (isset($_SESSION['is_logged']) && $_SESSION['is_logged'] == true && $_SESSION['is_siswa'] == true) {
             # code...
             ?>
             var url_static_siswa = "<?php echo base_url('includes/ajax.php'); ?>";
@@ -235,7 +235,7 @@
         <?php
     } //end of session siswa
 
-    if ($_SESSION['is_logged'] == true && $_SESSION['is_admin'] == true) {
+    if (isset($_SESSION['is_logged']) && $_SESSION['is_logged'] == true && $_SESSION['is_admin'] == true) {
         ?>
         var url_static_admin = "<?php echo base_url('admin/ajax_admin.php'); ?>";
 
