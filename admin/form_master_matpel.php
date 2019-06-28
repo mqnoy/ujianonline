@@ -84,7 +84,7 @@ if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "for
                     </div>
                     <div class="form-group">
                         <label>Mata pelajaran</label>
-                        <input type="text" name="nm_matpel" class="form-control" placeholder="contoh : matematika">
+                        <input type="text" name="nm_matpel" class="form-control" placeholder="contoh : matematika" required="true">
                     </div>
                 </div>
                 <!-- /.box-body -->
@@ -96,6 +96,9 @@ if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "for
         </div>
 
         <div class="box box-primary">
+        <div class="overlay">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
             <div class="box-header with-border">
                 <h3 class="box-title">List mata pelajaran</h3>
             </div>

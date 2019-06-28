@@ -85,6 +85,9 @@ if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "for
   </div>
 
   <div class="box box-primary">
+  <div class="overlay">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
     <div class="box-header with-border">
       <h3 class="box-title">List data soal</h3>
     </div>

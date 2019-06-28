@@ -16,6 +16,9 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
+            <div class="overlay">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
               <table class="table table-hover" id="tabel_data_siswa">
                 <tbody><tr>
                   <th>ID</th>

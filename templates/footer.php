@@ -94,9 +94,12 @@
                         'set_token': valuetoken
                     },
                     dataType: "json",
-                    beforeSend: function() {},
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
                     success: function(response) {
                         if (response.status) {
+                            $(".overlay").hide();
                             // //console.log(response);
                             window.location.href = "<?php echo base_url('dashboard.php?halaman=nilai_saya'); ?>";
                         } else {
@@ -122,10 +125,13 @@
                         'set_matpel': soal_idmatpel
                     },
                     dataType: "json",
-                    beforeSend: function() {},
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
                     success: function(response) {
                         if (response.status) {
                             //console.log(response);
+                            $(".overlay").hide();
                             window.location.href = "<?php echo base_url('dashboard.php?halaman=lembar_soal_siswa'); ?>";
                         } else {
                             console.log("set matpel gagal");
@@ -147,9 +153,12 @@
                         'fetch': 'data_listsoal_siswa',
                     },
                     dataType: "json",
-                    beforeSend: function() {},
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
                     success: function(response) {
                         if (response.status) {
+                            $(".overlay").hide();
                             var div_put;
                             var i = 1;
                             var data_soal_siswa_db = JSON.parse(JSON.stringify(response.data));
@@ -192,10 +201,12 @@
                         'fetch': 'cb_data_kelas',
                     },
                     dataType: "json",
-                    beforeSend: function() {},
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
                     success: function(response) {
                         if (response.status) {
-                            // console.log(response.data);
+                            $(".overlay").hide();
                             $("#cb_kelas_siswa").html(response.data).show();
                         } else {
                             console.log("data tidak ada");
@@ -217,10 +228,12 @@
                         set_kelas: $("#cb_kelas_siswa").val()
                     },
                     dataType: "json",
-                    beforeSend: function() {},
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
                     success: function(response) {
                         if (response.status) {
-                            //console.log(response);
+                            $(".overlay").hide();
                             window.location.href = "<?php echo base_url('dashboard.php?halaman=list_soal'); ?>";
                         } else {
                             console.log("data tidak ada");
@@ -253,10 +266,12 @@
                         'fetch': 'cb_data_kelas',
                     },
                     dataType: "json",
-                    beforeSend: function() {},
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
                     success: function(response) {
                         if (response.status) {
-                            // console.log(response.data);
+                            $(".overlay").hide();
                             $("#cb_kelas").html(response.data).show();
                         } else {
                             console.log("data tidak ada");
@@ -280,10 +295,12 @@
                         idkelas: $("#cb_kelas").val()
                     },
                     dataType: "json",
-                    beforeSend: function() {},
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
                     success: function(response) {
                         if (response.status) {
-                            // console.log(response.data);
+                            $(".overlay").hide();
                             $("#cb_matpel").html(response.data).show();
                         } else {
                             console.log("data tidak ada");
@@ -310,9 +327,12 @@
                         idmatpel: $("#cb_matpel").val()
                     },
                     dataType: "json",
-                    beforeSend: function() {},
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
                     success: function(response) {
                         if (response.status) {
+                            $(".overlay").hide();
                             $("#cb_nomor_soal").html(response.data).show();
                         } else {
                             console.log("data tidak ada");
@@ -337,7 +357,9 @@
                         nomorsoal: $("#cb_nomor_soal").val()
                     },
                     dataType: "json",
-                    beforeSend: function() {},
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
                     success: function(response) {
                         if (response.status) {
                             // show pg
@@ -352,6 +374,7 @@
                             CKEDITOR.instances.editor1.setData(datasoal.text_soal, function() {
                                 this.checkDirty(); // true
                             });
+                            $(".overlay").hide();
                         } else {
                             $("#group_pg_soal").hide();
                             console.log("data tidak ada");
@@ -372,19 +395,16 @@
                     data: $("#form_matpel").serialize(),
                     dataType: "json", 
                     beforeSend: function() {
-                        // $('#notifications').show();
-                        // $("#notifications").html("Please wait....");
+                        $(".overlay").show();
                     },
                     success: function(response) {
                         if (response.status) {
-                            // console.log(response.data);
-
+                            $(".overlay").hide();
+                            alert("berhasil tambah matpel");
+                            fetch_data_mata_pelajaran();
+                            // window.location.href = "<?php echo base_url('dashboard.php?halaman=form_mata_pelajaran'); ?>";
                         } else {
-                            window.setTimeout(function() {
-                                $('#notifications').show();
-                                $("#notifications").html(response.data);
-                            }, 2000);
-                            // $( '#notifications' ).attr( 'css', 'alert alert-success alert-dismissible' );   
+                            alert("gagal tambah matpel");
                         }
                     },
                     error: function(xhr, Status, err) {
@@ -403,17 +423,19 @@
                     data: $("#form_pilihanganda").serialize(),
                     dataType: "json", 
                     beforeSend: function() {
-                        // $('#notifications').show();
-                        // $("#notifications").html("Please wait....");
+                        $(".overlay").show();
                     },
                     success: function(response) {
                         if (response.status) {
-                            console.log(response.data);
+                            $(".overlay").hide();
+                            alert("berhasil menambah pilihan ganda");
                             //coba w/o refresh
                             fetch_data_pilihan_ganda();
                             // $("#tabel_piihanganda").hide();
                             // $("#tabel_piihanganda").show();
                         } else {
+                            alert("gagal menambah pilihan ganda");
+
                             window.setTimeout(function() {
                                 $('#notifications').show();
                                 $("#notifications").html(response.data);
@@ -422,7 +444,10 @@
                         }
                     },
                     error: function(xhr, Status, err) {
+                        alert(Status);
+
                         $("Terjadi error : " + Status);
+
                     }
                 });
                 return false;
@@ -446,25 +471,23 @@
 
                     dataType: "json", 
                     beforeSend: function() {
-                        console.log(value);
-
-                        // $('#notifications').show();
-                        // $("#notifications").html("Please wait....");
+                        $(".overlay").show();
                     },
                     success: function(response) {
                         if (response.status) {
+                            $(".overlay").hide();
                             // console.log(response.data);
+                            alert("berhasil tambah soal");
+                            fetch_data_soal();
+                            // window.location.href = "<?php echo base_url('dashboard.php?halaman=form_soal'); ?>";
+
                         } else {
-                            window.setTimeout(function() {
-                                $('#notifications').show();
-                                $("#notifications").html(response.data);
-                            }, 2000);
-                            // $( '#notifications' ).attr( 'css', 'alert alert-success alert-dismissible' );   
+                            alert("gagal tambah soal"); 
                         }
                     },
-                    // error: function(xhr, Status, err) {
-                    //     $("Terjadi error : " + Status);
-                    // }
+                    error: function(xhr, Status, err) {
+                        $("Terjadi error : " + Status);
+                    }
                 });
                 return false;
             });
@@ -477,9 +500,12 @@
                         'fetch': 'cb_data_kelas',
                     },
                     dataType: "json",
-                    beforeSend: function() {},
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
                     success: function(response) {
                         if (response.status) {
+                            $(".overlay").hide();
                             // console.log(response.data);
                             $(".mod-edit-mk").html(response.data).show();
                         } else {
@@ -503,7 +529,7 @@
                     },
                     dataType: "json",
                     beforeSend: function() {
-
+                        $(".overlay").show();
                     },
                     success: function(response) {
                         if (response.status) {
@@ -517,6 +543,7 @@
                                 $("option:selected", ".mod-edit-mk").removeAttr("selected");
                                 // alert("modal closed");
                             });
+                            $(".overlay").hide();
 
                             //button edit mata pelajaran
                             $("#btn-ubah-modal-mk").click(function () {
@@ -526,14 +553,14 @@
                                     data: $("#form_modal_mk").serialize(),
                                     dataType: "json", 
                                     beforeSend: function() {
-                                        // $('#notifications').show();
-                                        // $("#notifications").html("Please wait....");
+                                        $(".overlay").show();
                                     },
                                     success: function(response) {
                                         if (response.status) {
                                             // $("#modal-kunci-jawaban").modal("hide");
+                                            $(".overlay").hide();
                                             alert("berhasil ubah");
-                                            window.location.href = "<?php echo base_url('dashboard.php?halaman=form_mata_pelajaran'); ?>";
+                                            // window.location.href = "<?php echo base_url('dashboard.php?halaman=form_mata_pelajaran'); ?>";
                                         } else {
                                             alert("gagal ubah");
                                         }
@@ -572,7 +599,7 @@
                     },
                     dataType: "json",
                     beforeSend: function() {
-
+                        $(".overlay").show();
                     },
                     success: function(response) {
                         if (response.status) {
@@ -582,7 +609,7 @@
                             $("#modal-kunci-jawaban [name='post_soal_id']").val(post_idsoal);
                             $("#modal-kunci-jawaban [name='post_pg_bobot']").val(response.data_bobotjwbn_modal);
                             $("#modal-kunci-jawaban [value='"+response.data_kuncijwbn_modal+"']").attr('checked', 'checked');
-                            
+                            $(".overlay").hide();
                             $("#modal-kunci-jawaban").modal("show");
 
                             $("#btn-pilih-modal-mkj").click(function () {
@@ -592,14 +619,15 @@
                                     data: $("#form_modal_mkj").serialize(),
                                     dataType: "json", 
                                     beforeSend: function() {
-                                        // $('#notifications').show();
-                                        // $("#notifications").html("Please wait....");
+                                        $(".overlay").show();
                                     },
                                     success: function(response) {
                                         if (response.status) {
                                             $("#modal-kunci-jawaban").modal("hide");
+                                            $(".overlay").hide();
                                             alert("success");
-                                            window.location.href = "<?php echo base_url('dashboard.php?halaman=master_kunci_jawaban'); ?>";
+                                            fetch_data_kunci_jwbn();
+                                            // window.location.href = "<?php echo base_url('dashboard.php?halaman=master_kunci_jawaban'); ?>";
                                         } else {
                                             alert("gagal menerapkan kunci jawaban");
                                         }
@@ -638,13 +666,15 @@
                     data: $("#form_del_modal_mk").serialize(),
                     dataType: "json",
                     beforeSend: function() {
-
+                        $(".overlay").show();
                     },
                     success: function(response) {
                         if (response.status) {
                             alert("berhasil hapus");
+                            $(".overlay").hide();
                             $("#modal-remove-matpel").modal("hide");
-                            window.location.href = "<?php echo base_url('dashboard.php?halaman=form_mata_pelajaran'); ?>";
+                            fetch_data_mata_pelajaran();
+                            // window.location.href = "<?php echo base_url('dashboard.php?halaman=form_mata_pelajaran'); ?>";
                                         
                         } else {
                             alert("gagal hapus");
@@ -669,12 +699,14 @@
                     },
                     dataType: "json",
                     beforeSend: function() {
-
+                        $(".overlay").show();
                     },
                     success: function(response) {
                         if (response.status) {
                             // console.log(response.data);
-                            $("#tabel_matpel tr:last").empty().after(response.data);
+                            
+                            $("#tabel_matpel > tbody").empty().append(response.data);
+                            $(".overlay").hide();
                             //button master matpel untuk update 
                             var db_list_kuncijawaban = JSON.parse(JSON.stringify(response.data));
                             $(".btn_aksi_mp .edit-matpel").each(function (index , obj) {
@@ -719,12 +751,14 @@
                     },
                     dataType: "json",
                     beforeSend: function() {
-
+                        $(".overlay").show();
                     },
                     success: function(response) {
                         if (response.status) {
+                            $(".overlay").hide();
                             // console.log(response.data);
-                            $("#tabel_kunci_jawaban tr:last").empty().after(response.data);
+                            $("#tabel_kunci_jawaban > tbody").empty().append(response.data);
+
                             //button master kunci jawaban untuk update 
                             var db_list_kuncijawaban = JSON.parse(JSON.stringify(response.data));
                             $(".btn_aksi_mkj button").each(function (index , obj) {
@@ -758,13 +792,13 @@
                     },
                     dataType: "json",
                     beforeSend: function() {
-
+                        $(".overlay").show();
                     },
                     success: function(response) {
                         if (response.status) {
-                            // console.log(response.data);
-                            // $('#myTable tr:last').after('<tr>...</tr><tr>...</tr>');
-                            $("#tabel_piihanganda tr:last").after(response.data);
+                            $("#tabel_piihanganda > tbody").empty().append(response.data);
+                            $(".overlay").hide();
+
                         } else {
                             console.log("false");
                         }
@@ -788,15 +822,15 @@
                     },
                     dataType: "json",
                     beforeSend: function() {
-
+                        $(".overlay").show();
                     },
                     success: function(response) {
                         if (response.status) {
                             // console.log(response.data);
-                            // $('#myTable tr:last').after('<tr>...</tr><tr>...</tr>');
-                            $("#tabel_soal tr:last").after(response.data);
+                            $("#tabel_soal > tbody").empty().append(response.data);
+                            
                         } else {
-                            console.log("false");
+                            console.log("false tabel_soal");
                         }
                     },
                     // error : function (xhr, Status, err) {
@@ -818,13 +852,12 @@
                     },
                     dataType: "json",
                     beforeSend: function() {
-
+                        $(".overlay").show();
                     },
                     success: function(response) {
                         if (response.status) {
-                            // console.log(response.data);
-                            // $('#myTable tr:last').after('<tr>...</tr><tr>...</tr>');
-                            $("#tabel_data_siswa tr:last").after(response.data);
+                            $("#tabel_data_siswa > tbody").empty().append(response.data);
+                            
                         } else {
                             console.log("false");
                         }

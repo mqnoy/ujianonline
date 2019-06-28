@@ -285,7 +285,7 @@ class Query extends Koneksi{
 			$res[] = $row;
 		}
 		// return $result;
-		return sizeof($res) > 0 ? $res : null;
+		return $res > 0 ? $res : null;
 	}
 	
 
