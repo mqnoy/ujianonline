@@ -8,6 +8,8 @@
       # code...
       $token_siswa = $value['token_siswa'];
     }
+    $_SESSION['token_siswa'] = $token_siswa; 
+    // var_dump($_SESSION['ses_nis_siswa'] );
     if(!isset($_SESSION['ses_id_matpel'])){
     ?>
     <!--start dashboard siswa-->
@@ -20,15 +22,11 @@
               <h3 class="profile-username text-center"><?php echo $nama_siswa; ?></h3>
               <p class="text-muted text-center"><?php echo $nis_siswa; ?></p>
               <div class="form-group">
-                <label>token</label>
-                <input type="text" class="form-control" value="<?php echo $token_siswa;?>" id="txt_token_siswa"/>
-                <p class="help-block">klik kolom token untuk copy token</p>
-              </div>
-              <div class="form-group">
                 <label>Kelas</label>
                 <select class="form-control" name="name_kelas_siswa" id="cb_kelas_siswa">
                 </select>
               </div>
+              <p class="help-block">silahkan pilih kelas untuk melanjutkan ke halaman daftar soal.</p>
             </div>
             <!-- /.box-body -->
           </div>

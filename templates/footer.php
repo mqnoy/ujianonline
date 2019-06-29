@@ -84,14 +84,14 @@
             })
 
             //terapkan token tuntuk melihat hasil nilai 1 siswa
-            $("#btn_token_set").click(function name(params) {
-                var valuetoken =  $("#value_token").val();
+            $("#send_nilai_toemail").click(function name(params) {
+                var valueEmail =  $("#value_email").val();
                 $.ajax({
                     type: "post",
                     url: url_static,
                     data: {
-                        'aksi_siswa': 'terapkan_token_siswa',
-                        'set_token': valuetoken
+                        'aksi_siswa': 'kirim_email_nilai',
+                        'set_email': valueEmail
                     },
                     dataType: "json",
                     beforeSend: function() {
@@ -99,16 +99,17 @@
                     },
                     success: function(response) {
                         if (response.status) {
+                            alert("kirim email sukses " + response.pesan);
                             $(".overlay").hide();
                             // //console.log(response);
-                            window.location.href = "<?php echo base_url('dashboard.php?halaman=nilai_saya'); ?>";
                         } else {
-                            console.log("set token gagal");
+                            alert("kirim email gagal " + response.pesan);
+                            $(".overlay").hide();
                         }
                     },
-                    // error: function(xhr, Status, err) {
-                    //     $("Terjadi error : " + Status);
-                    // }
+                    error: function(xhr, Status, err) {
+                        $("Terjadi error : " + Status);
+                    }
                 });
                 return false;
                 

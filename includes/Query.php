@@ -181,10 +181,12 @@ class Query extends Koneksi{
 		return $res;
 	}
 	//select nilai siswa by token
-	public function select_nilai_bytoken($token_siswa,$nis_siswa){
+	public function select_nilai_bytoken($token_siswa){
 		$res = null;
-		$query = "SELECT * FROM tabel_nilai_siswa tns INNER JOIN master_siswa ms ON tns.siswa_id = ms.id_siswa
-		WHERE ms.token_siswa = '".$token_siswa."' AND ms.siswa_nis='".$nis_siswa."'";
+		$query = "SELECT * FROM tabel_nilai_siswa tns 
+		LEFT JOIN master_siswa ms ON tns.siswa_id = ms.id_siswa
+		LEFT JOIN master_matpel mm ON tns.matpel_id = mm.id_matpel
+		WHERE ms.token_siswa = '".$token_siswa."' AND sent_email='N' ";
 
 		$result = mysqli_query($this->conn,$query);
 		while($row=mysqli_fetch_assoc($result)){
@@ -193,7 +195,7 @@ class Query extends Koneksi{
 		// mysqli_free_result($result);
 
 		// return $query;
-		return sizeof($res) > 0 ? $res : null;
+		return $res > 0 ? $res : null;
 	}
 	//select nilai siswa
 	public function select_nilai_siswa(){
@@ -376,6 +378,18 @@ class Query extends Koneksi{
 
 	public function update_matpel($text_matpel,$id_matpel,$text_kelasid){
 		$query = "UPDATE master_matpel SET nama_matpel='".$text_matpel."' , kelas_id='".$text_kelasid."' WHERE id_matpel='".$id_matpel."'";
+		$execute = mysqli_query($this->conn,$query);
+		return $execute;
+	}
+
+	public function update_nilai_siswa($id_siswa,$id_matpel){
+		$now = tgl_waktu_skrg();
+		$query = "UPDATE tabel_nilai_siswa SET sent_email='Y' , sent_date='".$now."' WHERE siswa_id='".$id_siswa."' AND matpel_id='".$id_matpel."'";
+		$execute = mysqli_query($this->conn,$query);
+		return $execute;
+	}
+	public function update_email_siswa($email_siswa,$id_siswa){
+		$query = "UPDATE master_siswa SET email_siswa='".$email_siswa."' WHERE id_siswa='".$id_siswa."'";
 		$execute = mysqli_query($this->conn,$query);
 		return $execute;
 	}
