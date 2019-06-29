@@ -352,20 +352,6 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
         //data tabel mata pelajaran
         if (isset($_POST['fetch']) && $_POST['fetch'] == "list_matpel") {
             # code...
-            /** 
-    ["id_matpel"]=>
-    string(2) "16"
-    ["nama_matpel"]=>
-    string(7) "english"
-    ["kelas_id"]=>
-    string(1) "2"
-    ["id_kelas"]=>
-    string(1) "2"
-    ["txt_kelas"]=>
-    string(11) "kelas 2 smk"
-    ["kelas"]=>
-    string(1) "2"
-  } */
             $list_matpel = $models->select_matpel();
             if ($list_matpel == null) {
                 # code...

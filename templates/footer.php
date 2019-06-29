@@ -246,6 +246,47 @@
                 });
                 return false;
             });
+
+            // menampilkan list data untuk table nilai saya 
+            function fetch_data_nilai_saya() {
+                console.log("execute => fetch_data_nilai_saya()");
+                
+                $.ajax({
+                    url: url_static,
+                    type: "post",
+                    data: {
+                        'fetch': 'datatable_nilai_saya'
+                    },
+                    dataType: "json",
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            $("#table_nilai_saya > tbody").empty().append(response.data);
+                            $(".overlay").hide();
+                        } else {
+                            alert("false");
+                            $(".overlay").hide();
+                        }
+                    },
+                    // error : function (xhr, Status, err) {
+                    //     $("terjadi error : "+ Status);
+
+                    // }
+
+                });
+                return false;
+            }
+
+            $(".btn-print-nilai").click(function () {
+                $(".box-header").hide();
+                $(".will-hide").hide();
+                $("body").addClass('sidebar-collapse');
+                window.print();
+            });
+
+            fetch_data_nilai_saya();
         <?php
     } //end of session siswa
 

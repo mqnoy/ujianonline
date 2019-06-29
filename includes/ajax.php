@@ -3,6 +3,45 @@ include '../includes/app.php';
 
 if (isset($_SESSION['is_logged'])) {
     # code...
+    //post datatable nilai saya
+    if (isset($_POST['fetch']) && $_POST['fetch'] == "datatable_nilai_saya") {
+        # code...
+        $token_siswa = $_SESSION['token_siswa'];
+        $data = [];
+        $nomor = 1;
+        $i = 0;
+        $list_history_nilai = $models->select_nilai_bytoken($token_siswa);
+        if ($list_history_nilai != null) {
+            # code...
+            foreach ($list_history_nilai as $value) {
+                # code...
+                $id_siswa = $value['id_siswa'];
+                $id_matpel = $value['id_matpel'];
+                $email_siswa = $value['email_siswa'];
+                $data[] = "
+                    <tr>
+                        <td>" . $nomor . "</td>
+                        <td>" . $value['nama_matpel'] . "</td>
+                        <td>" . $value['total_nilai'] . "</td>
+                        <td>" . $value['tanggal_pengerjaan'] . "</td>
+                    </tr>
+                ";
+                $i++;
+                $nomor++;
+            }
+            $status = true;
+        }else {
+            # code...
+            $status = true;
+            $data = "tidak ada data ";
+        }
+        $response = array(
+            'status' => $status,
+            'data' => $data
+        );
+        // var_dump($data);
+        echo json_encode($response);
+    }
 
     //post lembar soal siswa
     if (isset($_POST['fr_post']) && $_POST['fr_post'] == "post_lembarsoal_siswa") {
@@ -77,7 +116,6 @@ if (isset($_SESSION['is_logged'])) {
         }
         echo json_encode($response);
     }
-    //terapkan token tuntuk melihat hasil nilai 1 siswa
     if (isset($_POST['aksi_siswa']) && $_POST['aksi_siswa'] == "kirim_email_nilai") {
         //cek token siswa
         //select data siswa ,nilai siswa
@@ -144,7 +182,7 @@ if (isset($_SESSION['is_logged'])) {
                         $pesan = "email tidak valid !";
                     }
                 }
-            }else{
+            } else {
                 $pesan = "list nilai ,sudah pernah di kirim";
             }
 
