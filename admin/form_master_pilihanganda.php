@@ -1,8 +1,5 @@
 <?php
 $ck_editor = true;
-$list_kelas = $models->select_kelas();
-$anu = $models->select_pilihan_ganda();
-
 if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "form_pil_ganda") {
   ?>
   <div class="modal fade" id="modal-edit-mpg">
