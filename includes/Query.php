@@ -288,7 +288,7 @@ class Query extends Koneksi{
 		$res=null;
 		$query="";
 
-		$query = "SELECT ts.nomor_soal,ts.text_soal,ts.id_soal,mm.nama_matpel,mk.txt_kelas FROM tabel_soal ts 
+		$query = "SELECT ts.matpel_id,ts.nomor_soal,ts.text_soal,ts.id_soal,mm.nama_matpel,mk.txt_kelas FROM tabel_soal ts 
 		LEFT JOIN master_matpel mm ON ts.matpel_id = mm.id_matpel
 		LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas";
 
@@ -424,21 +424,7 @@ class Query extends Koneksi{
 
 	//close connection database
 	public function close_db(){
-
 		return mysqli_close($this->conn);
 	}
 }
 $models = new Query();
-/*
-SELECT *,CONCAT(mps.jawaban_pg,': ',mps.jawaban_text) AS pilihan_ganda FROM tabel_soal ts 
- RIGHT JOIN master_pg_soal mps ON ts.id_soal = mps.soal_id
- LEFT JOIN master_matpel mm ON ts.matpel_id = mm.id_matpel
- GROUP BY text_soal,pilihan_ganda
-
-
- SELECT COUNT(*) FROM (SELECT mm.nama_matpel,mk.txt_kelas,mk.kelas FROM master_matpel mm 
-LEFT JOIN master_kelas mk ON mm.kelas_id = mk.id_kelas
-LEFT JOIN tabel_soal ts ON mm.id_matpel = ts.matpel_id
-WHERE mk.kelas = '1'
-) AS total_soal
- */

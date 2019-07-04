@@ -43,6 +43,11 @@ function tgl_waktu_skrg(){
     return date("Y-m-d H:i:s");
 }
 
+//fungsi untuk clear tag html dengan pengecualian
+function clear_tags($content){
+    $allowed_tags = "<img></img><blockquote></blockquote><ul></ul><ol></ol><li></li><font></font><b></b><s></s><i></i><br></br><br/><p></p><table></table><tr></tr><td></td><tbody></tbody>";
+    return strip_tags($content,$allowed_tags);
+}
 
 $hal_aktif = function ($str_halaman){
     // unset($_SESSION['halaman_aktif']);
