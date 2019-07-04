@@ -457,7 +457,8 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
             // ts.nomor_soal,ts.text_soal,mkj.jawaban_pg,mm.nama_matpel,mk.txt_kelas
             foreach ($data_pilihan_ganda as $value) {
                 # code...
-                // $jawaban_pg = $value['jawaban_pg'] == null ? "belum di set" : $value['jawaban_pg'] ;
+                $id_pg = $value['id_pg'];
+                $soal_id = $value['soal_id'];
                 $data []= "
                 <tr>
                     <td>".$nomor."</td>
@@ -467,11 +468,10 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
                     <td>".$value['nama_matpel']."</td>
                     <td>".$value['txt_kelas']."</td>
                     <td>
-                        <div class='btn-group'>
-                            <a class='margin' data-toggle='modal' data-target='#modal-pilihan-ganda'>
-                                <button type='button' class='btn  btn-warning'><i class='fa fa-edit'></i></button>
-                            </a>
-                        </div>
+                    <div class='btn-group margin btn_aksi_mpg'>
+                        <button role='button' data-pg='".$id_pg."' data-soal= '".$soal_id."' type='button' class='edit-mpg btn  btn-warning'><i class='fa fa-edit'></i></button>
+                        <button role='button' data-pg='".$id_pg."' data-soal= '".$soal_id."' type='button' class='remove-mpg btn  btn-danger'><i class='fa fa-remove'></i></button>
+                    </div>
                     </td>
                     </tr>
                 ";
@@ -483,6 +483,34 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
             );
         }
         echo json_encode($response);
+    }
+    //data modal master pilihan ganda
+    if (isset($_POST['fetch']) && $_POST['fetch'] == "data_modal_mpg") {
+        # code...
+        $id_pg = $_POST['p_idpg'];
+        $soal_id = $_POST['p_idsoal'];
+        $data_pilihan_ganda = $models->select_pilihan_ganda($id_pg,$soal_id);
+        $status = false;
+        $text_jawaban="";
+        if ($data_pilihan_ganda != null) {
+            # code...
+            $status = true;
+            foreach ($data_pilihan_ganda as $value) {
+                # code...
+                $text_jawaban = $value['jawaban_text'];
+            }
+            $response = array(
+                'status' => $status,
+                'text_jawaban_db' => $text_jawaban,
+            );
+        }else{
+            $response = array(
+                'status' => $status,
+                'data' => "tidak ada!",
+            );
+        }
+        //  var_dump($response);
+         echo json_encode($response);
     }
 
     //data tabel soal

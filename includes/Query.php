@@ -243,22 +243,37 @@ class Query extends Koneksi{
      * @param $keyword 
 	 * @return array
 	 */
-	public function select_pilihan_ganda($fields=null,$operand=null,$keyword=null){
-		$query = "SELECT ts.nomor_soal,ts.text_soal,CONCAT(mps.jawaban_pg,'. ',mps.jawaban_text) as pilihan_ganda,mm.nama_matpel,mk.txt_kelas FROM tabel_soal ts 
-		RIGHT JOIN  master_pg_soal mps 
-		ON ts.id_soal = mps.soal_id
-		LEFT JOIN master_matpel mm 
-		ON ts.matpel_id = mm.id_matpel
-		LEFT JOIN master_kelas mk
-		ON mm.kelas_id = mk.id_kelas
-		GROUP BY ts.text_soal,mps.jawaban_pg";
+	public function select_pilihan_ganda($id_pg=null,$soal_id=null){
+		$query = "";
+		if ($id_pg ==  null && $soal_id == null) {
+			# code...
+			$query = "SELECT mps.id_pg,mps.soal_id,ts.nomor_soal,ts.text_soal,CONCAT(mps.jawaban_pg,'. ',mps.jawaban_text) as pilihan_ganda,mm.nama_matpel,mk.txt_kelas FROM tabel_soal ts 
+			RIGHT JOIN  master_pg_soal mps 
+			ON ts.id_soal = mps.soal_id
+			LEFT JOIN master_matpel mm 
+			ON ts.matpel_id = mm.id_matpel
+			LEFT JOIN master_kelas mk
+			ON mm.kelas_id = mk.id_kelas
+			GROUP BY ts.text_soal,mps.jawaban_pg";
+		} else {
+			# code...
+			$query = "SELECT mps.id_pg,mps.soal_id,ts.nomor_soal,ts.text_soal,mps.jawaban_text,mm.nama_matpel,mk.txt_kelas FROM tabel_soal ts 
+			RIGHT JOIN  master_pg_soal mps 
+			ON ts.id_soal = mps.soal_id
+			LEFT JOIN master_matpel mm 
+			ON ts.matpel_id = mm.id_matpel
+			LEFT JOIN master_kelas mk
+			ON mm.kelas_id = mk.id_kelas
+			WHERE mps.id_pg =".$id_pg." AND mps.soal_id =".$soal_id;
+		}
+		
 		$res =[];
 		$result = mysqli_query($this->conn,$query);
 		while($row=mysqli_fetch_assoc($result)){
 			$res[] = $row;
 		}
 		// return $result;
-		return sizeof($res) > 0 ? $res : null;
+		return $res> 0 ? $res : null;
 		// var_dump($query);
 	}
 

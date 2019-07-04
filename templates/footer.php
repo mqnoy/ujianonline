@@ -824,6 +824,40 @@
                 return false;
             }
 
+            //fungsi edit pilihan ganda
+            function edit_data_master_pilihanganda(post_idPg,post_idSoal){
+                var kunci_jawaban = "";
+                $.ajax({
+                    url: url_static_admin,
+                    type: "post",
+                    data: {
+                        'fetch': 'data_modal_mpg',
+                        'p_idpg' : post_idPg,
+                        'p_idsoal' : post_idSoal
+                    },
+                    dataType: "json",
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            $("#modal-edit-mpg [name='post_pg_text']").val(response.text_jawaban_db);
+                            $("#modal-edit-mpg [name='post_pg_id']").val(response.post_idPg);
+                            $("#modal-edit-mpg [name='post_soal_id']").val(response.post_idSoal);
+                            $("#modal-edit-mpg").modal("show");
+                            $(".overlay").hide();
+                        } else {
+                            console.log("false");
+                            $(".overlay").hide();
+                        }
+                    },
+                    error: function(xhr, Status, err) {
+                        $("terjadi error : " + Status);
+                    }
+                });
+                return false;
+            } 
+
             // menampilkan list data untuk pilihan ganda 
             function fetch_data_pilihan_ganda() {
                 $.ajax({
@@ -841,8 +875,27 @@
                             $("#tabel_piihanganda > tbody").empty().append(response.data);
                             $(".overlay").hide();
 
+                            $(".btn_aksi_mpg .edit-mpg").each(function (index , obj) {
+                                $(this).click(function () {
+                                    //data-soal='1' data-matpel= '15'
+                                    var id_pg_db =$(this).data('pg');
+                                    var id_soal_db =$(this).data('soal');
+                                    edit_data_master_pilihanganda(id_pg_db,id_soal_db);
+                                });
+                            });
+                            $(".btn_aksi_mpg .remove-mpg").each(function (index , obj) {
+                                $(this).click(function () {
+                                    //data-soal='1' data-matpel= '15'
+                                    // var id_matpel_db =$(this).data('matpel');
+                                    // var id_kelas_db =$(this).data('kelas');
+                                    // $("#modal-remove-matpel [name='text_matpel']").val(id_matpel_db);
+                                    // $("#modal-remove-matpel [name='text_kelas']").val(id_kelas_db);
+                                    $("#modal-remove-mpg").modal("show");
+                                });
+                            });
+
                         } else {
-                            console.log("false");
+                            console.log("false tam_pilihan_ganda");
                         }
                     },
                     // error : function (xhr, Status, err) {
