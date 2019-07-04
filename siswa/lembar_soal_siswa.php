@@ -26,7 +26,7 @@ if ($_SESSION['is_siswa'] == true && isset($_GET['halaman']) && $_GET['halaman']
 <div class="col-md-6">
 <div class="box box-info[<?php echo $soal['id_soal'];?>]">
     <div class="box-header with-border">
-      <h3 class="box-title"><?php echo strip_tags($soal['text_soal_sis']); ?></h3>
+      <h3 class="box-title"><?php echo clear_tags($soal['text_soal_sis']); ?></h3>
     </div>
     <div class="box-body">
       <?php
