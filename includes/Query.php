@@ -409,6 +409,12 @@ class Query extends Koneksi{
 		return $execute;
 	}
 
+	public function update_pilihan_ganda($id_pg,$soal_id,$text_pg){
+		$query = "UPDATE master_pg_soal SET jawaban_text='".$text_pg."' WHERE id_pg='".$id_pg."' AND soal_id='".$soal_id."' ";
+		$execute = mysqli_query($this->conn,$query);
+		return $execute;
+	}
+
 	public function delete_one_record($tablename,$field,$operand,$priKey){
 		$query = "DELETE FROM ".$tablename." WHERE $field".$operand.$priKey;
 		$execute = mysqli_query($this->conn,$query);

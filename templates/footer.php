@@ -823,7 +823,64 @@
                 });
                 return false;
             }
+            //tombol ubah pilihan ganda
+            $("#btn-ubah-modal-mpg").click(function () {
+                $.ajax({
+                    url: url_static_admin,
+                    type: "post", 
+                    data: $("#form_modal_mpg").serialize(),
+                    dataType: "json", 
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            $("#modal-edit-mpg").modal("hide");
+                            $("#modal-edit-mpg").on("hidden.bs.modal", function () {
+                                alert("berhasil ubah");
+                                fetch_data_pilihan_ganda(); 
+                            });
+                        } else {
+                            alert("gagal ubah");
+                            $(".overlay").hide();
+                        }
+                    },
+                    error: function(xhr, Status, err) {
+                        $("Terjadi error : " + Status);
+                    }
+                });
+                return false;
 
+            });
+            //tombol hapus pilihan ganda
+            $(".btn-hpus-mpg").click(function (){
+                $.ajax({
+                    url: url_static_admin,
+                    type: "post", 
+                    data: $("#form_del_modal_mpg").serialize(),
+                    dataType: "json",
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            $("#modal-remove-mpg").modal("hide");
+                            $("#modal-remove-mpg").on("hidden.bs.modal", function () {
+                                alert("berhasil hapus pilihan ganda");
+                                fetch_data_pilihan_ganda(); 
+                            });
+                        } else {
+                            alert("gagal hapus pilihan ganda");
+                            $(".overlay").hide();
+                        }
+                    },
+                    error: function(xhr, Status, err) {
+                        $("terjadi error : " + Status);
+                    }
+
+                });
+                return false;
+            });
             //fungsi edit pilihan ganda
             function edit_data_master_pilihanganda(post_idPg,post_idSoal){
                 var kunci_jawaban = "";
@@ -842,8 +899,8 @@
                     success: function(response) {
                         if (response.status) {
                             $("#modal-edit-mpg [name='post_pg_text']").val(response.text_jawaban_db);
-                            $("#modal-edit-mpg [name='post_pg_id']").val(response.post_idPg);
-                            $("#modal-edit-mpg [name='post_soal_id']").val(response.post_idSoal);
+                            $("#modal-edit-mpg [name='post_pg_id']").val(post_idPg);
+                            $("#modal-edit-mpg [name='post_soal_id']").val(post_idSoal);
                             $("#modal-edit-mpg").modal("show");
                             $(".overlay").hide();
                         } else {
@@ -886,10 +943,10 @@
                             $(".btn_aksi_mpg .remove-mpg").each(function (index , obj) {
                                 $(this).click(function () {
                                     //data-soal='1' data-matpel= '15'
-                                    // var id_matpel_db =$(this).data('matpel');
-                                    // var id_kelas_db =$(this).data('kelas');
-                                    // $("#modal-remove-matpel [name='text_matpel']").val(id_matpel_db);
-                                    // $("#modal-remove-matpel [name='text_kelas']").val(id_kelas_db);
+                                    var id_pg_db =$(this).data('pg');
+                                    var id_soal_db =$(this).data('soal');
+                                    $("#modal-remove-mpg [name='post_pg_id']").val(id_pg_db);
+                                    $("#modal-remove-mpg [name='post_soal_id']").val(id_soal_db);
                                     $("#modal-remove-mpg").modal("show");
                                 });
                             });

@@ -15,8 +15,8 @@ if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "for
         </div>
         <form role="form" id="form_modal_mpg">
           <input type="hidden" name="fr_post_master_pilihanganda" value="post_mpg" />
-          <input type="text" name="post_pg_id" value="" />
-          <input type="text" name="post_soal_id" value="" />
+          <input type="hidden" name="post_pg_id" value="" />
+          <input type="hidden" name="post_soal_id" value="" />
           <div class="modal-body">
             <div class="input-group">
               <label>Text jawaban pilihan ganda : </label>
@@ -39,22 +39,25 @@ if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "for
     <div class="modal-dialog">
 
       <div class="modal-content">
-        <form role="form" id="form_del_modal_mk">
+        <form role="form" id="form_del_modal_mpg">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Hapus mata pelajaran?</h4>
+            <h4 class="modal-title">Hapus pilihan ganda?</h4>
           </div>
           <div class="modal-body">
             <p>
-              <input type="hidden" name="fr_post_del" value="post_del_matpel" />
-              <input type="hidden" name="text_matpel" value="" />
-              <input type="hidden" name="text_kelas" value="" />
+              <input type="hidden" name="fr_post_del" value="post_del_mpg" />
+              <input type="hidden" name="post_pg_id" value="" />
+              <input type="hidden" name="post_soal_id" value="" />
+              <p class="help-block margin" style="color:white !important;">
+                Perhatian ! ,menghapus satu pilihan ganda akan menghapus semuanya 
+              </p>
             </p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-            <button type="button" class="btn-hpus-matpel btn btn-outline">Hapus</button>
+            <button type="button" class="btn-hpus-mpg btn btn-outline">Hapus</button>
           </div>
         </form>
       </div>
@@ -131,7 +134,9 @@ if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "for
 
       <!-- /.box-header -->
       <div class="box-body table-responsive no-padding">
-
+      <div class="overlay">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
         <table class="table table-bordered" id="tabel_piihanganda">
           <tbody>
             <tr>

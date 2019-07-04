@@ -512,6 +512,50 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
         //  var_dump($response);
          echo json_encode($response);
     }
+    //edit pilihan ganda
+    if (isset($_POST['fr_post_master_pilihanganda']) && $_POST['fr_post_master_pilihanganda']=="post_mpg") {
+        # code...
+        // var_dump($_POST);
+        $val_id_pg = $_POST['post_pg_id'];
+        $val_soal_id = $_POST['post_soal_id'];
+        $val_text_pg = $_POST['post_pg_text'];
+        $edit_pg = $models->update_pilihan_ganda($val_id_pg,$val_soal_id,$val_text_pg);
+        if ($edit_pg) {
+            # code...
+            $status = true;
+            $pesan = "berhasil ubah pilihan ganda";
+        }else{
+            $status = false;
+            $pesan = "gagal ubah pilihan ganda";
+        }
+        $response = array(
+            "status" => $status,
+            "pesan" => $pesan
+        );
+        // var_dump($edit_matpel);
+        echo json_encode($response);
+    }
+     //delete pilihan ganda
+     if (isset($_POST['fr_post_del']) && $_POST['fr_post_del'] == "post_del_mpg") {
+        # code...
+        $soal_id = $_POST['post_soal_id'];
+        $delete_pg = $models->delete_one_record("master_pg_soal","soal_id","=",$soal_id);//semua
+        $delete_kunci_jwbn = $models->delete_one_record("master_kunci_jawaban","soal_id","=",$soal_id);
+        $status = false;
+        if ($delete_pg && $delete_kunci_jwbn) {
+            # code...
+            $status = true;
+            $pesan = "berhasil hapus pilihan ganda";
+        }else{
+             $status = false;
+             $pesan = "gagal hapus pilihan ganda";
+        }
+        $response = array(
+            "status" => $status,
+            "pesan" => $pesan
+        );
+        echo json_encode($response);
+    }
 
     //data tabel soal
     if (isset($_POST['fetch']) && $_POST['fetch'] == "data_tabel_soal") {
