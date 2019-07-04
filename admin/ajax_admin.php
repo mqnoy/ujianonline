@@ -319,7 +319,7 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
 
         foreach ($soal_untuk_siswa as $soal) {
             $no_soal = $soal['nomor_soal'];
-            $text_soal_modal = strip_tags($soal['text_soal']);
+            $text_soal_modal = clear_tags($soal['text_soal']);
             $list_pilihan_ganda_soal = $models->select_pgsoal_siswa($soal['id_soal']);
             if ($list_pilihan_ganda_soal != null) {
                 foreach ($list_pilihan_ganda_soal as $pilihan_ganda) {
@@ -556,7 +556,40 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
         );
         echo json_encode($response);
     }
-
+    //data modal master soal
+    if (isset($_POST['fetch']) && $_POST['fetch'] == "data_modal_soal") {
+        # code...
+        $id_soal = $_POST['p_idsoal'];
+        $list_soal = $models->select_soal("id_soal","=",$id_soal);
+        // var_dump($list_matpel);
+        $status = false;
+        $text_soal="";
+        $no_soal=-1;
+        $matpel_id = -1;
+        if ($list_soal != null) {
+            # code...
+            $status = true;
+            foreach ($list_soal as $value) {
+                # code...
+                $text_soal = clear_tags($value['text_soal']);
+                $no_soal = $value['nomor_soal'];
+                $matpel_id = $value['matpel_id'];
+            }
+            $response = array(
+                'status' => $status,
+                'text_soal' => $text_soal,
+                'no_soal' => $no_soal,
+                'matpel_id' => $matpel_id
+            );
+        }else{
+            $response = array(
+                'status' => $status,
+                'data' => "tidak ada!",
+            );
+        }
+        //  var_dump($response);
+         echo json_encode($response);
+    }
     //data tabel soal
     if (isset($_POST['fetch']) && $_POST['fetch'] == "data_tabel_soal") {
         # code...
@@ -573,19 +606,19 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
             // ts.nomor_soal,ts.text_soal,mkj.jawaban_pg,mm.nama_matpel,mk.txt_kelas
             foreach ($data_soal as $value) {
                 # code...
+                $id_soal = $value['id_soal'];
                 $data []= "
                 <tr>
                     <td>".$nomor."</td>
                     <td>".$value['nomor_soal']."</td>
-                    <td>".strip_tags($value['text_soal'])."</td>
+                    <td>".clear_tags($value['text_soal'])."</td>
                     <td>".$value['nama_matpel']."</td>
                     <td>".$value['txt_kelas']."</td>
                     <td>
-                        <div class='btn-group'>
-                            <a class='margin' data-toggle='modal' data-target='#modal-soal'>
-                                <button type='button' class='btn  btn-warning'><i class='fa fa-edit'></i></button>
-                            </a>
-                        </div>
+                    <div class='btn-group margin btn_aksi_soal'>
+                        <button role='button' data-soal= '".$id_soal."' type='button' class='edit-soal btn  btn-warning'><i class='fa fa-edit'></i></button>
+                        <button role='button' data-soal= '".$id_soal."' type='button' class='remove-soal btn  btn-danger'><i class='fa fa-remove'></i></button>
+                    </div>
                     </td>
                     </tr>
                 ";

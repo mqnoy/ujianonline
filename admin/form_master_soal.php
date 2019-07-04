@@ -3,33 +3,79 @@ $ck_editor = true;
 $list_kelas = $models->select_kelas();
 if ($_SESSION['is_admin'] && isset($_GET['halaman']) && $_GET['halaman'] == "form_soal") {
   ?>
-  <div class="modal fade" id="modal-soal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Default Modal</h4>
+  <div class="modal fade" id="modal-edit-soal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Ubah data soal</h4>
+                </div>
+                <form role="form" id="form_modal_soal">
+                    <input type="hidden" name="fr_post_mastersoal" value="post_soal" />
+                    <input type="hidden" name="post_matpel_id" value="" />
+                    <div class="modal-body">
+                    <div class="input-group">
+                    <label>Nomor soal</label>
+                            <input type="number" name="p_nomor_soal" class="form-control" placeholder="1" value="" />
+                        </div>
+                        <div class="input-group">
+                        <label>Pertanyaan</label>
+                            <textarea id="editor_soal" name="p_text_soal" class="form-control">
+                            </textarea>
+                        </div>
+<!--                         
+                        <div class="input-group">
+                            <input type="text" name="p_matpel_id" class="form-control" placeholder="1" value="" />
+                        </div> -->
+                        <p class="help-block margin"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">tutup</button>
+                        <button type="button" id="btn-ubah-modal-soal" class="btn btn-primary">Ubah</button>
+                    </div>
+            </div>
+            </form>
+            <!-- /.modal-content -->
         </div>
-        <div class="modal-body">
-          <p>One fine body&hellip;</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-      <!-- /.modal-content -->
+        <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal-dialog -->
-  </div>
-  <!-- /.modal -->
-  <div class="col-md-12">
+    <!-- /.modal -->
+    <div class="col-md-12">
     <div class="box box-primary">
       <div class="box-header with-border">
         <h3 class="box-title">Input Soal</h3>
       </div>
       <!-- /.box-header -->
+
+      <div class="modal modal-danger fade" id="modal-remove-soal">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <form role="form" id="form_del_modal_soal">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Hapus data soal ?</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                			<input type="hidden" name="fr_post_del" value="post_del_soal"/>
+                            <input type="hidden" name="p_id_soal" value=""/>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn-hpus-soal btn btn-outline">Hapus</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+
       <!-- form start -->
       <form role="form" id="form_soal">
         <input type="hidden" name="fr_post_soal" value="post_soal" />

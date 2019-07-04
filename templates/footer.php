@@ -900,9 +900,11 @@
                         if (response.status) {
                             $("#modal-edit-mpg [name='post_pg_text']").val(response.text_jawaban_db);
                             $("#modal-edit-mpg [name='post_pg_id']").val(post_idPg);
-                            $("#modal-edit-mpg [name='post_soal_id']").val(post_idSoal);
+                            // $("#modal-edit-mpg [name='post_soal_id']").val(post_idSoal);
                             $("#modal-edit-mpg").modal("show");
-                            $(".overlay").hide();
+                            $("#modal-remove-mpg").on("shown.bs.modal", function () {
+                                $(".overlay").hide();
+                            });
                         } else {
                             console.log("false");
                             $(".overlay").hide();
@@ -955,15 +957,47 @@
                             console.log("false tam_pilihan_ganda");
                         }
                     },
-                    // error : function (xhr, Status, err) {
-                    //     $("terjadi error : "+ Status);
+                    error : function (xhr, Status, err) {
+                        $("terjadi error : "+ Status);
 
-                    // }
-
+                    }
                 });
                 return false;
             }
-
+            //fungsi edit data soal
+            function edit_data_soal(post_idSoal) {
+                var kunci_jawaban = "";
+                var editor_soal = CKEDITOR.instances['editor_soal'];
+                $("#form_modal_soal [name='post_matpel_id']").val(post_idSoal);
+                $.ajax({
+                    url: url_static_admin,
+                    type: "post",
+                    data: {
+                        'fetch': 'data_modal_soal',
+                        'p_idsoal' : post_idSoal
+                    },
+                    dataType: "json",
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            editor_soal.setData(response.text_soal);
+                            $("#modal-edit-soal [name='p_nomor_soal']").val(response.no_soal);
+                            $("#modal-edit-soal [name='p_matpel_id']").val(response.matpel_id);
+                            $("#modal-edit-soal").modal("show");
+                            $(".overlay").hide();
+                        } else {
+                            console.log("false");
+                            $(".overlay").hide();
+                        }
+                    },
+                    error: function(xhr, Status, err) {
+                        $("terjadi error : " + Status);
+                    }
+                });
+                return false;
+            } 
             // menampilkan list data untuk pilihan ganda 
             function fetch_data_soal() {
                 $.ajax({
@@ -980,6 +1014,24 @@
                         if (response.status) {
                             // console.log(response.data);
                             $("#tabel_soal > tbody").empty().append(response.data);
+                            $(".overlay").hide();
+                            
+                            //button master soal untuk update 
+                            var db_list_kuncijawaban = JSON.parse(JSON.stringify(response.data));
+                            $(".btn_aksi_soal .edit-soal").each(function (index , obj) {
+                                $(this).click(function () {
+                                    var id_soal_db =$(this).data('soal');
+                                    edit_data_soal(id_soal_db);
+                                });
+                            });
+                            $(".btn_aksi_soal .remove-soal").each(function (index , obj) {
+                                $(this).click(function () {
+                                    var id_soal_db =$(this).data('soal');
+                                    console.log(id_soal_db);
+                                    $("#modal-remove-soal [name='p_id_soal']").val(id_soal_db);
+                                    $("#modal-remove-soal").modal("show");
+                                });
+                            });
                             
                         } else {
                             console.log("false tabel_soal");
@@ -1036,6 +1088,7 @@
         if (isset($ck_editor)) {
             ?>
             CKEDITOR.replace('editor1');
+            CKEDITOR.replace('editor_soal');
         <?php
     }
     ?>
