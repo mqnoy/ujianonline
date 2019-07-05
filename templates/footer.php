@@ -1144,6 +1144,12 @@
             fetch_data_mata_pelajaran();
             fetch_data_kunci_jwbn();
             fetch_data_pilihan_ganda();
+            $(".btn-print-listnilai").click(function () {
+                $(".will-hide").hide();
+                $(".btn-print-listnilai").hide();
+                $("body").addClass('sidebar-collapse');
+                window.print();
+            });
         <?php
     }
     /**end sessions an admin*/
