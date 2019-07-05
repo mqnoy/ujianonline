@@ -397,6 +397,12 @@ class Query extends Koneksi{
 		return $execute;
 	}
 
+	public function update_soal($id_soal,$text_soal,$nomor_soal){
+		$query = "UPDATE tabel_soal SET text_soal='".$text_soal."' , nomor_soal='".$nomor_soal."' WHERE id_soal='".$id_soal."'";
+		$execute = mysqli_query($this->conn,$query);
+		return $execute;
+	}
+
 	public function update_nilai_siswa($id_siswa,$id_matpel){
 		$now = tgl_waktu_skrg();
 		$query = "UPDATE tabel_nilai_siswa SET sent_email='Y' , sent_date='".$now."' WHERE siswa_id='".$id_siswa."' AND matpel_id='".$id_matpel."'";
