@@ -66,7 +66,12 @@ class Query extends Koneksi{
 	}
 	//select count [query builder]
 	public function select_count($tabels=null,$field=null,$operand=null,$keyword=null){
-		$query = "SELECT COUNT(*) AS total_data FROM ".$tabels." "; 
+		if ($field != null) {
+			# code...
+			$query = "SELECT COUNT(*) AS total_data FROM ".$tabels." "; 
+		}else{
+			$query = "SELECT COUNT('".$field."') AS total_data FROM ".$tabels." "; 
+		}
 		if ($keyword != null ) {
 			# code...
 			$query .= "WHERE ".$field."".$operand."".$keyword;

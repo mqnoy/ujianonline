@@ -1144,6 +1144,42 @@
             fetch_data_mata_pelajaran();
             fetch_data_kunci_jwbn();
             fetch_data_pilihan_ganda();
+
+            function fetch_count_data(){
+                $.ajax({
+                    url: url_static_admin,
+                    type: "get",
+                    data: {
+                        'total_data': 'all'
+                    },
+                    dataType: "json",
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            var matpel = JSON.parse(JSON.stringify(response.data_matpel_all));
+                            var soal = JSON.parse(JSON.stringify(response.data_soal_all));
+                            var siswa = JSON.parse(JSON.stringify(response.data_siswa_all));
+                               console.log(matpel[0].total_data);
+                               $("#val_count_matpel").text(matpel[0].total_data);
+                               $("#val_count_soal").text(soal[0].total_data);
+                               $("#val_count_siswa").text(siswa[0].total_data);
+                               $(".overlay").hide();
+                        } else {
+                            console.log("false");
+                        }
+                    },
+                    // error : function (xhr, Status, err) {
+                    //     $("terjadi error : "+ Status);
+
+                    // }
+
+                });
+                return false;
+            }
+            fetch_count_data();
+
             $(".btn-print-listnilai").click(function () {
                 $(".will-hide").hide();
                 $(".btn-print-listnilai").hide();

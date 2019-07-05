@@ -3,6 +3,24 @@ include '../includes/app.php';
 if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
     # code...
 
+    if (isset($_GET['total_data']) && $_GET['total_data']=="all") {
+        # code...
+        // select_count($tabels=null,$field=null,$operand=null,$keyword=null)
+        # code...
+        $total_data_matpel = $models->select_count("master_matpel","id_matpel");
+        $total_data_soal = $models->select_count("tabel_soal","id_soal");
+        $total_data_siswa = $models->select_count("master_siswa","id_siswa");
+
+        $response = array(
+            'status' => true,
+            'data_matpel_all' => $total_data_matpel,
+            'data_soal_all' => $total_data_soal,
+            'data_siswa_all' => $total_data_siswa
+        );
+        echo json_encode($response);
+        // var_dump($_GET);
+    }
+
     //post matapelajaran
     if (isset($_POST['fr_post_matpel'])) {
         # code...
