@@ -964,6 +964,70 @@
                 });
                 return false;
             }
+            //button ubah data soal
+            $("#btn-ubah-modal-soal").click(function () {
+                var value = CKEDITOR.instances['editor_soal'];
+                $.ajax({
+                    url: url_static_admin,
+                    type: "post", 
+                    data: {
+                        'fr_post': $("[name='fr_post']").val(),
+                        'p_id_soal': $("[name='post_id_soal']").val(),
+                        'p_no_soal': $("[name='p_nomor_soal']").val(),
+                        'p_pertanyaan': value.getData()
+                    },
+                    dataType: "json", 
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            $("#modal-edit-soal").modal("hide");
+                            $("#modal-edit-soal").on("hidden.bs.modal", function () {
+                                alert("berhasil ubah");
+                                fetch_data_soal();
+                            });
+                        } else {
+                            alert("gagal ubah");
+                            $(".overlay").hide();
+                        }
+                    },
+                    // error: function(xhr, Status, err) {
+                    //     $("Terjadi error : " + Status);
+                    // }
+                });
+                return false;
+
+            });
+            //hapus data 1 soal
+            $("#modal-remove-soal .btn-hpus-soal").click(function () {
+                var id_soal = $("#modal-remove-soal [name='p_id_soal']").val();
+                $.ajax({
+                    url: url_static_admin,
+                    type: "post", 
+                    data: $("#form_del_modal_soal").serialize(),
+                    dataType: "json",
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            $("#modal-remove-soal").modal("hide");
+                            $("#modal-remove-soal").on("hidden.bs.modal", function () {
+                                alert("berhasil hapus");
+                                fetch_data_soal();
+                            });
+                        } else {
+                            alert("gagal hapus");
+                            $(".overlay").hide();
+                        }
+                    },
+                    error: function(xhr, Status, err) {
+                        $("terjadi error : " + Status);
+                    }
+                });
+                return false;
+            });
             //fungsi edit data soal
             function edit_data_soal(post_idSoal) {
                 var kunci_jawaban = "";
@@ -983,10 +1047,11 @@
                     success: function(response) {
                         if (response.status) {
                             editor_soal.setData(response.text_soal);
+                            $("#modal-edit-soal [name='post_id_soal']").val(post_idSoal);
                             $("#modal-edit-soal [name='p_nomor_soal']").val(response.no_soal);
                             $("#modal-edit-soal [name='p_matpel_id']").val(response.matpel_id);
-                            $("#modal-edit-soal").modal("show");
                             $(".overlay").hide();
+                            $("#modal-edit-soal").modal("show");
                         } else {
                             console.log("false");
                             $(".overlay").hide();
@@ -1079,6 +1144,48 @@
             fetch_data_mata_pelajaran();
             fetch_data_kunci_jwbn();
             fetch_data_pilihan_ganda();
+
+            function fetch_count_data(){
+                $.ajax({
+                    url: url_static_admin,
+                    type: "get",
+                    data: {
+                        'total_data': 'all'
+                    },
+                    dataType: "json",
+                    beforeSend: function() {
+                        $(".overlay").show();
+                    },
+                    success: function(response) {
+                        if (response.status) {
+                            var matpel = JSON.parse(JSON.stringify(response.data_matpel_all));
+                            var soal = JSON.parse(JSON.stringify(response.data_soal_all));
+                            var siswa = JSON.parse(JSON.stringify(response.data_siswa_all));
+                               console.log(matpel[0].total_data);
+                               $("#val_count_matpel").text(matpel[0].total_data);
+                               $("#val_count_soal").text(soal[0].total_data);
+                               $("#val_count_siswa").text(siswa[0].total_data);
+                               $(".overlay").hide();
+                        } else {
+                            console.log("false");
+                        }
+                    },
+                    // error : function (xhr, Status, err) {
+                    //     $("terjadi error : "+ Status);
+
+                    // }
+
+                });
+                return false;
+            }
+            fetch_count_data();
+
+            $(".btn-print-listnilai").click(function () {
+                $(".will-hide").hide();
+                $(".btn-print-listnilai").hide();
+                $("body").addClass('sidebar-collapse');
+                window.print();
+            });
         <?php
     }
     /**end sessions an admin*/

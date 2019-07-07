@@ -3,6 +3,24 @@ include '../includes/app.php';
 if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
     # code...
 
+    if (isset($_GET['total_data']) && $_GET['total_data']=="all") {
+        # code...
+        // select_count($tabels=null,$field=null,$operand=null,$keyword=null)
+        # code...
+        $total_data_matpel = $models->select_count("master_matpel","id_matpel");
+        $total_data_soal = $models->select_count("tabel_soal","id_soal");
+        $total_data_siswa = $models->select_count("master_siswa","id_siswa");
+
+        $response = array(
+            'status' => true,
+            'data_matpel_all' => $total_data_matpel,
+            'data_soal_all' => $total_data_soal,
+            'data_siswa_all' => $total_data_siswa
+        );
+        echo json_encode($response);
+        // var_dump($_GET);
+    }
+
     //post matapelajaran
     if (isset($_POST['fr_post_matpel'])) {
         # code...
@@ -554,6 +572,51 @@ if (isset($_SESSION['is_logged']) && $_SESSION['is_admin'] == true) {
             "status" => $status,
             "pesan" => $pesan
         );
+        echo json_encode($response);
+    }
+     //delete satu mata pelajaran
+     if (isset($_POST['fr_post_del']) && $_POST['fr_post_del'] == "post_del_soal") {
+        # code...
+        $soal_id = $_POST['p_id_soal'];
+        $delete_soal = $models->delete_one_record("tabel_soal","id_soal","=",$soal_id);
+        $delete_pg = $models->delete_one_record("master_pg_soal","soal_id","=",$soal_id);//semua
+        $delete_kunci_jwbn = $models->delete_one_record("master_kunci_jawaban","soal_id","=",$soal_id);
+        $status = false;
+        if ($delete_soal && $delete_pg && $delete_kunci_jwbn) {
+            # code...
+            $status = true;
+            $pesan = "berhasil hapus data soal";
+        }else{
+             $status = false;
+             $pesan = "gagal hapus data soal";
+        }
+        $response = array(
+            "status" => $status,
+            "pesan" => $pesan
+        );
+        echo json_encode($response);
+    }
+    //edit data soal
+    if (isset($_POST['fr_post']) && $_POST['fr_post']=="p_edit_soal") {
+        # code...
+        $id_soal = $_POST['p_id_soal'];
+        $text_soal = $_POST['p_pertanyaan'];
+        $nomor_soal = $_POST['p_no_soal'];
+        $status = false;
+        $edit_soal = $models->update_soal($id_soal,$text_soal,$nomor_soal);
+        if ($edit_soal) {
+            # code...
+            $status = true;
+            $pesan = "berhasil ubah data soal";
+        }else{
+             $status = false;
+             $pesan = "gagal ubah data soal";
+        }
+        $response = array(
+            "status" => $status,
+            "pesan" => $pesan
+        );
+        // var_dump($edit_matpel);
         echo json_encode($response);
     }
     //data modal master soal

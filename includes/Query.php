@@ -66,7 +66,12 @@ class Query extends Koneksi{
 	}
 	//select count [query builder]
 	public function select_count($tabels=null,$field=null,$operand=null,$keyword=null){
-		$query = "SELECT COUNT(*) AS total_data FROM ".$tabels." "; 
+		if ($field != null) {
+			# code...
+			$query = "SELECT COUNT(*) AS total_data FROM ".$tabels." "; 
+		}else{
+			$query = "SELECT COUNT('".$field."') AS total_data FROM ".$tabels." "; 
+		}
 		if ($keyword != null ) {
 			# code...
 			$query .= "WHERE ".$field."".$operand."".$keyword;
@@ -393,6 +398,12 @@ class Query extends Koneksi{
 
 	public function update_matpel($text_matpel,$id_matpel,$text_kelasid){
 		$query = "UPDATE master_matpel SET nama_matpel='".$text_matpel."' , kelas_id='".$text_kelasid."' WHERE id_matpel='".$id_matpel."'";
+		$execute = mysqli_query($this->conn,$query);
+		return $execute;
+	}
+
+	public function update_soal($id_soal,$text_soal,$nomor_soal){
+		$query = "UPDATE tabel_soal SET text_soal='".$text_soal."' , nomor_soal='".$nomor_soal."' WHERE id_soal='".$id_soal."'";
 		$execute = mysqli_query($this->conn,$query);
 		return $execute;
 	}
