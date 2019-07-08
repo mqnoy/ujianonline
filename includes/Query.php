@@ -6,6 +6,10 @@
 include "Koneksi.php";
 class Query extends Koneksi{
 
+	function __destruct(){
+		$this->close_db();
+	}
+
 	public function select_admin($var_username,$var_password){
 		$q_select_admin = "SELECT * FROM master_admin_aplikasi WHERE username='".$var_username."' AND password='".$var_password."'";
 		$res =[];
@@ -437,5 +441,6 @@ class Query extends Koneksi{
 	public function close_db(){
 		return mysqli_close($this->conn);
 	}
+
 }
 $models = new Query();
