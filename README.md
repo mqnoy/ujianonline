@@ -43,12 +43,12 @@ Nama : same as Nis
 ## Demo
 
 ```
-[Admin user](http://kelompok3nih.tk/ujianonline/admin.php)
+http://kelompok3nih.tk/ujianonline/admin.php
 username : admin
 password : admin
 
 
-[Siswa](http://kelompok3nih.tk/ujianonline/siswa.php)
+http://kelompok3nih.tk/ujianonline/siswa.php
 Nis : your nis ex : 12345678
 Nama : yourname
 ```
