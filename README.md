@@ -43,13 +43,12 @@ Nama : same as Nis
 ## Demo
 
 ```
-Admin user
-http://kelompok3nih.tk/ujianonline/admin.php
+[Admin user](http://kelompok3nih.tk/ujianonline/admin.php)
 username : admin
 password : admin
 
-Siswa
-http://kelompok3nih.tk/ujianonline/siswa.php
+
+[Siswa](http://kelompok3nih.tk/ujianonline/siswa.php)
 Nis : your nis ex : 12345678
 Nama : yourname
 ```
@@ -58,6 +57,8 @@ Nama : yourname
 ## Author
 * kelompok - [kelompok3](http://kelompok3nih.tk)
 
-## License
+## Source code
+[here](https://github.com/mqnoy/ujianonline/archive/master.zip)
 
+## License
 This project is licensed under the Apache-2.0 - see the [LICENSE.md](LICENSE) file for details
