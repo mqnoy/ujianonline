@@ -1,5 +1,5 @@
 <?php
-define("_DIR_APPS_", "ujianonline");
+define("_DIR_APPS_", "/");
 session_start();
 require_once("Query.php");
 
