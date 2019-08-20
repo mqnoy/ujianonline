@@ -1,5 +1,8 @@
 <?php
-define("_DIR_APPS_", "/");
+$find_dir = explode('\\', getcwd());
+$cur_dir = $find_dir[count($find_dir)-1];
+
+define("_DIR_APPS_", $cur_dir);
 session_start();
 require_once("Query.php");
 
